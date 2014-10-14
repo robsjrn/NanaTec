@@ -3,7 +3,7 @@ var router = express.Router();
 var DatabaseConn = require('../../Database/Database');
 var jwt = require('jwt-simple'),
  tokenSecret='1234567890QWERTY';
-var Monthlyposting = require('../../jobs/producer');
+var Monthlyposting = require('../../Jobs/producer');
 
         function ensureAuthenticated(req, res, next) {
 				  try
