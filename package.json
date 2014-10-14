@@ -1,0 +1,37 @@
+{
+  "name": "RentalManagement",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "agenda": "latest",
+    "async": "latest",
+    "bcrypt": "latest",
+    "body-parser": "latest",
+    "crypto": "latest",
+    "ejs": "latest",
+    "email-templates": "latest",
+    "emailjs": "latest",
+    "express": "latest",
+    "express-namespace": "latest",
+    "handlebars": "^2.0.0",
+    "jade": "latest",
+    "jwt-simple": "latest",
+    "kue": "latest",
+    "moment": "^2.8.3",
+    "mongodb": "latest",
+    "multer": "latest",
+    "nib": "latest",
+    "node-uuid": "^1.4.1",
+    "nodemailer": "latest",
+    "phantom": "^0.6.5",
+    "phantomjs-pdf": "^0.1.2",
+    "redis": "latest",
+    "serve-static": "latest",
+    "string": "latest",
+    "stylus": "latest",
+    "twilio": "latest"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}

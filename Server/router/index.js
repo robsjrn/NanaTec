@@ -19,5 +19,6 @@ module.exports = function (app) {
 	 app.use('/Admin', require('./routes/AdminRoutes'));
      app.use('/Reports', require('./routes/ReportsRoutes'));
 	 app.use('/Download', require('./routes/DownloadRoute'));
+	 app.use('/Sms', require('./routes/SmsRoutes'));
 	 
 };
