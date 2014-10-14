@@ -1,14 +1,14 @@
-var config=require('../Config/Config.js');
-var mail=require('../Mail/mail.js');
-var sms=require('../Sms/Sendsms.js');
-var fs = require('fs');
-var util     = require('util')
-var path     = require('path');
-var async =require('async');
-var bcrypt = require('bcrypt');
-
-
-var MongoClient = require('mongodb').MongoClient;
+var config=require('../Config/Config.js')
+, mail=require('../Mail/mail.js')
+, sms=require('../Sms/Sendsms.js')
+, fs = require('fs')
+, util     = require('util')
+, path     = require('path')
+, async =require('async')
+, bcrypt = require('bcrypt')
+, jwt = require('jwt-simple')
+, tokenSecret='1234567890QWERTY'
+, MongoClient = require('mongodb').MongoClient;
 var db;
 
 
@@ -414,9 +414,10 @@ exports.Accessrequest = function(req, res) {
 
 exports.GrantAccess = function(req, res) {
     updateAccessStatus(req.body._id,function(ok,status) {
+
       if (ok){
-		       //send mail here
-               sms.TenantWelcomeSMS(req.body,function(message){
+               var token = jwt.encode({username: req.body._id}, tokenSecret);
+               sms.TenantWelcomeSMS(req.body,token,function(message){
 			       SaveMessage(message);
 		        });     
 		   Success(res);  
@@ -893,106 +894,8 @@ exports.vacantHouseReport= function(plot,fn) {
 
 
 exports.MonthlyRentPosting= function(req, res) {
- 
-var plotname =req.body.plotName;
-var month =req.body.Month;
-console.log("Posting Rent.... for "+plotname);
- 
- db.collection('MonthlyPosting', function(err, collection) {
-  collection.findOne({$and:[{"plotname":plotname},{"Month":month}]},function(err, item){
- 
-  if(item){
-
-	   console.log("Already Posted");
-			res.json(500,{error: "Rent Already Posted"});
-    
-  }
-	  else {
-	        // Not Posted
-             console.log("Not Posted");
-						var ReceiptNo =req.body.ReceiptNo;
-						var PostDateTime  =req.body.PostDateTime;
-						var det={};
-						var req1={};
-						var i=0;
-						var length;
-						det.receiptno=ReceiptNo ;
-						det.transactiontype="Posting";
-						det.plotnumber=plotname;
-						det.transactiondate=new Date().toISOString();
-						det.Description="Rent for "+month;
-
-			  db.collection('House', function(err, collection) {
-				var cursor  =collection.find({$and:[{"plot.Plotname":plotname},{"status":"rented"}]},{amount:1,tenantid:1,_id:0,number:1});
-				 
-				 cursor.toArray(function (err,items){
-					 console.log("Cursor Length.." + items.length);  
-					  length =items.length;
-
-
-                    
-					   async.eachSeries(items,
-							function(item,callback){
-								//call posting here it is async
-								det.tranAmount=item.amount;
-								det.tenantid=item.tenantid;
-								det.housenumber=item.number;
-
-								// constuct the _id
-								det._id=PostDateTime+ReceiptNo+month+i;
-								req1.body=det;	
-										i=i+1;
-									//	console.log("Record loop posted " + i +" for " + item.tenantid );
-								  
-									
-								  doPosting(req1,function(status,err){
-									 //console.log("The status is .. " + status);		    
-											if (status){
-												console.log("Error from posting Transactions...");
-												callback('error');
-												}
-											else {
-												
-												 if (i==length)
-													 {
-														console.log("Everything was posted");
-													   RentPosted(plotname,month)
-														callback('ok');                    
-													 }
-												   else{
-													   //proceed to the next record
-													   callback();
-													   }
-												}
-									   });
-
-								
-								 } ,
-							   function(err){
-								   if(err=='error'){
-									//   console.log("Errrors ");
-									   ErrorPostNotification(res);
-									   }
-									else{
-										//console.log("Everything is ok ..responding to user");
-										SuccessPostNotification(res)
-										}
-								 }
-
-						 );
-				 
-					   });
-
-					   });
-               
-          //Not Posted Ends
-	     }
-	  
-	  }
-
-
-);
-});
+ //to delete
+   res.json(200,{Status: "Ok"});
   }; 
 
 
@@ -1323,6 +1226,17 @@ var getUser=function(lid,callback){
 });
 });
 }
+
+exports.findUser=function(lid,callback) {
+	 db.collection('user', function(err, collection) {
+  collection.findOne({"_id":lid},function(err, item){
+  if(item){ callback( "ok",item); }
+   else { callback( null,null); };
+  if (err) {callback( null,null);}
+});
+});
+}
+
 
 exports.findPhoneNumber=function(phonenumber,callback) {
    db.collection('user', function(err, collection) {

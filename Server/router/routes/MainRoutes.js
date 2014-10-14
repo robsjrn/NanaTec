@@ -24,20 +24,28 @@ var express = require('express')
 					 }
 					  
 			}
-    router.get('/Welcome/:token', function (req, res) {
-		console.log("The Token is " + req.params.token);
 
-			  res.render('index',
-				 { title : 'Home',names : 'beste',housenumber:'10020' ,plotname:'Kasarani'}
-			
-			   )
-     })
-    router.get('/about', function (req, res) {
+
+        router.get('/Welcome/:token', function (req, res) {
+        var decoded = jwt.decode(req.params.token, tokenSecret);
+		   DatabaseConn.findUser(decoded.username, function(ok, user) {
+             if ("ok")
+             {          
+               console.log("The User is " + user.names);
+			   res.render('index', { title : 'Welcome Tenant',names : user.names,housenumber:user.housename ,plotname:user.plot.Plotname}  );
+			  }
+			  else{
+				res.render('error', {error:'Sorry Serious Error Occurred'} );
+			  }
+    
+		   });
+         })
+             router.get('/about', function (req, res) {
 				  res.render('about',
 				 { title : 'Abouuuuuut',names : 'beste',id:'10020' }
 			
-			   )
-     })
+			       )
+              })
 
           router.get('/', function(req, res){res.redirect('/index.html');});
   
