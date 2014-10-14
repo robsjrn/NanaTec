@@ -1,0 +1,75 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+     <link rel="stylesheet" href="styles/Home/login.css">
+    <!-- endbuild -->
+  </head>
+
+ <body ng-app="RentmngtAppLogin" >
+
+<div data-ng-controller="loginCtrl" class="wrapper">
+
+    <form class="form-signin">
+	     <h3 class="form-signin-heading"> <span class="fa fa-sign-in">Login</h3>
+		 <span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>
+	  <a class="pull-right" href="/index.html"><span class="glyphicon glyphicon-home"></span><strong>   
+	   Home</strong></a>
+      <input type="text" class="form-control" name="username" placeholder="Identification No." required="" ng-model="user.username" autofocus="" />
+      <input type="password" class="form-control" name="password" placeholder="Password" ng-model="user.password" required=""/>      
+      <label class="checkbox">
+        <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+      </label>
+      <button ng-disabled="login.$invalid" ng-click="Userlogin()" class="btn btn-lg btn-primary btn-block" type="submit">Login</button> 
+	  <hr>
+      <p> By Signing in, you confirm that you've reviewed & accepted the <a href="/Terms.html">Terms & Conditions.</a></p>
+       <a  href="/AccountRecovery.html">Forgot Password</a>
+	   <br>
+
+	   <hr>
+	   <div ng-show="invalidcredential" class="alert alert-danger"><strong>Invalid Credential !!!</strong> </div>  
+      <div ng-show="noAccess" class="alert alert-danger"><strong>Sorry But you have no Access..Contact The Administrator</strong> </div>    
+	  <div ng-show="noFullyConfigured" class="alert alert-danger"><strong>Hi Sorry For the Inconvinience..Contact The Administartor</strong> </div> 
+    </form>
+ 
+    	
+  </div>
+
+  
+
+
+  <!--[if lt IE 9]>
+    <script src="public/es5-shim/es5-shim.js"></script>
+    <script src="public/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+   
+
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        	 <script src="scripts/Home/controller/login.js"></script>
+        <!-- endbuild -->
+   </body>
+</html>

@@ -1,0 +1,31 @@
+  <div class="panel panel-default">
+					 <div class="panel-heading">
+				        	Landlord Monthly Posting
+					 </div>
+
+					 	<div class="panel-body">
+						  <div class="col-sm-6">
+						    <label for="plot">Plot Name</label>
+							<select class="form-control"  ng-model="Landlord.plot" id="plot" ng-options="c.Plotname for c in plot" >    
+			                       </select>
+                              <hr>
+								   <button type="button" class="btn btn-large btn-warning" ng-click="PostMonthlyRent()">Post This Month Rent </button>   
+                          </div>
+						    <div class="col-sm-6">
+                              <label for="PostDate">Month</label>
+							      <select class="form-control"  ng-model="Landlord.dateChoosen" id="PostDate" ng-options="m.value for m in Months" >    
+			                       </select>
+
+								
+                                 <label for="rcpt">Receipt Number</label>
+								   <input type="text" class="form-control" placeholder="Receipt Number" id ="rcpt" ng-model="Landlord.receipt"  >
+
+                          
+                            </div>
+					</div>
+
+					 <div ng-show="rentPosted" class="alert alert-warning"><strong>The Monthly Rent Successfully Submitted for Posting</strong> </div>
+                      <div ng-show="rentPostedError" class="alert alert-warning"><strong>Error Occurred During Posting..</strong>{{msg}} </div>
+ </div>
+					  
+		

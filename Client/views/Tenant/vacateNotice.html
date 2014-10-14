@@ -1,0 +1,26 @@
+ <div class="panel panel-default">
+
+		<div class="panel-heading">
+					<div class="form-group">
+						 <label for="gender">Notice Period</label>
+							<select ng-model="notice.period"  id="gender" class="form-control" >
+								<option>One Month</option>
+								<option>Two Month</option>
+								<option>Three Month</option>
+								</select>
+					</div>
+			
+           </div>
+              <div class="panel-body">
+                   
+				
+                    <div class="col-xs-12">
+						      <p ng-bind-html="notice.text"></p>					 
+				</div>
+        </div>
+		<div class="panel-footer">
+	       <button type="button " class="btn btn-primary" ng-click="sendNotice()"  ng-disabled="btndisable">Send</button>
+        </div>
+  </div>
+  <div ng-show="noticeSent" class="alert alert-warning"><strong>Notice Sent</strong> </div>
+   <div ng-show="noticeSentError" class="alert alert-warning"><strong>Error Occurred </strong>{{msg}} </div>

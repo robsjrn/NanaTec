@@ -1,0 +1,65 @@
+ <br>
+ <div class="row">
+   <div class="col-md-4 col-md-offset-2">
+    <button type="button" class="btn btn-warning" ng-disabled="userForm.$invalid">Add</button>
+   </div>
+  </div>
+  <br>
+<div class="row">
+
+  <div class="col-md-4 col-md-offset-2">
+  
+          <form role="form">
+             
+			  <div class="form-group">
+				  <label for="Names">Names</label>
+				  <input type="text" class="form-control" placeholder="Names" id="Names" ng-model="property.Owner.names" ng-disabled=disableComponents required/>
+			  </div>
+              
+			   <div class="form-group">
+                   <label for="cont">Contacts</label>
+					<span ng-show="ContactSpinner"><i class="fa fa-refresh fa-spin"></i></span>
+					 <input type="number" class="form-control" placeholder="Contact" name ="cont" ng-model="property.Owner.contact" ng-blur="CheckPhonenumberExists()" ng-disabled=disableComponents required ng-pattern="/^07[0-9]+$/" ng-minlength=10  ng-maxlength=10  />
+					 <div ng-show="userForm.cont.$error.pattern">e.g 0722111111</div>
+					 <div ng-show="userForm.cont.$error.minlength">Should be atleast 10 Characters</div>
+					 <div ng-show="userForm.cont.$error.maxlength">Cannot be more than 10 Characters</div>
+					<div ng-show="contactExist" class="alert alert-danger"><strong>Contact Already Used</strong> </div>
+			   </div>
+
+               <div class="form-group">
+                        <label for="Email">Email</label>
+						<input type="email" name="email" class="form-control" ng-model="property.Owner..email" placeholder="Email" ng-disabled=disableComponents required/>
+						<p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block alert alert-danger">Enter a valid email.</p>
+			   </div>
+             
+
+
+          
+  </div>
+
+  <div class="col-md-4" >
+
+       <div class="form-group">
+              <label for="loc">Location</label>
+				  <input type="text" class="form-control" placeholder="Office Location" id="loc" ng-model="property.Owner.fax" ng-disabled=disableComponents required/>
+          </div>
+         <div class="form-group">
+              <label for="fax">Fax</label>
+				  <input type="text" class="form-control" placeholder="Fax" id="fax" ng-model="property.Owner.fax" ng-disabled=disableComponents required/>
+          </div>
+
+		   <div class="form-group">
+              <label for="url">Website Url</label>
+				  <input type="text" class="form-control" placeholder="e.g www.websitename.com" id="url" ng-model="property.Owner.url" ng-disabled=disableComponents required/>
+          </div>
+  </div>
+
+  </form>
+</div>
+
+ <hr>
+ <div class="row">
+   <div class="col-md-4 col-md-offset-2">
+			    <button type="button" class="btn btn-success" ng-disabled="userForm.$invalid"  >Save</button>
+   </div>
+</div>

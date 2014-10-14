@@ -1,0 +1,48 @@
+<div>
+ <h5 >House Management</h5>
+ <div class="panel panel-default">
+					<div class="panel-heading">
+					 <button type="button" class="btn btn-info" ng-click="addHouse()" ng-disabled=!disableComponents>Add</button>
+				
+					    <button type="button" class="btn btn-warning" ng-disabled=disableComponents>Clear</button>
+					  
+				   </div>
+					   <div class="panel-body">
+                
+                       
+							   <br>
+							  
+							    <div class="col-md-4">
+						<form name="userForm"  novalidate>
+								 <label for="plot">Plot Name</label>
+							       <select class="form-control"  ng-model="House.plot" id="plot" ng-options="c.Plotname for c in plot" ng-disabled=disableComponents required>    
+			                       </select>
+								   <label for="hsenum">House Number</label>
+								   <span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>
+								   <input type="text" class="form-control" placeholder="House Number" id="hsenum" ng-model="House.number" ng-blur="CheckHseNoExists()"  ng-disabled=disableComponents required>
+                                    <div ng-show="HsenoExist" class="alert alert-danger"><strong>House Number Already in Use</strong> </div>
+								   <label for="amt">Amount</label>
+								   <input type="number" class="form-control" placeholder="Amount" id ="amt" ng-model="House.amount" ng-disabled=disableComponents required>
+								</div>
+							  <div class="col-md-4">
+							    <label for="hsetype">House Type</label>
+							    <select class="form-control"  ng-model="House.type" id="hsetype" ng-options="h.name for h in hsetype" ng-disabled=disableComponents required>    
+			                       </select>
+								 <label for="desc">Description</label>
+								 <textarea class="form-control" rows="3" id="desc" ng-model="House.description" ng-disabled=disableComponents required></textarea>
+							   </div>
+							</form>
+						
+                       </div>
+            <div class="panel-footer">
+		<button type="button" class="btn btn-success" ng-disabled="userForm.$invalid" ng-click="saveHouse()" ng-disabled=disableComponents>Save</button>
+						 </div>
+                   
+					      </div>
+            <div ng-show="housecreated" class="alert alert-success"><strong>{{msg}} !!!</strong> House Successfully Maintained</div>
+			<div ng-show="houseterror" class="alert alert-success"><strong>Error Occurred !!!</strong> {{msg}}</div>
+					  							 
+					</div>  
+
+
+</div>

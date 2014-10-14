@@ -1,0 +1,38 @@
+  <div class="panel panel-default">
+   <div class="panel-heading">
+   Statement
+   </div>
+  <div class="table-responsive">
+<table class="table table-hover table-striped">  
+        <thead>  
+          <tr>  
+            <th>Receipt No.</th>  
+            <th>Payment Date</th>
+			<th>Transaction Type</th> 
+			<th>Payment Method</th> 
+            <th>Amount</th>  
+            <th>Description</th>  			
+          </tr>  
+        </thead>  
+
+
+        <tbody> 
+		
+
+		<tr data-ng-repeat="stmt in statement">
+             <td>{{stmt.receiptno}}</td>
+			 <td>{{stmt.transactiondate |date:'yyyy-MM-dd' }}</td>
+			  <td>{{stmt.transactiontype}}</td>
+			 <td>{{stmt.paymentmethod}}</td>
+			 <td>{{stmt.tranAmount}}</td>
+			 <td>{{stmt.Description}}</td>
+		</tr>
+         
+		
+        </tbody>  
+
+</table>
+ </div>            
+</div>
+
+

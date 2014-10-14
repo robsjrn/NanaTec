@@ -1,0 +1,27 @@
+<div class="col-xs-4">
+  <div class="list-group">
+	  <li ng-repeat="noticedet in noticelist " >
+	  <a href="" class="list-group-item" ng-click="selectnotice(noticedet)">{{noticedet.hse}} </a>
+	  </li>
+	  
+  </div>
+</div>
+<div class="col-xs-8">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Notice Details</h3>
+  </div>
+  <div class="panel-body">
+    <div class="col-xs-12">
+		 <p ng-bind-html="notice.text"></p>					 
+	</div>
+  </div>
+  <div class="panel-footer">
+      <button class="btn btn-primary" ng-click="updateNotificationStatus($index)" ng-disabled="btndisable">Accept</button>
+	 
+  </div>
+     
+</div>
+ <div ng-show="noticeSent" class="alert alert-warning"><strong>Notice Updated</strong> </div>
+      <div ng-show="noticeSentError" class="alert alert-warning"><strong>Error Occurred </strong>{{msg}} </div>
+</div>

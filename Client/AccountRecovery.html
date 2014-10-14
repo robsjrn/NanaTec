@@ -1,0 +1,63 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="public/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="public/font-awesome/css/font-awesome.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/login.css">
+    <!-- endbuild -->
+  </head>
+
+ <body ng-app="RentmngtAppRecoverpwd" background="images/Assets/bg.png">
+ <div data-ng-controller="recoverPwd" class="wrapper">
+
+ 
+	  <form class="form-signin">
+	     <h3 class="form-signin-heading"> Forgot your Password?</h3>
+	  <a class="pull-right" href="/index.html"><span class="glyphicon glyphicon-home"></span><strong>   
+	   Home</strong></a>
+	   <input type="text" class="form-control" name="idnumber" placeholder="Identification No." required="" ng-model="user.id" autofocus="" />
+	  
+
+	  <hr>
+	  <button ng-disabled="login.$invalid"  ng-click="RecoverPassword()" class="btn btn-lg btn-warning btn-block" type="submit">Recover </button> 
+	  </form>
+         
+     <div ng-show="pwdRecovered" class="alert alert-danger"><strong>Password Sent to Phone Number you Provided   </strong></div>
+	 <div ng-show="ErrorpwdRecovered" class="alert alert-danger"><strong>Error Occurred Kindly Try Later....</strong> </div> </div> 
+
+</div>
+   <!--[if lt IE 9]>
+    <script src="public/es5-shim/es5-shim.js"></script>
+    <script src="public/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="public/jquery/jquery.js"></script>
+    <script src="public/angular/angular.js"></script>
+    <script src="public/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="public/angular-resource/angular-resource.js"></script>
+    <script src="public/angular-touch/angular-touch.js"></script>
+
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        	<script src="scripts/controllers/recoverPwd.js"></script>
+        <!-- endbuild -->
+   </body>
+</html>

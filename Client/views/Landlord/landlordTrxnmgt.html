@@ -1,0 +1,102 @@
+          <h5>Transaction Management</h5> 
+		  
+<div class="panel panel-default">
+					<div class="panel-heading">
+					 <button type="button" class="btn btn-info" ng-click="AddPayment()" ng-disabled=!disableComponents >Add</button>
+					    <button type="button" class="btn btn-warning" ng-disabled=disableComponents ng-click="ClearPayment()">Clear</button>
+					    
+					   <label class="pull-right">Bal c/f {{Tenant.balance-Transaction.amount + Charge.Amount}}</label>
+					 
+					  </div>
+					   <div class="panel-body">
+					<form name="userForm"  novalidate>		
+                            <div class="row">
+							   <div class="col-xs-6">
+							    <label for="hsename">Tenant id</label>
+							   <input type="text" class="form-control" placeholder="Tenant id" id="Tid" ng-model="search.tenantid"       ng-blur="SearchTenantid()" ng-disabled=disableTenantid >
+							   </div>
+
+							   <div class="col-xs-6">
+							      <label for="hsename">House Name</label>
+							   <input type="text" class="form-control" placeholder="House name" id="hsename" ng-model="search.housename" ng-blur="SearchHouseid()" ng-disabled=disableSearchHse>
+							   </div>
+
+							</div>
+							<div ng-show="TenantNotFound" class="alert alert-warning"><strong>Tenant Not Found</strong></div>
+                               <hr>
+					     <div class="col-md-4">
+                            <label for="tenant">Tenant Names</label>
+							         <input type="text" class="form-control" placeholder="Tenant names" id="tnames" ng-model="Tenant.names" disabled required>
+                              <label for="hsename">House Name</label>
+							   <input type="text" class="form-control" placeholder="House name" id="hsename" ng-model="Tenant.housename" disabled required>
+
+							    <label for="balamt">Balance Amt</label>
+							   <input type="text" class="form-control" placeholder="Balance Amount" id="balamt" ng-model="Tenant.balance" disabled required>
+                            
+							 <label for="paymethod">Payment Method</label>
+							       <select class="form-control"  ng-model="Transaction.paymentmethod" id="paymethod" ng-options="c.name for c in paymentmethod" ng-disabled=disableComponents required>  
+			                       </select>
+
+                            <label for="amt">Amount</label>
+							   <input type="text" class="form-control" placeholder="Amount" id="amt" ng-model="Transaction.amount" ng-disabled=disableComponents required>
+
+						 </div>
+
+						 <div class="col-md-4">
+                              <label for="pstdate">Posted Date</label>
+							   <input type="text" class="form-control" placeholder="Date:YYYY-MM-DD" id="pstdate" ng-model="Transaction.PostedDate" disabled required>
+                              							 
+                              <label for="date">Transaction Date</label>
+                              
+                     
+								  <p class="input-group">
+								  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="Transaction.transactiondate" is-open="opened" min-date="minDate" max-date="'2015-06-22'"  ng-required="true" close-text="Close" placeholder="YYYY-MM-DD"/>
+								  <span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								  </span>
+								</p>
+
+							   <label for="trantype">Transaction Type</label>
+							       <select class="form-control"  ng-model="Transaction.transactiontype" id="trantype" ng-options="c.name for c in transactiontype" ng-disabled=disableComponents required>  
+			                       </select>
+                                  
+
+                              <label for="desc">comments</label>
+								 <textarea class="form-control" rows="1" id="desc" ng-model="Transaction.comments" ng-disabled=disableComponents></textarea>
+
+                              <label for="rcpt">Receipt</label>
+							   <input type="text" class="form-control" placeholder="Receipt Number" id="rcpt" ng-model="Transaction.receiptno" ng-disabled=disableComponents ng-blur="Receipt()"> 
+                               <div ng-show="ReceiptFound" class="alert alert-danger"><strong>Receipt Already Paid to House {{Receiptdata.housenumber}} Amount {{Receiptdata.tranAmount}} Date {{Receiptdata.TransactionDate}}</strong></div>
+						 </div>
+						 <div class="col-md-4">
+                           
+                           <input type="checkbox" ng-model="ApplyCharges" ng-click="CheckCharges()">  Apply Charges
+						  <div ng-show="ShowCharges" >
+						          <input type="checkbox" ng-model="LateCharge" ng-click="LatePaymentCharges()"> Late Payment
+                                  <input type="checkbox" ng-model="CustomCharge" ng-click="CustomPaymentCharges()"  > Custom  
+								<label for="cAmt">Custom Charge Amount</label>
+							   <input type="number" class="form-control" placeholder="Custom Amount"  ng-model="Charge.Amount" id="cAmt" ng-disabled="customDisable"/>
+							   <label for="Cmmt">Custom Charge Amount</label>
+							   <input type="text" class="form-control" placeholder="Custom Comments" id="Cmmt" ng-model="Charge.comment" ng-disabled="customDisable"/>
+									
+						  </div>
+                      </div>
+					   </div>  
+                    </form>
+					    <div class="panel-footer">
+						 <button type="button" class="btn btn-success" ng-click="postPayment()" ng-disabled="userForm.$invalid" >Save</button>
+						 </div>
+                    
+
+</div>
+
+
+
+
+            <div ng-show="paymentposted" class="alert alert-success"><strong>{{msg}} !!!</strong> Payment Successfully Posted</div>
+			<div ng-show="paymenterror" class="alert alert-danger"><strong>Error Occurred !!!</strong> {{msg}}</div>
+
+
+
+
+		

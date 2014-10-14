@@ -1,0 +1,81 @@
+<div class="row">
+<div class="col-sm-6 col-md-4"><p>
+	  <div class="panel panel-default">
+	<div class="panel-heading">
+	<h1 class="panel-title">House Types</h1>
+	</div>
+	<div class="panel-body">
+	   <label for="hsetypename">House Type Name</label>
+		<input type="text" class="form-control" placeholder="Hse Type Name" id="hsetypename" ng-model="Hsetype.name" ng-disabled=disableComponents>
+		<br>
+		<div class="btn-group">
+		    <button type="button" class="btn btn-primary">Add</button>
+			<button type="button" class="btn btn-success" ng-click="SaveHseType()">Save</button>
+		</div>
+	</div>
+	</div>
+</p>
+</div>
+<div class="col-sm-6 col-md-4"><p>
+		  <div class="panel panel-default">
+		<div class="panel-heading">
+		<h1 class="panel-title">Payment Methods</h1>
+		</div>
+		<div class="panel-body">
+                   <label for="paymethod">Payment Name</label>
+					<input type="text" class="form-control" placeholder="Payment Methods" id="paymethod" ng-model="paymethod.name" ng-disabled=disableComponents>
+					<br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-primary">Add</button>
+						<button type="button" class="btn btn-success" ng-click="SavePaymentMethod()">Save</button>
+					</div>
+           </div>
+		</div>
+
+</p></div> 
+<div class="clearfix visible-sm"></div>
+<div class="col-sm-6 col-md-4"><p>
+	 <div class="panel panel-default">
+	<div class="panel-heading">
+	<h1 class="panel-title">Transaction Types</h1>
+	</div>
+	<div class="panel-body">
+	   
+               <label for="trantype">Transaction Name</label>
+					<input type="text" class="form-control" placeholder="Transaction Type" id="trantype" ng-model="trantype.name" ng-disabled=disableComponents>
+					<br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-primary">Add</button>
+						<button type="button" class="btn btn-success" ng-click="SaveTrxnType()">Save</button>
+					</div>
+	</div>
+	</div>
+
+</p></div>
+<div class="col-sm-6 col-md-4"><p>
+
+		<div class="panel panel-default">
+		<div class="panel-heading">
+		<h1 class="panel-title">Expense Types</h1>
+		</div>
+		<div class="panel-body">
+		  <label for="exptype">Expense Name</label>
+					<input type="text" class="form-control" placeholder="Expense Type" id="exptype" ng-model="exptype.name" ng-disabled=disableComponents>
+					<br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-primary">Add</button>
+						<button type="button" class="btn btn-success" ng-click="SaveExpenseType()">Save</button>
+					</div>
+		</div>
+		</div>
+
+</p></div>
+
+</div>
+
+
+
+  <div ng-show="ErrorStatus" class="alert alert-danger"><strong>Database Error</strong> </div>  
+  <div ng-show="SuccessStatus" class="alert alert-success"><strong>Configuration</strong>Successfully Saved</div>
+
+  

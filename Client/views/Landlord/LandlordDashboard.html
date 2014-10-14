@@ -1,0 +1,144 @@
+  <div class="panel panel-default">
+					 <div class="panel-heading">
+					Landlord Settings
+					</div>
+
+					 	<div class="panel-body">
+                               <div class ="row">
+                                     <div class ="col-md-6">
+                                        <div class="panel panel-default">
+										  <div class="panel-heading">
+											<h3 class="panel-title">Tenant Notifications</h3>
+										  </div>
+										  <div class="panel-body">
+										   <label for="plot">Plot Name</label>
+							                  <select class="form-control"  ng-model="Landlord.plot" id="plot" ng-options="c.Plotname for c in plot" >    
+			                       </select>
+										  <label for="not">Send Notification Every</label>
+										<select ng-model="TenantNotification.month" class="form-control" >
+												            <option value='1'>01</option>
+															<option value='2'>02</option>
+															<option value='3'>03</option>
+															<option value='4'>04</option>
+															<option value='5'>05</option>
+															<option value='6'>06</option>
+															<option value='7'>07</option>
+															<option value='8'>08</option>
+															<option value='9'>09</option>
+															<option value='10'>10</option>
+															<option value='11'>11</option>
+															<option value='12'>12</option>
+															<option value='13'>13</option>
+															<option value='14'>14</option>
+															<option value='15'>15</option>
+															<option value='16'>16</option>
+															<option value='17'>17</option>
+															<option value='18'>18</option>
+															<option value='19'>19</option>
+															<option value='20'>20</option>
+															<option value='21'>21</option>
+															<option value='22'>22</option>
+															<option value='23'>23</option>
+															<option value='24'>24</option>
+															<option value='25'>25</option>
+															<option value='26'>26</option>
+															<option value='27'>27</option>
+															<option value='28'>28</option>
+															<option value='29'>29</option>
+															<option value='30'>30</option>
+															<option value='31'>31</option>
+											</select>
+											<br>
+											
+											<label for="not">Of the Month</label>
+											<br>
+											   <button type="button" class="btn btn-warning" ng-click="addTnotifications()">Add</button>
+                                               <button type="button" class="btn btn-success" ng-click="saveTnotifications()" ng-disabled="btnNotification">Save</button>
+												<br>
+											    <div ng-show="NotificationPosted" class="alert alert-warning"><strong>Record Saved</strong> </div>
+												<div ng-show="NotificationError" class="alert alert-warning"><strong>Database Error</strong> </div>
+										  </div>
+										</div>
+							        </div>
+									 <div class ="col-md-6">
+                                        <div class="panel panel-default">
+										  <div class="panel-heading">
+											<h3 class="panel-title">Late Payment Charges</h3>
+										  </div>
+										  <div class="panel-body">
+										   <label for="plot">Plot Name</label>
+							                  <select class="form-control"  ng-model="Landlord.plot" id="plot" ng-options="c.Plotname for c in plot" >    
+			                               </select>
+											   <label for="amt">Amount</label>
+							                      <input type="text" class="form-control" placeholder="Amount" id="amt" ng-model="Payment.amount" ng-disabled=disableComponents required> 
+
+												  <br>
+												  <button type="button" class="btn btn-warning" ng-click="addLatePayment()">Add</button>
+                                               <button  type="button" class="btn btn-success" ng-click="LatePayment()" ng-disabled="btnLatePayment">Save</button>
+										        <br>
+												<div ng-show="latePaymentPosted" class="alert alert-warning"><strong>Record Saved</strong> </div>
+												<div ng-show="latePaymentError" class="alert alert-warning"><strong>Record Saved</strong> </div>
+										  </div>
+										</div>
+							         </div>
+							   </div>
+							   <div class ="row">
+							   <div class ="col-md-6">
+                                        <div class="panel panel-default">
+										  <div class="panel-heading">
+											<h3 class="panel-title">Rent Posting </h3>
+										  </div>
+										  <div class="panel-body">
+										   <label for="plot">Plot Name</label>
+							                 <select class="form-control"  ng-model="Landlord.plot" id="plot" ng-options="c.Plotname for c in plot" >    
+			                                 </select>
+											 <label for="not">Post Monthly Rent  Every</label>
+											<select class="form-control" ng-model="MPosting.month">
+                                                            <option value='1'>01</option>
+															<option value='2'>02</option>
+															<option value='3'>03</option>
+															<option value='4'>04</option>
+															<option value='5'>05</option>
+															<option value='6'>06</option>
+															<option value='7'>07</option>
+															<option value='8'>08</option>
+															<option value='9'>09</option>
+															<option value='10'>10</option>
+															<option value='11'>11</option>
+															<option value='12'>12</option>
+															<option value='13'>13</option>
+															<option value='14'>14</option>
+															<option value='15'>15</option>
+															<option value='16'>16</option>
+															<option value='17'>17</option>
+															<option value='18'>18</option>
+															<option value='19'>19</option>
+															<option value='20'>20</option>
+															<option value='21'>21</option>
+															<option value='22'>22</option>
+															<option value='23'>23</option>
+															<option value='24'>24</option>
+															<option value='25'>25</option>
+															<option value='26'>26</option>
+															<option value='27'>27</option>
+															<option value='28'>28</option>
+															<option value='29'>29</option>
+															<option value='30'>30</option>
+															<option value='31'>31</option>
+											</select>
+											<br>
+											<label for="not">Of the Month</label>
+											<br>
+											 <button type="button" class="btn btn-warning" ng-click="addMPosting()">Add</button>
+                                               <button type="button" class="btn btn-success" ng-click="saveMPosting()" ng-disabled="btnPosting">Save</button>
+											    <br>
+												<div ng-show="MonthlyPosting" class="alert alert-warning"><strong>Record Saved</strong> </div>
+												<div ng-show="MonthlyPostingError" class="alert alert-warning"><strong>Database Error</strong> </div>
+										  </div>
+										</div>
+							        </div>
+									
+						 </div>
+ </div>
+					  
+		

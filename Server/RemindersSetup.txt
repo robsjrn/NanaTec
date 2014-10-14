@@ -1,0 +1,17 @@
+var k =[
+      {"Rundate":1,"ProcessName":"Monthly Posting Process","ProcessDetails":{"plotname":"Kahawa","title":"Scheduled Monthly Postin for Kahawa","month":"August"}},
+{"Rundate":1,"ProcessName":"Monthly Posting Process","ProcessDetails":{"plotname":"Kahawa","title":"Scheduled Monthly Postin for Kahawa","month":"September"}},
+
+         ]
+
+db.Schedules.insert(k);
+
+
+
+var k =[
+
+{"Rundate":1,"ProcessName":"Daily Tenant balance Process","ProcessDetails":{"plotname":"Kahawa","title":"Scheduled Tenant Balance Notification for Kahawa","month":"August"}},
+{"Rundate":1,"ProcessName":"Monthly Posting Process","ProcessDetails":{"plotname":"Kahawa","title":"Scheduled Monthly Postin for Kahawa","month":"September"}},
+ ]
+
+db.Schedules.insert(k);

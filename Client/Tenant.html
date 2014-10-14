@@ -1,0 +1,223 @@
+
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>Tenant Management</title>
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+     <link rel="stylesheet" href="styles/Tenant/Tenant.css">
+	 <link rel="stylesheet" href="styles/Tenant/ngProgress.css">
+    <!-- endbuild -->
+	
+  </head>
+
+<body data-ng-app="TenantmngtApp">
+
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+
+
+<div data-ng-controller="MainTenantsctrl">
+
+             <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
+		       <div class="container" >
+				  <div class="navbar-header">
+					   <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					   
+				  <a class="navbar-brand" href="#">
+				   <span class="glyphicon glyphicon-home"></span>
+				   <strong>Nana Tenant</strong>
+				  </a>
+				 </div>
+					<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+					  <ul class="nav navbar-nav navbar-right">
+					    <li ><a href="#!/nyumbakumi"><i class="glyphicon glyphicon-home"></i> Nyumba Kumi</a></li>
+						<li ><a href="#!"><i class="fa fa-question fa-fw"></i>Services</a></li>
+					    <li ><a href="#!/help"><i class="fa fa-question fa-fw"></i> Help</a></li>
+						<li ><a href="#!/Terms"><i class="fa fa-edit fa-fw"></i>Terms/Condition</a></li>
+						<li ><a href="#!/pwdchange"><i class="fa fa-cogs fa-fw"></i> Change Password</a></li>
+						<li ><a href="#!/about"><i class="fa fa-info fa-fw"></i>About</a></li>
+						<li ><a href="#!/Profile"><i class="fa fa-cogs fa-fw"></i>Profile</a></li>
+						<li class="divider"></li>
+						<li><a type="button"  ng-click="Logout()"><i class="fa fa-power-off fa-fw"></i>Logout</a></li>
+					 </ul>
+	                  </nav>   
+					   
+   
+      </div>
+        </header>
+
+<div class="container">
+
+    <ul class="nav nav-tabs tab-bar">
+      <li><a href="#!/statements">Statement </a></li>
+      <li><a href="#!/inbox">Notifications </a></li>
+	  <li><a href="#!/Document">Documents </a></li>
+       <li ><a href="#!/vacateNotice"><i class="fa fa-edit fa-fw"></i>Vacate Notice</a></li>
+	   <li ><a href="#!/evictionNotice">Eviction Notice</a></li>
+       <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                       <ul class="dropdown-menu dropdown-messages">
+                        <li ng-repeat="message in emails.messages  | limitTo :4" >
+                            <a href="#">
+                                <div>
+                                    <strong>{{ message.from }}</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>{{ message.date | date:'yyyy-MM-dd'  }}</em>
+                                    </span>
+                                </div>
+                                <div>{{ message.subject }}</div>
+                            </a>
+							  <div class="divider"></div>
+                        </li>
+                        
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong><a href="#!/inbox">Read All Messages</a></strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                       </li>
+    				 </ul>
+				</li>
+    </ul>
+
+      <div class="row">
+	  	        <div class="col-md-8">
+			 	
+                   <div class="{{ pageClass }}" data-ng-view >
+			     </div> 
+			
+            </div>
+			<div class="col-md-4">
+			     <div class="row">
+				 <div class="col-xs-12">
+					<div class="panel panel-default">
+					 <div class="panel-heading">
+						  Tenant Details
+						   </div>
+					<div class="panel-body">
+					 <div class="col-xs-8">
+                           <p> <h5>Names :{{TenantData.names}} </h5>  </p>
+                           <p> <h5>ID NO. {{TenantData._id}} </h5>  </p>
+						   <p> <h5>Occupation :{{TenantData.occupation}}</h5>  </p>
+						   <p> <h5>Place of Work :{{TenantData.location}}</h5>  </p>
+						</div>	   
+							 <div class="col-xs-4">
+			                     <img class="img-thumbnail" ng-src="{{ TenantData.Details.imageUrl }}" />		
+			                </div>
+					 </div>
+					</div>  
+                 </div>
+			  </div>	 
+            <div class="row">
+             <div class="col-xs-12">
+
+			   <div class="panel panel-default">
+						   <div class="panel-heading">
+						  Tenant Housing Details
+						   </div>
+							<div class="panel-body">
+
+                              <p>Plot No. {{TenantData.plot.Plotname}} </p>
+                              <p> <h5>House Number  : {{TenantData.housename}}</h5>  </p>
+							  <p> <h5>Rental Balance :{{TenantData.balance}}</h5>  </p>
+							  
+
+								         
+							 </div>
+							</div>  
+                </div>
+           </div>
+			
+			</div>
+			
+			
+		
+       </div>
+	
+
+			
+   
+
+          
+</div>
+  
+
+
+  <div class="navbar navbar-default navbar-fixed-bottom">
+		         <div class="container" >
+			       <p>copyrights @NanaTec 2014 </p>				    	
+               </div>
+  </div>
+</div>
+  <!--[if lt IE 9]>
+    <script src="public/es5-shim/es5-shim.js"></script>
+    <script src="public/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+
+	<script src="lib/ng-file-upload-shim/angular-file-upload-shim.min.js"></script> 
+	<script src="lib/ng-file-upload/angular-file-upload.min.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+	<script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script> 
+
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+         <script src="scripts/Tenant/controller/TenantMngt.js"></script>
+		 <script src="scripts/Tenant/controller/ngProgress.min.js"></script>
+        <!-- endbuild -->
+	<script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Tenant Agreement Doc</h3>
+        </div>
+        <div class="modal-body">
+          <p>{{doc.txt}} </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!/Document" class="btn btn-primary" ng-click="ok()">OK..Show me</a>
+            <button class="btn btn-warning" ng-click="cancel()">No..Later</button>
+        </div>
+    </script>		
+			
+  </body>
+</html>
+
+
+
+                    
+
+
+

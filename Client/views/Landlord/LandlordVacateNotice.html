@@ -1,0 +1,40 @@
+ <h5>House Rental Management..Tenant Vacate Notice</h5>
+
+ <div class="panel panel-default">
+  <div class="panel-heading">
+    <button type="button" class="btn btn-warning" ng-click="add()" >Add</button>
+  </div>
+  <div class="panel-body">
+                <div class="row">
+					<div class="col-xs-6">
+					 <label for="hsename">Tenant id</label>
+						<input type="text" class="form-control" placeholder="Tenant id" id="Tid" ng-model="search.tenantid"       ng-blur="SearchTenantid()" ng-disabled=disableTenantid >
+					</div>
+				   <div class="col-xs-6">
+						<label for="hsename">House Name</label>
+						<input type="text" class="form-control" placeholder="House name" id="hsename" ng-model="search.housename" ng-blur="SearchHouseid()" ng-disabled=disableSearchHse>
+						</div>
+                   </div>
+				   <hr>
+				    <h5>{{search.names}}</h5>
+                   <hr>
+     <div class="row">
+	  <div class="col-xs-12">
+		 <text-angular name="htmlcontent" ng-model="Noticetext">
+		 </text-angular>
+      </div>
+	 </div>
+  </div>
+  <div class="panel-footer">
+     <div class="row">
+			<div class="col-xs-3">
+			 <button type="button" class="btn btn-primary" ng-click="sendNotification()" ng-diasbled=btnSend>Save</button>
+			</div>
+			<div class="col-xs-9">
+			  <div ng-show="NoticeSent" class="alert alert-warning"><strong>Notice Sent..</strong></div>
+			   <div ng-show="NoticeSentError" class="alert alert-success"><strong>Database Error !</strong></div>
+		   </div>
+     </div>
+  </div>
+</div>
+

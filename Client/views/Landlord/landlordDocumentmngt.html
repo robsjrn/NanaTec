@@ -1,0 +1,43 @@
+<div class="panel panel-default">
+       <div class="panel-heading">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			  Choose Document
+			  <span class="caret"></span>
+		</button>
+			<ul class="dropdown-menu">
+			            <li ng-repeat="item in documents">
+						      <a ng-click="selectdocType(item)" >{{item.name}}</a>
+					    	</li>
+			</ul>	
+			<h5> {{doc.docType}}</h5>
+			
+  </div>
+  
+  <button type="button" class="btn-warning pull-right" ng-click="adddoc()">Add</button>
+   <button type="button" class="btn-primary pull-right" ng-click="clearEdit()">Clear</button>
+   <button type="button" class="btn-danger pull-right">Get</button>
+     </div>
+
+</div>
+		<div class="panel-body">
+		 <div ng-show="showdoc">
+		  <div ng-show="documentSaved" class="alert alert-success"><strong>Document Saved</strong> </div>
+		  <div ng-show="documenterror" class="alert alert-danger"><strong>Error Occurred !!!</strong> {{msg}}</div>	
+		 <button type="button" class="btn-danger" ng-click="SaveDoc(plot.Plotname)" ng-disabled="btndisabled">Save Document</button>
+		 <div class="input-group">
+			<span class="input-group-addon">Plot</span>
+			<select class="form-control"  ng-model="plot"  ng-options="c.Plotname for c in landlordplots"	ng-disabled=disableComponents>  
+			</select>
+		</div>
+		      <div class="well" >
+            
+                 <text-angular name="htmlcontent" ng-model="doctext">
+				  </text-angular>
+			  </div>
+
+			 
+		 </div>
+
+		</div>
+</div>

@@ -1,0 +1,59 @@
+ <h5>Expense Management</h5>
+<div class="panel panel-default">
+					<div class="panel-heading">
+					     <button type="button" class="btn btn-info" ng-click="AddExpense()" ng-disabled=!disableComponents >Add</button>
+					    <button type="button" class="btn btn-warning" ng-disabled=disableComponents ng-click="ClearExpense()">Clear</button>
+					    
+				     </div>
+					   <div class="panel-body">
+					     <div class="row"> 
+								<div class="col-md-8">
+									<div class="input-group">
+									  <span class="input-group-addon">Plot</span>
+									  <select class="form-control"  ng-model="Tenant.plot"  ng-options="c.Plotname for c in landlordplots"	ng-disabled=disableComponents>  
+											   </select>
+									  <span class="input-group-btn">
+										<button class="btn btn-danger" type="button" ng-click="GetDetails()" ng-disabled=disableComponents >Get!</button>
+									  </span>
+									</div><!-- /input-group -->
+								  </div><!-- /.col-lg-6 -->  
+							</div>	  
+                         <hr>
+						 
+						 
+
+						 <div class="col-md-4">
+                            <label for="exptype">Expense Type</label>
+							       <select class="form-control"  ng-model="Expense.type" id="exptype" ng-options="c.name for c in expensetype" ng-disabled=disableComponents>  
+			                       </select>
+                             
+                            <label for="amt">Amount</label>
+							   <input type="text" class="form-control" placeholder="Amount" id="amt" ng-model="Expense.amount" ng-disabled=disableComponents>
+
+
+							    <label for="tenant">House Name</label>
+							       <select class="form-control"  ng-model="crit" id="tenant" ng-options="c.housename for c in Tenants" ng-disabled=disableComponents >  
+			                       </select>
+
+							    <label for="hsename">Tenant Name</label>
+							   <input type="text" class="form-control" placeholder="Tenant name" id="hsename" ng-model="crit.name" disabled>
+
+						 </div>
+
+						 <div class="col-md-4">
+                              <label for="date">Date</label>
+							   <input type="text" class="form-control" placeholder="Date" id="date" ng-model="Expense.date" disabled>                           
+                              <label for="desc">Description</label>
+								 <textarea class="form-control" rows="3" id="desc" ng-model="Expense.description" ng-disabled=disableComponents></textarea>
+
+						 </div>
+                            
+					   </div>  
+					   <div class="panel-footer">
+					   <button type="button" class="btn btn-success" ng-click="PostExpense()" ng-disabled=disableComponents>Save</button>
+					   </div>
+               
+</div>
+
+ <div ng-show="paymentposted" class="alert alert-success"><strong>{{msg}} !!!</strong> Expense Successfully Posted</div>
+			<div ng-show="paymenterror" class="alert alert-danger"><strong>Error Occurred !!!</strong> {{msg}}</div>

@@ -1,0 +1,203 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+     <link rel="stylesheet" href="styles/Home/EnlistProperty.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="RentmngtAppEnlistProperty" >
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+   
+ <!-- Add your site or application content here -->
+
+
+
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="#">
+	   <span class="glyphicon glyphicon-home"></span>
+	   <strong>Nana</strong>
+	  </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/SearchRentals.html">To Rent</a></li>
+		<li><a href="/LandlordAgents.html">Landlords/Agents</a></li>
+		
+		 <li class="dropdown active">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Property <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/Property.html">Search/View Property</a></li>
+			 <li class="divider"></li>
+            <li class="active"><a href="/EnlistProperty.html">Enlist Property</a></li>
+          </ul>
+        </li>
+       	<li><a href="/News.html">News</a></li>
+		<li><a href="/Services.html">Services</a></li>
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+	      <li><a href="/Login.html">Login</a></li>
+		<li><a href="#"></a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+     <div data-ng-controller="MainCtrl" class="container">
+   
+					    <div class="col-md-6">
+                             <div class="well"> 
+							     <h5>What we Will Do for You</h5>
+								 <hr>
+								 <p>We Will  Help You Reach Many Customers.</p>
+                                 <p>Expose your listing to investors, owners, tenants and brokers.</p>
+								 <p>Get the names and phone numbers of prospects interested in your type of listing</p>
+								 <p>Track how often and when your listing is viewed </p>
+								 <p>Free membership allows you to view hundreds of thousands of properties posted by members.</p>
+									
+									
+						     </div> 
+						</div>  
+
+			 <div class="col-md-6">
+               <div class="well">
+			     <h5>Have an Account ?</h5>
+				 <hr>
+                   <ul class="nav nav-tabs" role="tablist">
+					   <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
+					  <li><a href="#create" data-toggle="tab">Register</a></li>
+                    </ul>
+					  <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane active in" id="login">
+							<!-- Login -->
+
+							   <div data-ng-controller="loginCtrl" class="wrapper">
+
+									<form class="form-signin" id="login">
+										 <h3 class="form-signin-heading"> <span class="fa fa-sign-in">Login</h3>
+										 <span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>
+										  <input type="text" class="form-control" name="username" placeholder="User Name" required="" ng-model="user.username" autofocus="" />
+										  <input type="password" class="form-control" name="password" placeholder="Password" ng-model="user.password" required=""/>      
+										  <br>
+										  <button ng-disabled="login.$invalid" ng-click="Userlogin()" class="btn btn-lg btn-primary btn-block" type="submit">Login</button> 
+										  <hr>
+										  <p> By Signing in, you confirm that you've reviewed & accepted the <a href="/Terms.html">Terms & Conditions.</a></p>
+										   <a  href="/AccountRecovery.html">Forgot Password</a>
+										   <br>
+										 
+										</form>
+									 
+										<div ng-show="invalidcredential" class="alert alert-danger"><strong>Invalid Credential !!!</strong> </div>  
+										  <div ng-show="noAccess" class="alert alert-danger"><strong>Sorry But you have no Access..Contact The Administrator</strong> </div>    
+										
+									  </div>
+							  <!-- end login -->
+							</div>
+							<div class="tab-pane fade" id="create">
+                                  <!-- Registration-->
+								  <br>
+								  <h4 class="label label-primary pull-right">Property Owner Registration</h4>
+								  <br>
+							      <form id="PropertyRegistration" name="PropertyRegistration" novalidate>
+										 <label for="Names">Names</label>
+											<input type="text" class="form-control" placeholder="Names" id="Names" ng-model="property.names" ng-disabled=disableComponents required/>
+											
+											<label for="cont">Contacts</label>
+											 <span ng-show="ContactSpinner"><i class="fa fa-refresh fa-spin"></i></span>
+											   <input type="number" class="form-control" placeholder="Contact" name ="cont" ng-model="property.contact" ng-blur="CheckPhonenumberExists()" ng-disabled=disableComponents required ng-pattern="/^07[0-9]+$/" ng-minlength=10  ng-maxlength=10  />
+											   <div ng-show="PropertyRegistration.cont.$error.pattern">e.g 0722111111</div>
+											   <div ng-show="PropertyRegistration.cont.$error.minlength">Should be atleast 10 Characters</div>
+											   <div ng-show="PropertyRegistration.cont.$error.maxlength">Cannot be more than 10 Characters</div>
+											   <div ng-show="contactExist" class="alert alert-danger"><strong>Contact Already Used</strong> </div>
+											 <hr>
+										   <p>Login Details</p> 
+											 <label for="Names">User Name</label>
+											<input type="text" class="form-control" placeholder="User Name" name="uname" ng-model="property.username" ng-disabled=disableComponents required/>
+
+											<label for="Password">Password</label>
+											<input type="password"  class="form-control" id="pwd" name="pwd" ng-model="property.password" ng-minlength="5" ng-disabled=disableComponents placeholder="New Password" required/>
+											<div ng-show="PropertyRegistration.uname.$dirty">
+											<p ng-show="PropertyRegistration.pwd.$error.required" class="help-block alert alert-danger">Password Required</p>
+											<p ng-show="PropertyRegistration.pwd.$error.minlength" class="help-block alert alert-danger">Password too Short</p>
+											</div>
+
+											<label for="ConfirmPassword">Confirm Password</label>
+											<input type="password"  class="form-control" id="Confirmpwd" name="Confirmpwd" ng-model="confirmpwd" placeholder="Confirm Password" ng-disabled=disableComponents required pw-check="pwd"/>
+											<div ng-show="PropertyRegistration.Confirmpwd.$dirty">
+											<p ng-show="PropertyRegistration.Confirmpwd.$error.required" class="help-block alert alert-danger">Please Confirm your password</p>
+											<p ng-show="PropertyRegistration.Confirmpwd.$error.pwcheck" class="help-block alert alert-danger">Passwords do not match </p>
+											</div>
+                                          <hr>
+                                                    <button type="button" class="btn btn-primary" ng-click="Add()">Add</button>
+													<button type="button" class="btn btn-warning" ng-click="Clear()" >Clear</button>
+													<button type="button" class="btn btn-danger pull-right" ng-click="Save()" ng-disabled="PropertyRegistration.$invalid" >Save</button>
+													<hr>
+													<div ng-show="ErrorStatus" class="alert alert-danger"><strong>Database Error</strong> </div>  
+														<div ng-show="SuccessStatus" class="alert alert-success"><strong>Details</strong> Successfully Saved </div>
+														 
+									
+										</form>
+							<!-- Registration End-->
+							</div>
+					  </div>
+					
+			   </div>
+		  </div>
+	 </div>
+
+
+   <!--[if lt IE 9]>
+    <script src="public/es5-shim/es5-shim.js"></script>
+    <script src="public/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+     <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+    <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script> 
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/Home/controller/EnlistPropertyMngt.js"></script>
+        <!-- endbuild -->
+
+      
+
+
+</body>
+</html>
+

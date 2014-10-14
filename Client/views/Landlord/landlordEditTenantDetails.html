@@ -1,0 +1,41 @@
+<div>
+<div class="modal-header">
+            <h5>Edit Tenant</h5>
+        </div>
+        <div class="modal-body">
+           					
+              <div class="row">
+				<div class="col-md-6">		
+				   <div class="field">
+						 <strong>Names:</strong>
+                         <div click-to-edit="Tenant.name" >{{Tenant.name}}</div>
+                   </div>
+				   <div class="field">
+						 <strong>ID:</strong>
+                         <div click-to-edit="Tenant._id" >{{Tenant._id}}</div>
+                   </div>
+
+				    <div class="field">
+						 <strong>Occupation:</strong>
+                         <div click-to-edit="Tenant.occupation" >{{Tenant.occupation}}</div>
+                   </div>
+				  
+                     <div class="field">
+						 <strong>Place of Work :</strong>
+                         <div click-to-edit="Tenant.location" >{{Tenant.location}} </div>
+                   </div>
+                           
+				
+             
+						<p> <strong>Plot No :{{Tenant.plot.name}}</strong>  </p>          
+						<p> <strong>House Number :{{Tenant.housename}}</strong>     </p>             				   
+						 <p><strong>Rental Balance :{{Tenant.balance}}</strong></p>
+                                    				      			
+			</div>               
+							  							
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+</div>

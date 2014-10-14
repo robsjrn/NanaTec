@@ -1,0 +1,52 @@
+ <h5>House Rental Management..Vacate</h5>
+ <div class="panel panel-default">
+       <div class="panel-heading">
+			<button type="button" class="btn btn-primary" ng-click="Add()" ng-disabled=!disableComponents>Add</button>         	
+
+		</div> 
+   <div class="panel-body">
+	                      <div class="row">
+						    <div class="col-md-6">
+									<div class="input-group">
+									  <span class="input-group-addon">Plot</span>
+									  <select class="form-control"  ng-model="Tenant.plot"  ng-options="c.Plotname for c in landlordplots"	ng-disabled=disableComponents>  
+											   </select>
+									  <div class="input-group-btn">
+										<button class="btn btn-danger" type="button" ng-click="GetDetails()" ng-disabled=disableComponents >Get!</button>
+									  </div>
+									</div><!-- /input-group -->
+									</div>
+					   </div><!-- /row-->   
+                         <hr>
+		              <div class="col-md-4">
+							<label for="tname">Tenant Names</label>
+						<select class="form-control"  ng-model="crit" id="tname" ng-options="c.names for c in tenantdata" ng-disabled=disableComponents>  
+			                       </select>
+                                <div class="radio">
+									  <label>
+										<input type="radio" ng-model="House.status" name="optionsRadios" id="optionsRadios2" value="vacant" ng-disabled=disableComponents>
+										   VACATE
+									  </label>
+									</div>
+                         </div>
+						 <div class="col-md-4">
+                            <label for="hsename">House Name</label>
+								   <input type="text" class="form-control" placeholder="House Name" id ="hsename" ng-model="crit.housename" disabled >
+
+                            </div>
+
+				 
+</div>
+<div class="panel-footer">
+	        <button type="button" class="btn btn-success" ng-click="Update()" ng-disabled=disableComponents>Update</button>
+ </div>
+
+</div>
+
+ 
+
+<div ng-show="vacateupdate" class="alert alert-success"><strong>{{msg}} !!!</strong> Vacation Successfull</div>
+			<div ng-show="vacateerror" class="alert alert-danger"><strong>Error Occurred !!!</strong> {{msg}}</div>
+
+
+

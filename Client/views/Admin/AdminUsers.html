@@ -1,0 +1,26 @@
+
+
+
+<div class="panel">
+<ul class="list-group">
+	<li class="list-group-item" ng-repeat="request in users">
+		<a href="#" >{{request.names}}</a>
+		<a href="#" >{{request._id}}</a>
+		<a href="#" >{{request.housename}}</a>
+		<a href="#" >{{request.contact}}</a>
+		<a href="#" >{{request.email}}</a>
+		<div class="pull-right">
+		   <button type="button" class="btn btn-success btn-sm"  ng-click="GrantAccess(request,$index)">Grant Access</button>
+         <div>
+	</li>		
+</ul>
+
+</div>
+
+
+
+
+ <div ng-show="AccessGranted" class="alert alert-success"><strong>{{msg}} !!!</strong> User Access Successfully Granted</div>
+ <div ng-show="Acesserror" class="alert alert-warning"><strong>Error Occurred !!!</strong> {{msg}}</div>
+
+

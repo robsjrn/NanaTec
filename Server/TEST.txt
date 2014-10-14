@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-md-4 col-md-offset-3">
+  <br>
+          <form role="form">
+               <button type="button" class="btn btn-warning " ng-disabled="userForm.$invalid">Add</button>
+              <hr>
+			  <div class="form-group">
+				  <label class="control-label">Location</label>
+				  <input type="text" placeholder="eg Kasarani,Nairobi" ng-blur="codeAddress()" class="form-control" ng-model="property.address" ng-disabled=disableComponents >
+			  </div>
+              
+			   <div class="form-group">
+                                   <label >Property Type</label>
+					<select class="form-control"  ng-model="Property.type" ng-options="servicetype.name for servicetype in type">
+					</select>
+			   </div>
+
+               <div class="form-group">
+                        <label >Property Size</label>
+                                    <div class="input-group">
+									 <input type="text" class="form-control" placeholder="Property Size" id="PropertySize" name="PropertySize" ng-model="Property.Size" required >
+                                      <div class="input-group-btn">
+										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Measurement<span class="caret"></span></button>
+										<ul class="dropdown-menu dropdown-menu-right" role="menu">
+										  <li ng-repeat="item in Measurements">
+												  <a ng-click="selectMeasurements(item)"href="#">{{item}}</a>
+										  </li>
+										</ul>
+									  </div>
+                                     </div>
+
+			   </div>
+
+
+			   <div class="form-group">
+                        <label for="servicenames">Amount/Value</label>
+						<input type="text" class="form-control" placeholder="Property Amount/Value" id="PropertyAmount" name="PropertyAmount" ng-model="Property.Amount" required >
+
+			   </div>
+              <hr>
+			     <button type="button" class="btn btn-success" ng-disabled="userForm.$invalid"  >Save</button>
+
+
+          </form>
+  </div>
+</div>

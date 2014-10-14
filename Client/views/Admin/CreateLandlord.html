@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-sm-6 col-md-4"><p>
+		  <div class="panel panel-default">
+		<div class="panel-heading">
+		<h1 class="panel-title">LandLord ....</h1>
+		</div>
+		<div class="panel-body">
+		   <label for="idnumber">ID Number</label>
+			<input type="text" class="form-control" placeholder="Identification Document" id="idnumber" ng-model="landlord.id" ng-disabled=disableComponents>
+			<label for="Names">Names</label>
+			<input type="text" class="form-control" placeholder="Names" id="Names" ng-model="landlord.names" ng-disabled=disableComponents>
+			<label for="Occupation">Occupation</label>
+			<input type="text" class="form-control" placeholder="Occupation" id="Occupation" ng-model="landlord.occupation" ng-disabled=disableComponents>
+			<label for="Home">Home</label>
+			<input type="text" class="form-control" placeholder="Home" id="Home" ng-model="landlord.Home" ng-disabled=disableComponents>
+			<label for="Home">Contacts</label>
+			<input type="text" class="form-control" placeholder="Contacts" id="Home" ng-model="landlord.contact" ng-disabled=disableComponents>
+			<br>
+			<div class="btn-group">
+				<button type="button" class="btn btn-primary">Add</button>
+				<button type="button" class="btn btn-warning">Clear</button>
+				<button type="button" class="btn btn-success" ng-click="SaveLandlord()">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+  <div ng-show="ErrorStatus" class="alert alert-danger"><strong>Database Error</strong> </div>  
+  <div ng-show="SuccessStatus" class="alert alert-success"><strong>Landlord</strong> Successfully Saved</div>

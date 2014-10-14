@@ -1,0 +1,43 @@
+
+<div class="row">
+ 	 <div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			  Choose Document
+			  <span class="caret"></span>
+		   </button>
+			<ul class="dropdown-menu">
+			            <li ng-repeat="item in documents">
+						      <a ng-click="selectdocType(item)" >{{item.DocumentType}}</a>
+					    </li>
+			</ul>	
+			<h5> </h5>
+		</div>	
+  </div>
+
+  						     
+</div>
+
+<div class="row">
+ <div ng-show="showdoc">
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+		<h3 class="panel-title">Document Info..{{docname}}
+		<span class="pull-right text-muted">
+             <em>{{ docDate | date:'yyyy-MM-dd'  }}</em>
+           </span></h3>
+		
+	  </div>
+	  <div class="panel-body">
+		<p ng-bind-html="Document"></p>
+	  </div>
+	  <div class="panel-footer">
+		<button type="button" class="btn btn-info" ng-click="AgreeTerms()" ng-disabled="!btndisabled">Agree</button>
+		<button type="button" class="btn btn-warning" ng-click="CancelTerms()" ng-disabled="!btndisabled">DisAgree</button>
+	 	 <span ng-show="!btndisabled" class="pull-right text-muted">
+             <strong>You Have Agreed</strong> 
+           </span>	
+	  </div>
+	</div>
+  </div>
+</div>
+

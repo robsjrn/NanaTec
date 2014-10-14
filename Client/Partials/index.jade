@@ -1,0 +1,84 @@
+doctype html
+html(lang="en")
+  //if lt IE 7
+    html.no-js.lt-ie9.lt-ie8.lt-ie7  
+  //if IE 7
+    html.no-js.lt-ie9.lt-ie8  
+  //if IE 8
+    html.no-js.lt-ie9  
+  // [if gt IE 8] <!
+  html.no-js
+    // <![endif]
+    head
+      meta(charset="utf-8")
+      title
+      meta(name="description", content="")
+      meta(name="viewport", content="width=device-width")
+      link(rel="stylesheet", href="../lib/bootstrap/dist/css/bootstrap.css")
+      link(rel="stylesheet", href="../lib/font-awesome/css/font-awesome.min.css")
+      link(rel="stylesheet", href="../styles/Tenant/welcome.css")
+    body(ng-app="TenantWelcome")
+      header.navbar.navbar-inverse.navbar-fixed-top(role="banner")
+        .container
+          .navbar-header
+            button.navbar-toggle(type="button", data-toggle="collapse", data-target=".bs-navbar-collapse")
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.navbar-brand(href="#")
+              span.glyphicon.glyphicon-home
+              strong Nana
+          nav.collapse.navbar-collapse.bs-navbar-collapse(role="navigation")
+            ul.nav.navbar-nav.navbar-right
+              li
+                a(href="/about")
+                  i.fa.fa-info.fa-fw
+                  | About Us
+      .container
+        h4 Hello #{names} Welcome to Nana
+        br
+        p You have been Registered as a Tenant in Our system 
+        p Your House Number #{housenumber} Plot Name  #{plotname} 
+        hr
+        .row(data-ng-controller="Mainctrl")
+          .col-xs-7
+            .panel.panel-primary
+              .panel-heading What You Can Do..
+              .panel-body
+              ul.list-group
+                li.list-group-item View Payment Statements
+                li.list-group-item Send Notification to Your Landlord
+                li.list-group-item View Your Neighbours
+                li.list-group-item Search for Services
+                li.list-group-item Search for Property
+                li.list-group-item Issue Vacate Notice
+                li.list-group-item And many More ....
+          .col-xs-5
+            .well
+              legend Create Credential!
+              form(name="userForm", novalidate="")
+                label(for="Password") Password
+                input#pwd.form-control(type="password", name="pwd", ng-model="password", ng-minlength="5", ng-disabled="disableComponents", placeholder="New Password", required="")
+                p.help-block.alert.alert-danger(ng-show="userForm.pwd.$error.required") Password Required
+                p.help-block.alert.alert-danger(ng-show="userForm.pwd.$error.minlength") Password too Short
+                label(for="ConfirmPassword") Confirm Password
+                input#Confirmpwd.form-control(type="password", name="Confirmpwd", ng-model="confirmpwd", placeholder="Confirm Password", ng-disabled="disableComponents", required="", pw-check="pwd")
+                div(ng-show="userForm.Confirmpwd.$dirty")
+                  p.help-block.alert.alert-danger(ng-show="userForm.Confirmpwd.$error.required") Please Confirm your password
+                  p.help-block.alert.alert-danger(ng-show="userForm.Confirmpwd.$error.pwcheck") Passwords do not match 
+                hr
+                button.btn.btn-lg.btn-warning(type="button", ng-click="createPassword()", ng-disabled="userForm.$invalid") Create Password
+                hr
+                .alert.alert-success(ng-show="pwdUpdate")
+                  strong
+                    | Update Successfull
+                    a(href="#!", ng-click="login()") Proceed to Login
+                .alert.alert-success(ng-show="pwdUpdateError")
+                  strong An Error Occurred Kindly Try Again Later
+      script(src="../lib/jquery/dist/jquery.min.js")
+      script(src="../lib/angular/angular.js")
+      script(src="../lib/bootstrap/dist/js/bootstrap.js")
+      script(src="../lib/angular-route/angular-route.js")
+      script(src="../scripts/Tenant/controller/Welcome.js")
+      script(src="../scripts/Tenant/controller/ngProgress.min.js")

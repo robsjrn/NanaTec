@@ -1,0 +1,129 @@
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#received" data-toggle="tab">Received Notifications</a></li>
+  <li><a href="#sent" data-toggle="tab">Sent Notifications</a></li>
+  <li class="pull-right"><a href="#compose" data-toggle="tab"><span class="glyphicon glyphicon-pencil"> Compose</span> </a></li>
+</ul>
+
+
+<div class="tab-content">
+<div class="tab-pane active" id="received">
+<div class="panel panel-default">
+ <div class="panel-body">
+  
+      <div class="col-xs-12" >
+		<div class="table-responsive">
+			<table class="table table-striped table-condensed" >
+			<thead>
+			<td><a>From</a></td>
+			<td><a>Subject</a></td>
+			<td><a>Date</a></td>
+			</thead>
+				   <tr data-ng-repeat="inboxx in emails" ng-click="ShowMailpopUp(inboxx)">
+					<td><a href="#">{{inboxx.from}}</a></td>
+					<td>{{inboxx.subject}}</td>
+					<td>{{inboxx.date}}</td>
+					<td><a href="#/reply"><i class="fa fa-mail-reply fa-fw"></i> Reply</a> </td>
+					<td><a href="#/"><i class="fa fa-eraser fa-fw"></i>Delete</a> </td>
+					</tr>
+			</table>
+		</div>
+	</div>
+   </div> 
+   </div>
+  </div>
+
+
+<div class="tab-pane" id="compose">
+<div class="panel panel-default">
+ <div class="panel-body">
+  
+      <div class="col-xs-12" >
+		<div class="table-responsive">
+			<select class="form-control"  ng-model="Mail.to"  ng-options="c.name for c in MailTo"	>  
+			</select>
+             <br/>
+	         <input class="form-control" type="text" ng-model="Mail.subject"  placeholder="Subject" ><br/>
+			 
+			 <br/>
+             <textarea  class="form-control" ng-model="Mail.msg" rows="10"></textarea>
+
+        <hr>
+        <button type="button" class="btn btn-primary" ng-click="SendMail()">Send</button>
+		</div>
+	</div>
+   </div> 
+  </div>
+ </div>
+
+  <div class="tab-pane" id="sent">
+	 <div class="tab-pane active" id="received">
+		<div class="panel panel-default">
+			 <div class="panel-body">
+
+                 <div class="col-xs-12">
+					 <div class="table-responsive">
+						<table class="table table-striped table-condensed" >
+						<thead>
+							<td><a>To</a></td>
+							<td><a>Subject</a></td>
+							<td><a>Date</a></td>
+						</thead>
+							 <tr data-ng-repeat="Sent in Sentemails" ng-click="ShowSentMailpopUp(Sent)">
+								<td><a href="#">{{Sent.to}}</a></td>
+								<td>{{Sent.subject}}</td>
+								<td>{{Sent.date}}</td>
+								<td><a href="#/"><i class="fa fa-eraser fa-fw"></i> Delete</a> </td>
+							</tr>
+						</table>
+	</div>
+	</div>
+
+			 </div> 
+		 </div> 
+	</div> 
+  </div> 
+
+</div>
+
+
+
+
+<!--View Received Mail  Modal -->
+<modal-dialog show='viewMail' dialog-title='Subject' width='300px'>
+
+        <strong>From:</strong> {{Mail.from}}<br />
+        <strong>Date:</strong> {{Mail.date}} <br />
+        <br />
+        <p>
+           {{Mail.msg}}
+        </p>
+   <hr> 
+    <button type="button" class="btn btn-warning" ng-click="CloseViewMailpopup()" >Close</button>		 			  
+</modal-dialog>
+
+
+<!--View SentMail  Modal -->
+<modal-dialog show='viewSentMail' dialog-title='Subject' width='300px'>
+
+        <strong>To:</strong> {{Mail.to}}<br />
+        <strong>Date:</strong> {{Mail.date}} <br />
+        <br />
+        <p>
+           {{Mail.msg}}
+        </p>
+   <hr> 
+    <button type="button" class="btn btn-warning" ng-click="CloseViewMailpopup()" >Close</button>		 			  
+</modal-dialog>
+
+
+<modal-dialog show='ReplyMail' dialog-title='Reply' width='300px'>
+
+        <strong>To:</strong> {{Mail.to}}<br />
+        <strong>Date:</strong> {{Mail.date}} <br />
+        <br />
+        <p>
+           {{Mail.msg}}
+        </p>
+   <hr> 
+    <button type="button" class="btn btn-warning" ng-click="CloseReplyMailpopup()" >Close</button>		 			  
+</modal-dialog>

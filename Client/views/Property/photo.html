@@ -1,0 +1,53 @@
+           <h4>Upload Property Photos</h4>
+		   <button type="button " class="btn btn-success" ng-click="updateUserDetails()">Add</button>
+		   <button type="button " class="btn btn-danger" ng-click="addData()">Save</button>
+			<hr>
+			<div class="row">
+			      
+				  <div class="col-xs-4">View name</div>
+				  <div class="col-xs-4">Description</div>
+				  <div class="col-xs-4" >Upload</div>
+			</div>
+			<div class="row">
+			      
+				  <div class="col-xs-4"> <input type="text" ng-model="Property.viewName" ></div>
+				  <div class="col-xs-4"> <textarea class="form-control" rows="3" id="desc" ng-model="Property.Description"></textarea></div>
+				  <div class="col-xs-4" ><input type="file"  ng-file-select="onFileSelect($files)"  ></div>
+			</div>
+			<br>				 
+			<h5>Preview</h5>	
+			<hr>
+ <table class="table table-hover table-bordered table-striped table-condensed table-responsive" >
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Photo Preview</th>
+	  <th></th>
+    </tr>
+    </thead>
+    <tbody>
+	<tr ng-repeat="properties in PropertyDetails">
+	<td>{{$index+1}}</td>
+	<td>{{properties.Details.viewName}}</td>
+	<td>{{properties.Details.Description}}</td>
+	
+	<td>  
+	   <div ng-hide="!imageSrc"  >
+	     <img class="img-thumbnail"  ng-src="{{imageSrc[$index]}}" width="82" height="82" />
+	   </div>
+	  </td>
+	  <td><button type="button " class="btn btn-warning" ng-click="removeData($index)">Remove</button></td>
+    </tr>
+   </tbody>
+  </table>
+	<hr>						
+							 
+							 <button type="button " class="btn btn-danger" ng-click="updateUserDetails()">Upload</button>
+							 
+										
+       <pre>{{PropertyDetails}}</pre>  
+	   <hr>
+  <pre>{{test}}</pre>    
+

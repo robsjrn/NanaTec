@@ -1,0 +1,81 @@
+  <div class="btn-group">
+        <button type="button " class="btn btn-primary" ng-click="add()" ng-disabled="!btnsave">Add</button>
+							 <button type="button " class="btn btn-danger" ng-click="updateUserDetails()" ng-disabled="btnsave">Update</button>
+                  </div>
+  <div class="panel panel-default">
+					 <div class="panel-heading">
+						      Tenant Details                       
+									<div class="pull-right">
+										   <label>Public</label>
+											    Yes <input type="radio" name="view" value="true" ng-model="det.details.view" ng-disabled="btnsave">
+											   	No <input type="radio" name="view" value="false" ng-model="det.details.view" ng-disabled="btnsave">    
+										  </div>
+							
+						  </div>
+					<div class="panel-body">
+                         
+                  <div class="col-xs-6">
+						   
+                        
+						  <div class="form-group">
+							  <label for="gender">Gender</label>
+							  <select ng-model="det.details.gender"  id="gender" class="form-control" ng-disabled="btnsave">
+								<option>Male</option>
+								<option>Female</option>
+							  </select>
+							</div>
+
+							<div class="form-group">
+							  <label for="mstatus">Marital Status</label>
+							  <select ng-model="det.details.mstatus" id="mstatus" class="form-control" ng-disabled="btnsave">
+								<option>Married</option>
+								<option>Single</option>
+							  </select>
+							</div>
+
+							 <label >Children ? </label>
+								Yes <input type="radio" name="choice" value="yes" ng-click="showme(true)" ng-model="det.details.hasChildren" ng-disabled="btnsave">
+								No <input type="radio" name="choice" value="no" ng-click="showme(false)" ng-model="det.details.hasChildren" ng-disabled="btnsave">
+								<div ng-show="showChild">
+								          <div class="form-group">
+											 <label for="noChildren">Number of Children</label>
+											 <input type="number" class="form-control" ng-model="det.details.noChildren" placeholder="No.of Children">
+										   </div>
+										    <div class="form-group">
+											 <label for="ChildrenNames">Children Names</label>
+										      <input ng-model="det.details.Children.names" id ="ChildrenNames" type="text" class="form-control" placeholder="Children names">
+                                            </div>
+										</div>
+												 
+						 
+					 </div>
+
+
+					 <div class="col-xs-6">
+                      
+						  <div class="form-group">
+						      <label for="aboutme">About Me</label>
+						      <textarea id="aboutme" class="form-control" rows="3" ng-model="det.details.aboutme" class="form-control" ng-disabled="btnsave"></textarea>
+						  </div>
+                           
+								  <div class="form-group">
+											 <label for="email">Email</label>
+										      <input ng-model="det.details.email" id ="email" type="email" class="form-control" placeholder="Email" ng-disabled="btnsave">
+                                            </div>
+
+                            <div class="form-group">
+							 <label for="photo">Select Photo</label>
+						       <input id="photo" type="file"  ng-file-select="onFileSelect($files)" ng-disabled="btnsave" >
+							</div>
+
+							 <div ng-show="Profileupdate" class="alert alert-danger"><strong>Update Successfull</strong></div>	
+                     </div>
+
+				
+					    
+						
+					 </div>
+				</div>  
+			
+</div>
+

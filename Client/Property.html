@@ -1,0 +1,238 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/Home/property.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="RentmngtAppProperty" >
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+   
+ <!-- Add your site or application content here -->
+
+
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        
+      <a class="navbar-brand" href="#">
+	   <span class="glyphicon glyphicon-home"></span>
+	   <strong>Nana</strong>
+	  </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li ><a href="/index.html">Home</a></li>
+        <li><a href="/SearchRentals.html">To Rent</a></li>
+		<li><a href="/LandlordAgents.html">Landlords/Agents</a></li>
+		
+		 <li class="dropdown active" >
+          <a href="#!" class="dropdown-toggle" data-toggle="dropdown">Property <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li ><a href="/Property.html">Search/View Property</a></li>
+			 <li class="divider"></li>
+            <li><a href="/EnlistProperty.html">Enlist Property</a></li>
+          </ul>
+        </li>
+       	<li><a href="/News.html">News</a></li>
+		<li><a href="/Services.html">Services</a></li>
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+	      <li><a href="/Login.html">Login</a></li>
+		<li><a href="#"></a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+           
+
+
+
+       <ol class="breadcrumb">
+		    <li><a href="#!/Apartments">Apartments</a></li>
+			<li><a href="#!/Villas">Villas</a></li>
+            <li><a href="#!/Condos">Condos</a></li>
+            <li><a href="#!/Loft">Loft</a></li>
+            <li><a href="#!/Duplexes">Duplexes</a></li>
+			<li><a href="#!/PropertySearch">Search for Property</a></li>
+		</ol>
+
+           <div data-ng-view ></div>
+   
+           </div>
+
+
+         <div class="navbar navbar-default navbar-fixed-bottom">
+		         <div class="container" >
+			       <p>copyrights @@NanaTec 2014 </p>				    	
+          </div>
+
+
+
+
+
+		   <!--[if lt IE 9]>
+    <script src="public/es5-shim/es5-shim.js"></script>
+    <script src="public/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+   <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+    <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script> 
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/Home/controller/PropertyMngt.js"></script>
+
+         <SCRIPT id=/templates/Apartments.html type=text/ng-template> 
+		  <div class="well well-sm cont">
+		    <h3>Apartments for Rent</h3>
+			<p>Get to know more about an apartment for rent before you move in. We let you peruse detailed apartment listings, which include the amenities, 360-degree virtual tours, photos, rent prices and more. Rentals.com has thousands of listings for apartments in your city and across the country. Search as often and as much as you like -- it's always free 
+			</p>
+			</div>
+          </SCRIPT> 
+
+		  
+         <SCRIPT id=/templates/Villas.html type=text/ng-template> 
+              
+          </SCRIPT> 
+
+		  
+         <SCRIPT id=/templates/Condos.html type=text/ng-template> 
+          <div class="well well-sm cont">
+		       <h3>Condos & Townhouses for Rent</h3>
+		
+				<p>If you don't want to deal with lawn maintenance or come up with a down payment, renting a condo or a townhouse may be right for you. Because many of our listings are placed by individual landlords, Rentals.com provides more listings for condos and townhouses than anywhere else, including the classifieds. We'll help you find the perfect rental home for you.</p>
+				<h3>Condos for Rent</h3>
+
+				<p>Condominiums are typically part of a multi-unit dwelling where a homeowner's association manages common areas. With a condo, the owner or tenant is only responsible for the area located within the walls of their unit. Condos have become very popular in recent years, so many cities have an abundance of new construction. Renting a condo is a great way to get started in a new city.
+				</p>
+
+
+				<h3>Townhouses for Rent</h3>
+				<p>Trying to decide among an apartment, condo, house or townhouse for rent? A townhouse gives you similar amenities to a condo or apartment, yet comes with the benefits of a house. Some townhomes come with garages, small yards, large kitchens and fireplaces. A townhouse tenant often is responsible for the area inside the unit as well as the land the unit sits on. Some townhouse communities have common area maintenance included, while others don't. Be sure to ask the landlord about your responsibilities before signing a lease.
+				</p>
+
+				</div>
+          </SCRIPT> 
+
+         
+         <SCRIPT id=/templates/Loft.html type=text/ng-template> 
+		  <div class="well well-sm cont">
+            <h3> Lofts for Rent</h3>  
+			<p>Want to be chic without the high price tag? With a loft for rent, you live in the trendiest part of the city and keep a grip on your budget. The loft listings on Rentals.com are updated constantly, so you'll know as soon as the latest properties become available. With many lofts being developed from dormant factories in the downtown areas of cities, lofts for rent are typically conveniently located and have unique configurations.
+			</p>
+		  </div>
+          </SCRIPT> 
+
+		   
+         <SCRIPT id=/templates/Duplexes.html type=text/ng-template> 
+             <div class="well well-sm cont"> 
+			  <h3>Duplexes for Rent</h3>
+				<p>Living with a roommate doesn't mean you have to give up privacy. Get your own room and share expenses with a duplex or fourplex -- simply apartments or condos split into two or four units. Living in a duplex or fourplex affords you the same convenience of apartment living, but they can be detached, stand-alone or part of a complex. The easy duplex and fourplex search functions on Rentals.com will help you find the home you wan
+		         </p>
+				 </div>
+          </SCRIPT> 
+
+
+
+
+		  <SCRIPT id=/templates/SearchProperty.html type=text/ng-template> 
+						<div class="container">
+							<div class="row">
+								<div class="col-md-3">
+								 <label for="location">Location</label>
+									<select class="form-control"  ng-model="search.location" ng-options="loca.name for loca in loc">
+									 </select>
+								</div>
+								  <div class="col-md-3">
+									  <label for="RentalType">Property Type</label>
+										  <select class="form-control"  ng-model="search.Propertytype" ng-options="type.name for type in Type">
+									 </select>
+								  </div>
+								 <div class="col-md-3">
+									  <label for="RentalType">Amount</label>
+									  <div class="input-group">
+										<input type="text" class="form-control" placeholder="Min">
+										<input type="text" class="form-control" placeholder="Max">
+									  </div>
+								  </div>
+
+								   <div class="col-md-3">
+										 <div class="btn-group">
+										   <label >Go !</label>
+												<button ng-click="SearchForProperty()" type="button" class="btn btn-danger btn-lg">Search</button>
+											  </div>
+								   </div>
+
+							</div> 
+							<br>
+							
+                            <div class="row">
+							   <div class="well">
+								<div class="panel panel-default">
+									  <!-- Default panel contents -->
+									  <div class="panel-heading">
+									      Search Results ..  
+									  </div>
+                                       <div class="panel-body">
+											 <ul class="list-group" >
+											  <li class="list-group-item" ng-repeat="item in SearchResults">
+                                                     <div>
+                                                      <strong><a href="#">{{ item.type.name }}</a></strong>
+														<span class="pull-right text-muted">
+															<em>Contacts :{{ item.contact}}</em>
+															
+														</span>
+													</div>
+													<div> Amount :{{item.Amount }}</div>
+													 <div> <em>Size :{{ item.Size}}</em></div>          
+													
+											   </li>
+											 
+										  </ul>
+									  </div>
+							   </div>
+
+							</div>
+						</div>
+						
+                       </div>
+          </SCRIPT> 
+					
+  </body>
+</html>

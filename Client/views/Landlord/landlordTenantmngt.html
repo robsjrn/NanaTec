@@ -1,0 +1,63 @@
+ <h5>Tenant Management </h5>
+
+  <div class="panel panel-default">
+ <div class="panel-heading">
+       <div class="btn-group btn-group-sm ">
+                     <div class="btn-group">
+			           <button type="button" class="btn btn-info" ng-click="addTenant()" ng-disabled=!disableComponents>Add</button>
+					   </div>
+                      <div class="btn-group">
+					    <button type="button" class="btn btn-warning" ng-disabled=disableComponents ng-click="clearTenant()">Clear</button>
+                     </div>
+				                         
+                   </div>
+ </div>
+  <div class="panel-body">
+					<div class="panel panel-primary">
+					 <div class="panel-body">
+					 <form name="tform"  novalidate> 
+							 <div class="col-md-4">								
+	      					     <label for="tenantnames">Tenant Names</label>
+								   <input type="text" class="form-control" placeholder="Tenant Names" id="tenantnames" name="tenantnames" ng-model="Tenant.names" ng-disabled=disableComponents required>
+								   <label for="idno" >Id Number</label>
+								   <span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>
+								   <input type="text" class="form-control" placeholder="Id Number" id ="idno" ng-model="Tenant._id" ng-blur="CheckidExists()" ng-disabled=disableComponents required/>
+								   <div ng-show="userExist" class="alert alert-danger"><strong>ID Already Used</strong> </div>
+								   <label for="occp">Occupation</label>
+								   <textarea class="form-control" rows="3" id="desc" ng-model="Tenant.occupation" ng-disabled=disableComponents></textarea>
+								</div>
+							  <div class="col-md-4">
+							     <label for="cont">Contacts</label>
+								 <span ng-show="ContactSpinner"><i class="fa fa-refresh fa-spin"></i></span>
+								   <input type="number" class="form-control" placeholder="Contact" name ="cont" ng-model="Tenant.contact" ng-blur="CheckPhonenumberExists()" ng-disabled=disableComponents required ng-pattern="/^07[0-9]+$/" ng-minlength=10  ng-maxlength=10  />
+								   <div ng-show="tform.cont.$error.pattern">e.g 0722111111</div>
+								   <div ng-show="tform.cont.$error.minlength">Should be atleast 10 Characters</div>
+								   <div ng-show="tform.cont.$error.maxlength">Cannot be more than 10 Characters</div>
+								   <div ng-show="contactExist" class="alert alert-danger"><strong>Contact Already Used</strong> </div>
+								  <label for="Email">Email</label>
+								   <input type="Email" class="form-control" name="uEmail" placeholder="Email"  ng-model="Tenant.email" ng-disabled=disableComponents required/>
+								   <div ng-show ="tform.uEmail.$dirty && tform.uEmail.$invalid" ><span ng-show="tform.uEmail.$error.email">Email not Valid<span>
+								   <span ng-show="tform.uEmail.$error.required">Email Required<span></div>
+							      <label for="plw">Location of Work</label>
+								   <input type="text" class="form-control" placeholder="Place of Work"  ng-model="Tenant.location" ng-disabled=disableComponents required/>
+							    <label for="plot">Plot Name</label>
+							       <select class="form-control"  ng-model="Tnt.plot" id="plot" ng-options="c.Plotname for c in plots" ng-disabled=disableComponents required>    
+			                       </select>  
+                                  </div>      
+								 </form>  
+							   
+                  </div>
+         
+                <div class="panel-footer">
+                       <div class="btn-group">
+						<button type="button" class="btn btn-success" ng-click="saveTenant(Tenant.contact)" ng-disabled="tform.$invalid" >Save</button>
+					</div>
+                  </div>
+               </div>
+            <div ng-show="tenantcreated" class="alert alert-success"><strong>{{msg}} !!!</strong> Tenant Successfully Saved</div>
+			<div ng-show="tenanterror" class="alert alert-warning"><strong>Error Occurred !!!</strong> {{msg}}</div>
+
+ 
+
+  </div>
+</div>

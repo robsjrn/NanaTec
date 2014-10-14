@@ -1,0 +1,62 @@
+<h5>House Rental Management...Check In</h5>
+<div class="panel panel-default">
+       <div class="panel-heading">
+			<button type="button" class="btn btn-primary" ng-click="Add()" ng-disabled=!disableComponents>Add</button>
+         
+		</div>
+
+
+		<div class="panel-body">
+		 <tabset>
+		 <tab heading="Rent">
+		     <br>
+					<div class="col-md-8">
+						<div class="input-group">
+						  <select class="form-control"  ng-model="Tenant.plot"  ng-options="c.Plotname for c in landlordplots"	ng-disabled=disableComponents>  
+			                       </select>
+						  <span class="input-group-btn">
+							<button class="btn btn-danger" type="button" ng-click="GetDetails()" ng-disabled=disableComponents >Get!</button>
+						  </span>
+						</div><!-- /input-group -->
+					  </div><!-- /.col-lg-6 -->
+			
+                    <hr>
+      
+
+                    <div class="col-md-4">
+                            <label for="tname">Tenant Names</label>
+							       <select class="form-control"  ng-model="Tenant.names" id="tname" ng-options="c.names for c in tenantdata" ng-disabled=disableComponents>  
+			                       </select>
+
+                       
+		     
+                    </div>
+
+					<div class="col-md-4">
+                            <label for="exptype">House Name</label>
+							       <select class="form-control"  ng-model="House.housename" id="exptype" ng-options="k.number for k in housedata" ng-disabled=disableComponents>  
+			                       </select>	
+								   
+								
+		</div>
+	       
+           
+		</tab>
+		
+        
+              
+		 </tabset>
+
+		
+ </div>
+
+        <div class="panel-footer">
+		  	<button type="button" class="btn btn-success" ng-click="save()" ng-disabled=disableComponents>Save</button>
+		  </div>
+   
+		        
+	        <div ng-show="housetaken" class="alert alert-success"><strong>{{msg}} !!!</strong> Tenant {{Tenant.name.name}} Successfully Occupied House Number {{House.housename.number}}</div>
+			<div ng-show="housetakenerror" class="alert alert-danger"><strong>Error Occurred !!!</strong> {{msg}}</div>		
+</div>
+
+

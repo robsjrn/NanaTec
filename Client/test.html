@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en" >
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="styles/Tenant/welcome.css">
+ </head>
+  <body ng-app="TenantWelcome">
+      <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
+		       <div class="container" >
+				  <div class="navbar-header">
+					   <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					   
+				  <a class="navbar-brand" href="#">
+				   <span class="glyphicon glyphicon-home"></span>
+				   <strong>Nana</strong>
+				  </a>
+				 </div>
+					<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+					  <ul class="nav navbar-nav navbar-right">
+						<li ><a href="/about"><i class="fa fa-info fa-fw"></i>About Us</a></li>
+					 </ul>
+	                  </nav>   
+					   
+   
+      </div>
+        </header>
+    
+<div  class="container">
+  
+  <h4>Hello Robert Welcome to Nana</h4>
+  <br>
+  <p>You have been Registered as a Tenant in Our system </p>
+   <p>Your House Number A5 Plot Kahawa </p>
+  <hr>
+
+  <div class="row" data-ng-controller="Mainctrl">
+     <div class="col-xs-7">
+           <div class="panel panel-primary">
+			<div class="panel-heading">What You Can Do..</div>
+			<div class="panel-body">
+			   
+			 </div>
+			<ul class="list-group">
+				<li class="list-group-item">View Payment Statements</li>
+				<li class="list-group-item">Send Notification to Your Landlord</li>
+				<li class="list-group-item">View Your Neighbours</li>
+				<li class="list-group-item">Search for Services</li>
+				<li class="list-group-item">Search for Property</li>
+				<li class="list-group-item">Issue Vacate Notice</li>
+				<li class="list-group-item">And many More ....</li>
+			</ul>
+          </div>
+
+	 </div>
+      <div class="col-xs-5">
+	    <div class="well">
+         <legend>Create Credential!</legend>
+			<form name="userForm"  novalidate>
+			  <label for="Password">Password</label>
+								<input type="password"  class="form-control" id="pwd" name="pwd" ng-model="password" ng-minlength="5" ng-disabled=disableComponents placeholder="New Password" required/>
+								<p ng-show="userForm.pwd.$error.required" class="help-block alert alert-danger">Password Required</p>
+								<p ng-show="userForm.pwd.$error.minlength" class="help-block alert alert-danger">Password too Short</p>
+                           
+
+					<label for="ConfirmPassword">Confirm Password</label>
+								<input type="password"  class="form-control" id="Confirmpwd" name="Confirmpwd" ng-model="confirmpwd" placeholder="Confirm Password" ng-disabled=disableComponents required pw-check="pwd"/>
+								<div ng-show="userForm.Confirmpwd.$dirty">
+								<p ng-show="userForm.Confirmpwd.$error.required" class="help-block alert alert-danger">Please Confirm your password</p>
+								<p ng-show="userForm.Confirmpwd.$error.pwcheck" class="help-block alert alert-danger">Passwords do not match </p>
+								</div>
+								 <hr>
+
+								 <button type="button" class="btn btn-lg btn-warning" ng-click="createPassword()" ng-disabled="userForm.$invalid" >Create Password</button>
+								 <hr>
+								 <div ng-show="pwdUpdate" class="alert alert-success">
+								 <strong>Update Successfull <a href="#!" ng-click="login()">Proceed to Login</a> </strong>
+								 </div>
+								 <div ng-show="pwdUpdateError" class="alert alert-success">
+								 <strong>An Error Occurred Kindly Try Again Later</strong>
+								 </div>
+			</form>
+
+        </div>
+	  </div>
+  </div>
+
+</div>
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+	 <script src="lib/angular-route/angular-route.js"></script>
+    <script src="scripts/Tenant/controller/Welcome.js"></script>
+    <script src="scripts/Landlord/controller/ngProgress.min.js"></script>
+  </body>
+</html>

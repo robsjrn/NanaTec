@@ -1,0 +1,41 @@
+
+  <div class="panel panel-default">
+					 <div class="panel-heading">
+						      Landlord Details                       
+									<div class="pull-right">
+										   <label>Public</label>
+											   Yes <input type="radio" name="view" value="true" ng-model="det.details.view">
+												No <input type="radio" name="view" value="false" ng-model="det.details.view">    
+										  </div>
+							
+						  </div>
+					<div class="panel-body">
+                         
+                  <div class="col-xs-6">
+						   
+                          <input type="file"  ng-file-select="onFileSelect($files)"  >
+						  <br>
+						  <p>OR</p>
+
+                       <div ng-file-drop="onFileSelect($files)" class="drop-box" ng-file-drag-over-class="optional-css-class"
+                        ng-show="dropSupported">drop files here</div>
+                    <div ng-file-drop-available="dropSupported=true" 
+                       ng-show="!dropSupported">Droping File is not supported!</div>
+				  
+			             <span class="progress" ng-show="progress[$index] >= 0">						
+							<div style="width:{{progress[$index]}}%">{{progress[$index]}}%</div>
+						</span>
+						    
+					 </div>		    
+						
+					 </div>
+       <div class="panel-footer">
+	     <div class="btn-group">
+					 <button type="button " class="btn btn-danger" ng-click="updateUserDetails()">Update</button>
+                  </div>
+	   </div>
+
+			
+</div>
+
+ <div ng-show="Profileupdate" class="alert alert-danger"><strong>Update Successfull</strong></div>	
