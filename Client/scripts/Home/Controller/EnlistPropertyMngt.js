@@ -38,7 +38,7 @@ $scope.Clear=function(){
 	$scope.CheckPhonenumberExists=function(){
 $scope.ContactSpinner=true;
 var qerr={"phonenumber":"+254"+$scope.property.contact};
-$http.post('/property/ContactExists',qerr)
+$http.post('web/property/ContactExists',qerr)
 				 		 .success(function(data) {
 			                  if (data.exist)
 			                     { $scope.contactExist=true;
@@ -62,7 +62,7 @@ $http.post('/property/ContactExists',qerr)
 			  $scope.property.AccessStatus=1;
               $scope.property.datecreated=new Date().toISOString();
            var data={"PropertyDet":$scope.property};
-			   $http.post('/property/CreatePropertyOwner', data)
+			   $http.post('web/property/CreatePropertyOwner', data)
 						 .success(function(data) {
                                  $scope.SuccessStatus=true; 
 								 $scope.ErrorStatus=false;
@@ -89,7 +89,7 @@ EnlistPropertyMngt.controller('loginCtrl', function ($scope,$http,$window) {
     $scope.showSpinner=false;
        $scope.Userlogin=function(){
                $scope.showSpinner=true;
-                $http.post('property/login',$scope.user)
+                $http.post('web/property/login',$scope.user)
 				 		 .success(function(data) {
 								     $scope.invalidcredential=false;
 									 $window.sessionStorage.token = data.token;

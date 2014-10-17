@@ -51,7 +51,7 @@ Tenantmngt.controller('MainTenantsctrl', function($scope,$http,$rootScope,$windo
     		
   $scope.pageClass = 'page-nyumbakumi';
   ngProgress.start();
-  $http.get('Tenant/tenantDetails').success(function (data){
+  $http.get('web/Tenant/tenantDetails').success(function (data){
 
 
 	  $rootScope.Tenant=data
@@ -95,7 +95,7 @@ Tenantmngt.controller('MainTenantsctrl', function($scope,$http,$rootScope,$windo
 
    $scope.emails = {};
    
-$http.get('/Viewmail',{ cache: true }).success(function (data){
+$http.get('web/Viewmail',{ cache: true }).success(function (data){
 	$scope.UserMail=data;
 	$scope.emails.messages=$scope.UserMail.Received;
 });
@@ -104,7 +104,7 @@ $http.get('/Viewmail',{ cache: true }).success(function (data){
   
   $scope.Logout=function(){
 	 
-            $http.get('/logout')
+            $http.get('web/logout')
               .success(function(data) {	
 				   delete $window.sessionStorage.token; 
 					$window.location.href = "/";
@@ -121,7 +121,7 @@ $http.get('/Viewmail',{ cache: true }).success(function (data){
 Tenantmngt.controller('statementsctrl', function($scope,$http,$window,ngProgress) {
   $scope.pageClass = 'page-nyumbakumi';
   ngProgress.start();
-  $http.get('Tenant/tenantStatement',{ cache: true })
+  $http.get('web/Tenant/tenantStatement',{ cache: true })
 	   
                       .success(function(data) {
 							   $scope.statement=data;
@@ -136,7 +136,7 @@ Tenantmngt.controller('statementsctrl', function($scope,$http,$window,ngProgress
 });
 
 Tenantmngt.controller('evictionNoticectrl', function($scope,$http,$window,ngProgress) {
-           $http.get('Tenant/EvictionNotice')
+           $http.get('web/Tenant/EvictionNotice')
 			.success(function (data){
 					$scope.notice=data;
 				ngProgress.complete();
@@ -165,7 +165,7 @@ $scope.updateUserDetails=function(){
 	 $scope.btnsave=true;
 	ngProgress.start();
   $scope.det.details.imageUrl= $rootScope.Tenant.Details.imageUrl
- $http.post('Tenant/updateTenantData',$scope.det )
+ $http.post('web/Tenant/updateTenantData',$scope.det )
 		   .success(function(data) {
               $scope.Profileupdate=true;
 		       ngProgress.complete();
@@ -189,7 +189,7 @@ $scope.onFileSelect = function($files) {
     for (var i = 0; i < $files.length; i++) {
       var file = $files[i];
       $scope.upload = $upload.upload({
-        url: 'Tenant/photoupload', //upload.php script, node.js route, or servlet url
+        url: 'web/Tenant/photoupload', //upload.php script, node.js route, or servlet url
         method: 'POST',
         // headers: {'header-key': 'header-value'},
         // withCredentials: true,
@@ -225,7 +225,7 @@ $scope.onFileSelect = function($files) {
 Tenantmngt.controller('nyumbakumictrl', function($scope,$http,$window,$rootScope,ngProgress) {
    $scope.pageClass = 'page-nyumbakumi';
           ngProgress.start();
-				 $http.get('Tenant/Findneighbours',{params:{plot_name:$rootScope.Tenant.plot.Plotname}},{ cache: true })   
+				 $http.get('web/Tenant/Findneighbours',{params:{plot_name:$rootScope.Tenant.plot.Plotname}},{ cache: true })   
                       .success(function(data) {
 							    $scope.Neighbours=data;
 								ngProgress.complete();
@@ -263,7 +263,7 @@ Tenantmngt.controller('vacateNoticectrl', function($scope,$http,$window,$rootSco
                        $scope.notice.loc=$rootScope.Tenant.location;
 
 
-					   $http.post('Tenant/VacateNotice',$scope.notice )
+					   $http.post('web/Tenant/VacateNotice',$scope.notice )
 						   .success(function(data) {
 							   ngProgress.complete();
 							   $scope.btndisable=false;
@@ -320,7 +320,7 @@ Tenantmngt.controller('ViewDetailsctrl', function($scope,$http,$window,$rootScop
 Tenantmngt.controller('Documentctrl', function($scope,$http,$window,$rootScope,ngProgress) {
  $scope.btndisabled=$rootScope.Tenant.AgreementStatus;
  ngProgress.start();
-  $http.get('Tenant/GetDocument',{params:{plot_name:$rootScope.Tenant.plot.Plotname}},{ cache: true })
+  $http.get('web/Tenant/GetDocument',{params:{plot_name:$rootScope.Tenant.plot.Plotname}},{ cache: true })
 	  .success(function (data){
 	  $scope.documents=data;
 	    ngProgress.complete();
@@ -340,7 +340,7 @@ $scope.showdoc=false;
   $scope.AgreeTerms=function(){ 
 	  ngProgress.start();
 	  $scope.btndisabled=false;
-			 $http.get('Tenant/UpdateTenantAgreement')
+			 $http.get('web/Tenant/UpdateTenantAgreement')
 	                  .success(function(data) {
 						 ngProgress.complete();
 							 }) 
@@ -394,7 +394,7 @@ $scope.ShowSentMailpopUp=function(mailinbox){
  }
 
 
-  $http.get('/Viewmail',{ cache: true }).success(function (data){$scope.UserMail=data; $scope.emails = $scope.UserMail.Received; $scope.Sentemails= $scope.UserMail.Sent;});
+  $http.get('web/Viewmail',{ cache: true }).success(function (data){$scope.UserMail=data; $scope.emails = $scope.UserMail.Received; $scope.Sentemails= $scope.UserMail.Sent;});
 
 
  $scope.SendMail=function(){
@@ -417,7 +417,7 @@ ngProgress.start();
 	  }
 	}
 
-                  $http.post('/Mail',mail )
+                  $http.post('web/Mail',mail )
 				 		 .success(function(data) {
 								   $scope.SuccessStatus=true;
 								   $scope.Sentemails.push(mail.update.senderDetails );	
@@ -449,7 +449,7 @@ $scope.pwdchanged=false;
 $scope.pwderror=false;
 $scope.SubmitPwd=function(){
 ngProgress.start();
-    $http.post('/ChangePwd',$scope.pwd )
+    $http.post('web/ChangePwd',$scope.pwd )
 		   .success(function(data) {
 		  //  console.log(data.success)
 		    $scope.pwdchanged=true;
@@ -465,7 +465,7 @@ ngProgress.start();
 $scope.CheckPwd=function(){
 	ngProgress.start();
 	$scope.busy=true;
-     $http.post('/CheckPwd',$scope.pwd )
+     $http.post('web/CheckPwd',$scope.pwd )
 		   .success(function(data) {
 		 ngProgress.complete();
 		     if (data.success)

@@ -69,7 +69,7 @@ $locationProvider.hashPrefix("!");
 Adminmngt.controller('Mainctrl', function ($scope,$http,$window) {
   
     $scope.Logout=function(){
-            $http.get('/logout')
+            $http.get('web/logout')
               .success(function(data) {
 			    	delete $window.sessionStorage.token;
 					$window.location.href = "/";
@@ -89,13 +89,13 @@ Adminmngt.controller('Usersctrl', function ($scope,$http) {
     $scope.req={};
 	
   
- $http.get('Admin/AccessRequest').success(function (data){
+ $http.get('web/Admin/AccessRequest').success(function (data){
 	           $scope.users=data
 		 });
 
 $scope.GrantAccess=function(user,index){
 		 
-	 $http.post('Admin/GrantAccess', user)
+	 $http.post('web/Admin/GrantAccess', user)
 						 .success(function(data) {
 							   $scope.AccessGranted=true; 
 							   $scope.users.splice(index, 1);
@@ -115,7 +115,7 @@ $scope.SuccessStatus=false;
 $scope.ErrorStatus=false;
 
 $scope.SaveHseType=function(){
-     $http.post('Admin/HseTypeConfiguration',$scope.Hsetype)
+     $http.post('web/Admin/HseTypeConfiguration',$scope.Hsetype)
 				 		 .success(function(data) {
 								   $scope.SuccessStatus=true;							   
 							 }) 
@@ -126,7 +126,7 @@ $scope.SaveHseType=function(){
 
 $scope.SavePaymentMethod=function(){
 
-	 $http.post('Admin/PaymentmethodConfiguration',$scope.paymethod)
+	 $http.post('web/Admin/PaymentmethodConfiguration',$scope.paymethod)
 				 		 .success(function(data) {
 								   $scope.SuccessStatus=true;							   
 							 }) 
@@ -138,7 +138,7 @@ $scope.SavePaymentMethod=function(){
 
 $scope.SaveTrxnType=function(){
 
-	 $http.post('Admin/TransactiontypeConfiguration',$scope.trantype)
+	 $http.post('web/Admin/TransactiontypeConfiguration',$scope.trantype)
 				 		 .success(function(data) {
 								   $scope.SuccessStatus=true;							   
 							 }) 
@@ -149,7 +149,7 @@ $scope.SaveTrxnType=function(){
 }
 $scope.SaveExpenseType=function(){
 
-	$http.post('Admin/ExpenseTypeConfiguration',$scope.exptype)
+	$http.post('web/Admin/ExpenseTypeConfiguration',$scope.exptype)
 				 		 .success(function(data) {
 								   $scope.SuccessStatus=true;							   
 							 }) 
@@ -178,7 +178,7 @@ var data={"update":{ "LandlordDet":$scope.landlord, "CredentialDet":{"_id":$scop
 		
 
 			
-             	$http.post('/CreateLandlord',data)
+             	$http.post('web/CreateLandlord',data)
 				 		 .success(function(data) {
 								   $scope.SuccessStatus=true;							   
 							 }) 

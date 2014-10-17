@@ -69,7 +69,7 @@ $scope.$watch("visible", function(newvalue) {
 landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$rootScope,$window,ngProgress) {
 $scope.firsttimelogin=true;
 
- $http.get('Landlord/LandLordDetails',{ cache: true })
+ $http.get('web/Landlord/LandLordDetails',{ cache: true })
 	 .success(function (data){
 			ngProgress.start();
 				 $rootScope.landlordDetails=data;
@@ -82,7 +82,7 @@ $scope.firsttimelogin=true;
 				$rootScope.plot=[];
 			}	 
 	 });
-  $http.get('Landlord/LandLordConfiguration',{ cache: true }).success(function (data)
+  $http.get('web/Landlord/LandLordConfiguration',{ cache: true }).success(function (data)
 	  {
 	   $scope.config=data;
 	  $rootScope.expenseType=$scope.config.expenseType;
@@ -94,7 +94,7 @@ $scope.firsttimelogin=true;
   $scope.emails = {};
 
 
-$http.get('/Viewmail',{ cache: true })
+$http.get('web/Viewmail',{ cache: true })
 	.success(function (data){
 		$scope.UserMail=data; 
 		$scope.emails.messages=$scope.UserMail.Received;
@@ -106,7 +106,7 @@ $http.get('/Viewmail',{ cache: true })
 
  
  $scope.Logout=function(){
-            $http.get('/logout')
+            $http.get('web/logout')
               .success(function(data) {
 			    	delete $window.sessionStorage.token;
 					$window.location.href = "/";
@@ -129,7 +129,7 @@ landlordtmngt.controller('Noticectrl', function($scope,$rootScope,$http,ngProgre
 		$scope.btndisable=false;
 $scope.noticelist=[];
 
-		$http.get('Landlord/GetLandlordNotice')
+		$http.get('web/Landlord/GetLandlordNotice')
 			.success(function (data){
 					$scope.noticelist=data;
 				   //  $scope.notice=$scope.noticelist[0];
@@ -150,7 +150,7 @@ $scope.noticelist=[];
 $scope.btndisable=true;
 	  
 		    var dt={"tenantid":$scope.notice.Tenantid};
-          $http.post('Landlord/LandlordNoticeUpdate',dt)
+          $http.post('web/Landlord/LandlordNoticeUpdate',dt)
 				 		 .success(function(data) {
 			                    $scope.btndisable=false;
 			                    $scope.noticeSent=true;
@@ -198,7 +198,7 @@ landlordtmngt.controller('VacateNoticectrl', function($scope,$rootScope,$http,ng
    $scope.SearchTenantid=function(){
 	$scope.disableSearchHse=true;
     ngProgress.start();
-         $http.post('Landlord/tenantDataID',  $scope.search)
+         $http.post('web/Landlord/tenantDataID',  $scope.search)
 						 .success(function(data) {
 								
 							  $scope.disableTenantid=true;
@@ -216,7 +216,7 @@ landlordtmngt.controller('VacateNoticectrl', function($scope,$rootScope,$http,ng
 $scope.SearchHouseid=function(){
 	$scope.disableTenantid=true;
     ngProgress.start();
-	                  $http.post('Landlord/tenantDataHseName',  $scope.search)
+	                  $http.post('web/Landlord/tenantDataHseName',  $scope.search)
 						 .success(function(data) {
 							 
 								ngProgress.complete();
@@ -251,7 +251,7 @@ $scope.SearchHouseid=function(){
        $scope.notice.landlordid=$rootScope.landlordDetails._id;
        $scope.notice.hseno=$scope.search.housename;
        $scope.notice.contact=$scope.search.contact;
-          $http.post('Landlord/ServeEvictionNotice',$scope.notice )
+          $http.post('web/Landlord/ServeEvictionNotice',$scope.notice )
 						   .success(function(data) {
 							   ngProgress.complete();
 							  $scope.NoticeSent=true;
@@ -290,7 +290,7 @@ landlordtmngt.controller('tenantctrl', function($scope,$modal,$rootScope,$http,t
 $scope.CheckidExists=function(){
  $scope.showSpinner=true;
           var dt={"idnumber":$scope.Tenant._id};
-          $http.post('/CheckidExists',dt)
+          $http.post('web/CheckidExists',dt)
 				 		 .success(function(data) {
 			                  if (data.exist)
 			                     { $scope.userExist=true;
@@ -312,7 +312,7 @@ $scope.CheckidExists=function(){
 $scope.CheckPhonenumberExists=function(){
 $scope.ContactSpinner=true;
 var qerr={"phonenumber":"+254"+$scope.Tenant.contact};
-$http.post('/CheckPhonenumberExists',qerr)
+$http.post('web/CheckPhonenumberExists',qerr)
 				 		 .success(function(data) {
 			                  if (data.exist)
 			                     { $scope.contactExist=true;
@@ -362,7 +362,7 @@ $http.post('/CheckPhonenumberExists',qerr)
             $scope.Tenant.password= $scope.Tenant._id;
 
 				   ngProgress.start();
-                   $http.post('Landlord/createTenant', $scope.Tenant)
+                   $http.post('web/Landlord/createTenant', $scope.Tenant)
 						 .success(function(data) {
 							    $scope.tenantcreated=true;
 								$scope.msg=data.success;
@@ -425,7 +425,7 @@ $scope.CheckHseNoExists=function(){
            
       $scope.showSpinner=true;
           var dt={"hseno":$scope.House.number,"plotname":$scope.House.plot.Plotname};
-          $http.post('Landlord/CheckHseNoExists',dt)
+          $http.post('web/Landlord/CheckHseNoExists',dt)
 				 		 .success(function(data) {
 			                  if (data.exist)
 			                     { $scope.HsenoExist=true;
@@ -452,7 +452,7 @@ $scope.CheckHseNoExists=function(){
 			     $scope.disableComponents=true;
 				 ngProgress.start();
 				 $scope.House.landlordid=$rootScope.landlordDetails._id;
-                   $http.post('Landlord/createHouse', $scope.House)
+                   $http.post('web/Landlord/createHouse', $scope.House)
 						 .success(function(data) {
 							    $scope.housecreated=true;
 								$scope.msg=data.success;
@@ -550,7 +550,7 @@ $scope.CheckplotExists=function(){
   
    $scope.showSpinner=true;
           var dt={"plotname":$scope.LandlordPlot.Plotname};
-          $http.post('Landlord/CheckPlotExist',dt)
+          $http.post('web/Landlord/CheckPlotExist',dt)
 				 		 .success(function(data) {
 			                  if (data.exist)
 			                     { $scope.plotExist=true;
@@ -584,7 +584,7 @@ $scope.CheckplotExists=function(){
 	   }
    $scope.Saveplot=function(){  
 
-		  $http.post('Landlord/LandlordAddPlots', $scope.LandlordPlot)
+		  $http.post('web/Landlord/LandlordAddPlots', $scope.LandlordPlot)
 			  
 						 .success(function(data) {
 							  ngProgress.start();
@@ -662,7 +662,7 @@ $scope.Tenant={};
 $scope.SearchTenantid=function(){
 	$scope.disableSearchHse=true;
     ngProgress.start();
-         $http.post('Landlord/tenantDataID',  $scope.search)
+         $http.post('web/Landlord/tenantDataID',  $scope.search)
 						 .success(function(data) {
 							  $scope.Tenant=data
 							  $scope.search.housename=$scope.Tenant.housename;
@@ -680,7 +680,7 @@ $scope.SearchTenantid=function(){
 $scope.SearchHouseid=function(){
 	$scope.disableTenantid=true;
     ngProgress.start();
-	                  $http.post('Landlord/tenantDataHseName',  $scope.search)
+	                  $http.post('web/Landlord/tenantDataHseName',  $scope.search)
 						 .success(function(data) {
 							  $scope.Tenant=data
 								ngProgress.complete();
@@ -739,7 +739,7 @@ $scope.Receipt=function(){
   var data ={
      "receiptno":$scope.Transaction.receiptno,
   }
-      $http.post('Landlord/SearchReceipt',  data)
+      $http.post('web/Landlord/SearchReceipt',  data)
 						 .success(function(data) {							
 								ngProgress.complete();
 								  if (data === ""){
@@ -882,7 +882,7 @@ $scope.Tenant={};
     $scope.GetDetails=function(){
  // have this in a nested Promise
  ngProgress.start();
-     $http.get('Landlord/tenantList/'+$scope.Tenant.plot.Plotname,{ cache: true }).success(function (data){$scope.Tenants=data ;ngProgress.complete();}); 
+     $http.get('web/Landlord/tenantList/'+$scope.Tenant.plot.Plotname,{ cache: true }).success(function (data){$scope.Tenants=data ;ngProgress.complete();}); 
 }
 
 
@@ -925,7 +925,7 @@ ngProgress.start();
 
          
 
-  $http.post('Landlord/RentalPayment', $scope.expense)
+  $http.post('web/Landlord/RentalPayment', $scope.expense)
 						 .success(function(data) {
 							    $scope.paymentposted=true;
 								$scope.msg=data.success;
@@ -1034,7 +1034,7 @@ landlordtmngt.controller('documentmngtctrl', function($scope,$http,$rootScope,ng
 			         "DocumentText":$scope.doctext,
 			         "DocumentDate":new Date().toISOString()
 		  }
-                  $http.post('Landlord/SaveDocument',Details )
+                  $http.post('web/Landlord/SaveDocument',Details )
 				 		 .success(function(data) {
                                 ngProgress.complete();
                                 $scope.documentSaved=true;
@@ -1101,7 +1101,7 @@ landlordtmngt.controller('ReportsPortalctrl', function($scope,$http,$rootScope,n
 	                   "plot":$scope.pname,
 	                   "option":"view"
   };
-               $http.post('Reports/TransactionReport', $scope.reportData)
+               $http.post('web/Reports/TransactionReport', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                        $scope.ViewReport=true;
@@ -1132,7 +1132,7 @@ ngProgress.start();
 	                  "plot":$scope.pname,
 	                  "option":"download"
   };
-               $http.post('Reports/TransactionReport', $scope.reportData)
+               $http.post('web/Reports/TransactionReport', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                       $scope.ViewReport=false;
@@ -1188,7 +1188,7 @@ $scope.btnPosting=true;
 		   }
 		 }
       ngProgress.start();
-                   $http.post('Landlord/CreateNotification',Notificationdata )
+                   $http.post('web/Landlord/CreateNotification',Notificationdata )
 				 		 .success(function(data) {
 							ngProgress.complete();
 								   $scope.NotificationPosted=true;
@@ -1215,7 +1215,7 @@ $scope.btnPosting=true;
 		   }
 		 }
       ngProgress.start();
-                   $http.post('Landlord/CreateNotification',MonthlyPostingdata )
+                   $http.post('web/Landlord/CreateNotification',MonthlyPostingdata )
 				 		 .success(function(data) {
 							ngProgress.complete();
 								   $scope.MonthlyPosting=true;
@@ -1287,7 +1287,7 @@ ngProgress.start();
 			         "PostDateTime":new Date().toISOString()
 		  };
         
-				  $http.post('Landlord/MonthlyRentPosting',Details )
+				  $http.post('web/Landlord/MonthlyRentPosting',Details )
 				 		 .success(function(data) {
 					
                                 ngProgress.complete();
@@ -1308,7 +1308,7 @@ landlordtmngt.controller('inboxctrl', function($scope,$http,$rootScope,ngProgres
 $scope.SuccessStatus=false;
  $scope.ErrorStatus=false;
 $scope.Sentemails=[];
-$http.get('Landlord/LandlordTenants',{ cache: true })
+$http.get('web/Landlord/LandlordTenants',{ cache: true })
 	.success(function (data)
 	{ 
 	$scope.MailTo=data
@@ -1316,7 +1316,7 @@ $http.get('Landlord/LandlordTenants',{ cache: true })
 	}
 	);
 
-$http.get('/Viewmail').success(function (data){
+$http.get('web/Viewmail').success(function (data){
 	$scope.UserMail=data; 
 	$scope.emails = $scope.UserMail.Received;
 	$scope.Sentemails= $scope.UserMail.Sent;
@@ -1417,7 +1417,7 @@ $scope.Tenant={};
 
    $scope.GetDetails=function(){
  ngProgress.start();
-     $http.get('Landlord/bookedtenantList/'+$scope.Tenant.plot.Plotname,{ cache: true })
+     $http.get('web/Landlord/bookedtenantList/'+$scope.Tenant.plot.Plotname,{ cache: true })
 		 .success(function (data){
 		    $scope.tenantdata=data;
 			$scope.crit=$scope.tenantdata[0];
@@ -1443,7 +1443,7 @@ ngProgress.start();
 		  };
 
 
-      $http.post('Landlord/vacate', data)
+      $http.post('web/Landlord/vacate', data)
 	.success(function(data){
 		  ngProgress.complete();
       $scope.vacateupdate=true;
@@ -1472,7 +1472,7 @@ landlordtmngt.controller('LandlordProfilectrl', function($scope,$http,$rootScope
        ngProgress.start();
    
       $scope.upload = $upload.upload({
-        url: 'Landlord/Landlordphotoupload', //upload.php script, node.js route, or servlet url
+        url: 'web/Landlord/Landlordphotoupload', //upload.php script, node.js route, or servlet url
         method: 'POST',
         // headers: {'header-key': 'header-value'},
         // withCredentials: true,
@@ -1514,8 +1514,8 @@ $scope.GetDetails=function(){
  // have this in a nested Promise
 ngProgress.start();
 
-   $http.get('Landlord/UnbookedtenantList/'+ $scope.Tenant.plot.Plotname).success(function (data){$scope.tenantdata=data ;$scope.Tenant.names=$scope.tenantdata[0];});
-   $http.get('Landlord/VacanthouseList/'+$scope.Tenant.plot.Plotname).success(function (data){$scope.housedata=data;$scope.Tenant.housename=$scope.housedata[0]; ngProgress.complete();});
+   $http.get('web/Landlord/UnbookedtenantList/'+ $scope.Tenant.plot.Plotname).success(function (data){$scope.tenantdata=data ;$scope.Tenant.names=$scope.tenantdata[0];});
+   $http.get('web/Landlord/VacanthouseList/'+$scope.Tenant.plot.Plotname).success(function (data){$scope.housedata=data;$scope.Tenant.housename=$scope.housedata[0]; ngProgress.complete();});
  
 }
 
@@ -1538,7 +1538,7 @@ ngProgress.start();
                }
 		  };
 
-  $http.post('Landlord/Rent', data)
+  $http.post('web/Landlord/Rent', data)
 	.success(function(data){
 	  ngProgress.complete();
       $scope.housetaken=true;
@@ -1620,13 +1620,13 @@ landlordtmngt.directive('modalDialog', [    'ngModalDefaults', '$sce', function(
 //{
 
 landlordtmngt.factory('tenantcreation', function($resource) {
-  return $resource('Landlord/createTenant', {}, {
+  return $resource('web/Landlord/createTenant', {}, {
       create: {method:'POST', params:{}}
    });
 });
 
 landlordtmngt.factory('tenantlist', function($resource) {
-  return $resource('Landlord/tenantList/:crit', {}, {
+  return $resource('web/Landlord/tenantList/:crit', {}, {
       query: {method:'GET', params:{"plot.name":"kahawa_2"}, isArray:true}
    });
 });
@@ -1641,7 +1641,7 @@ $scope.pwdchanged=false;
 $scope.pwderror=false;
 $scope.SubmitPwd=function(){
 	ngProgress.start();
-    $http.post('/ChangePwd',$scope.pwd )
+    $http.post('web/ChangePwd',$scope.pwd )
 		   .success(function(data) {
 		   // console.log(data.success)
 		   ngProgress.complete();
@@ -1656,7 +1656,7 @@ $scope.SubmitPwd=function(){
 
 $scope.CheckPwd=function(){
 	$scope.busy=true;
-     $http.post('/CheckPwd',$scope.pwd )
+     $http.post('web/CheckPwd',$scope.pwd )
 		   .success(function(data) {
 		     if (data.success)
 		     {
@@ -1699,7 +1699,7 @@ $scope.disablebtn=true;
                        "option":"view"
                     };
 	  
-               $http.post('Reports/Tenantpaid', $scope.reportData)
+               $http.post('web/Reports/Tenantpaid', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                        $scope.ViewReport=true;
@@ -1727,7 +1727,7 @@ ngProgress.start();
 	                   "plot":$scope.pname,
                        "option":"download"
                     };
-               $http.post('Reports/Tenantpaid', $scope.reportData)
+               $http.post('web/Reports/Tenantpaid', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                       $scope.ViewReport=false;
@@ -1769,7 +1769,7 @@ $scope.disablebtn=true;
                        "option":"view"
                     };
 	  
-               $http.post('Reports/TenantUnpaid', $scope.reportData)
+               $http.post('web/Reports/TenantUnpaid', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                        $scope.ViewReport=true;
@@ -1797,7 +1797,7 @@ ngProgress.start();
 	                   "plot":$scope.pname,
                        "option":"download"
                     };
-               $http.post('Reports/TenantUnpaid', $scope.reportData)
+               $http.post('web/Reports/TenantUnpaid', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                       $scope.ViewReport=false;
@@ -1839,7 +1839,7 @@ $scope.disablebtn=true;
                        "option":"view"
                     };
 	  
-               $http.post('Reports/TenantList', $scope.reportData)
+               $http.post('web/Reports/TenantList', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                        $scope.ViewReport=true;
@@ -1867,7 +1867,7 @@ ngProgress.start();
 	                   "plot":$scope.pname,
                        "option":"download"
                     };
-               $http.post('Reports/TenantList', $scope.reportData)
+               $http.post('web/Reports/TenantList', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                       $scope.ViewReport=false;
@@ -1910,7 +1910,7 @@ $scope.disablebtn=true;
                        "option":"view"
                     };
 	  
-               $http.post('Reports/OccupiedHouses', $scope.reportData)
+               $http.post('web/Reports/OccupiedHouses', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                        $scope.ViewReport=true;
@@ -1938,7 +1938,7 @@ ngProgress.start();
 	                   "plot":$scope.pname,
                        "option":"download"
                     };
-               $http.post('Reports/OccupiedHouses', $scope.reportData)
+               $http.post('web/Reports/OccupiedHouses', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                       $scope.ViewReport=false;
@@ -1978,7 +1978,7 @@ $scope.disablebtn=true;
                        "option":"view"
                     };
 	  
-               $http.post('Reports/VacantHouses', $scope.reportData)
+               $http.post('web/Reports/VacantHouses', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                        $scope.ViewReport=true;
@@ -2006,7 +2006,7 @@ ngProgress.start();
 	                   "plot":$scope.pname,
                        "option":"download"
                     };
-               $http.post('Reports/VacantHouses', $scope.reportData)
+               $http.post('web/Reports/VacantHouses', $scope.reportData)
 						 .success(function(data) {
 				    ngProgress.complete();
                       $scope.ViewReport=false;

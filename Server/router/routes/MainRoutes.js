@@ -47,7 +47,7 @@ var express = require('express')
 			       )
               })
 
-          router.get('/', function(req, res){res.redirect('/index.html');});
+         // router.get('/', function(req, res){res.redirect('/index.html');});
   
            router.post('/Login',   function(req, res) {
 				DatabaseConn.getCredentials(req.body.username,req.body.password, function(err, user) {

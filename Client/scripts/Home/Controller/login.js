@@ -7,7 +7,7 @@ var LoginMngt= angular.module('RentmngtAppLogin', [] );
     $scope.showSpinner=false;
        $scope.Userlogin=function(){
             $scope.showSpinner=true;
-                $http.post('/Login',$scope.user)
+                $http.post('web/Login',$scope.user)
 				 		 .success(function(data) {
 								     $scope.invalidcredential=false;
 									 $window.sessionStorage.token = data.token;
@@ -30,7 +30,7 @@ var LoginMngt= angular.module('RentmngtAppLogin', [] );
 
 
       $scope.forgotPassword=function(){
-             $http.post('/sendmail',$scope.user)
+             $http.post('web/sendmail',$scope.user)
 				 .success(function(data) {
 					 })
 				.error(function(data) {
