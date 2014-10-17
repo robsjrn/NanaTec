@@ -773,8 +773,10 @@ exports.Landlordphotoupload = function(req, res) {
    // var target_path = __dirname +  "/"  + req.files.file.name; 
 
 	  var target_path = './Client/uploads/Landlord/' + req.files.file.name;
-	  var dbpath='uploads/Landlord/'+req.files.file.name;
+	  var dbpath='/uploads/Landlord/'+req.files.file.name;
 	
+
+	console.log("Image Path " + req.files.file.name);
     // move the file from the temporary location to the intended location
     fs.rename(tmp_path, target_path, function(err) {
         if (err) throw err;
