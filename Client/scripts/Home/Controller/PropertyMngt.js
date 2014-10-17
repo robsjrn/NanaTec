@@ -86,7 +86,7 @@ $scope.search={};
 
 
   $scope.SearchForProperty=function(){
-	   $http.post('web/Property/PropertyListing',$scope.search)
+	   $http.post('/web/Property/PropertyListing',$scope.search)
 	                   .success(function(data) {
 		  
 							 $scope.SearchResults=data;

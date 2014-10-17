@@ -67,7 +67,7 @@ $scope.Clear=function(){
 $scope.CheckidExists=function(){
  $scope.showSpinner=true;
           var dt={"idnumber":$scope.landlord.id};
-          $http.post('web/CheckidExists',dt)
+          $http.post('/web/CheckidExists',dt)
 				 		 .success(function(data) {
 		
 			                  if (data.exist)
@@ -89,7 +89,7 @@ $scope.CheckidExists=function(){
 $scope.CheckPhonenumberExists=function(){
 $scope.ContactSpinner=true;
 var qerr={"phonenumber":"+254"+$scope.landlord.contact};
-$http.post('web/CheckPhonenumberExists',qerr)
+$http.post('/web/CheckPhonenumberExists',qerr)
 				 		 .success(function(data) {
 			                  if (data.exist)
 			                     { $scope.contactExist=true;
@@ -114,7 +114,7 @@ $scope.SaveLandlord=function(){
       $scope.landlord.datecreated=new Date().toISOString();
 
          var data={"LandlordDet":$scope.landlord};
-             	$http.post('web/landlord/CreateLandlord',data)
+             	$http.post('/web/landlord/CreateLandlord',data)
 				 		 .success(function(data) {
 								   $scope.SuccessStatus=true;
 								   $scope.disableComponents=true;

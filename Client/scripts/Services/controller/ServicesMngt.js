@@ -55,7 +55,7 @@ $locationProvider.hashPrefix("!");
 
 		 $scope.search=function(){
     
-			  $http.post('web/ServiceListing',$scope.service)
+			  $http.post('//web/ServiceListing',$scope.service)
 	                   .success(function(data) {
 							 $scope.SearchResults=data;
 							 }) 
@@ -101,7 +101,7 @@ $locationProvider.hashPrefix("!");
      };
 
 $scope.add=function(){
-        $http.post('web/ServiceRegistration', $scope.service)
+        $http.post('//web/ServiceRegistration', $scope.service)
 						 .success(function(data) {
                                  $scope.saved=true;
 							     

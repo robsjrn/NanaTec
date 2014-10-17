@@ -63,7 +63,7 @@ var Search= angular.module('RentmngtAppSearchRental', [] );
 		  }
 
 
-			  $http.post('web/VacantRentalListing',$scope.search)
+			  $http.post('/web/VacantRentalListing',$scope.search)
 	                   .success(function(data) {
 							 $scope.Data=data;
 							 }) 
