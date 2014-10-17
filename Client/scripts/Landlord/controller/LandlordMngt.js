@@ -849,7 +849,7 @@ ngProgress.start();
  };
 
 
-                  $http.post('Landlord/RentalPayment', $scope.Payment)
+                  $http.post('/web/Landlord/RentalPayment', $scope.Payment)
 						 .success(function(data) {
 							    $scope.paymentposted=true;
 								$scope.msg=data.success;

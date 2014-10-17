@@ -31,14 +31,14 @@
 							   <input type="text" class="form-control" placeholder="House name" id="hsename" ng-model="Tenant.housename" disabled required>
 
 							    <label for="balamt">Balance Amt</label>
-							   <input type="text" class="form-control" placeholder="Balance Amount" id="balamt" ng-model="Tenant.balance" disabled required>
+							   <input type="number" class="form-control" placeholder="Balance Amount" id="balamt" ng-model="Tenant.balance" disabled required>
                             
 							 <label for="paymethod">Payment Method</label>
 							       <select class="form-control"  ng-model="Transaction.paymentmethod" id="paymethod" ng-options="c.name for c in paymentmethod" ng-disabled=disableComponents required>  
 			                       </select>
 
                             <label for="amt">Amount</label>
-							   <input type="text" class="form-control" placeholder="Amount" id="amt" ng-model="Transaction.amount" ng-disabled=disableComponents required>
+							   <input type="number" class="form-control" placeholder="Amount" id="amt" ng-model="Transaction.amount" ng-disabled=disableComponents required>
 
 						 </div>
 
