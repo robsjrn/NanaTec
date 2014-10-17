@@ -1,4 +1,4 @@
-var landlordtmngt= angular.module('LandlordmngtApp', ['ngResource','ngRoute','ui.bootstrap','angularFileUpload','ngProgress','textAngular','google-maps'] ); 
+var landlordtmngt= angular.module('LandlordmngtApp', ['ngResource','ngRoute','ui.bootstrap','angularFileUpload','ngProgress','textAngular','google-maps'.ns()] ); 
 
 
 

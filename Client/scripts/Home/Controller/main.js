@@ -1,6 +1,6 @@
 'use strict';
 
-var Rentmngt= angular.module('RentmngtApp', ['ngRoute','google-maps'] ); 
+var Rentmngt= angular.module('RentmngtApp', ['ngRoute','google-maps'.ns()] ); 
 
 
  Rentmngt.controller('MainCtrl', function ($scope,$http,$window) {
@@ -48,7 +48,7 @@ $scope.selectSearch=function(itm){
 	 
 	 $scope.Userlogin=function(){
     
-        $http.post('/login',$scope.user)
+        $http.post('/web/login',$scope.user)
 				 		 .success(function(data) {
 								    $scope.invalidcredential=false;
                                      $window.location.href='/LoginRedirect';							   
