@@ -214,7 +214,7 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-		<script src='//maps.googleapis.com/maps/api/js?key=AIzaSyBEZrkDl1LuGxjnnI4WXC7U5nx41NOmxy8'></script>
+		<script src='//maps.googleapis.com/maps/api/js?v=3.6&sensor=false&key=AIzaSyBEZrkDl1LuGxjnnI4WXC7U5nx41NOmxy8'></script>
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/angular/angular.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -226,6 +226,8 @@
     <script src="lib/textAngular/dist/textAngular.min.js"></script>
 	<script src="lib/textAngular/dist/textAngular-sanitize.min.js"></script>
 	<script src="lib/lodash/dist/lodash.min.js"></script>
+	<script src="Lib/bluebird/js/browser/bluebird.js"></script>
+	
 	<script src="lib/angular-google-maps/dist/angular-google-maps.min.js"></script>
 	
 
@@ -255,7 +257,7 @@
 		    	
         </div>
         <div class="modal-body">
-             <ui-gmap-google-map center="map.center" 
+              <ui-gmap-google-map center="map.center" 
 				zoom="map.zoom" 
 				draggable="true"
 				options="map.options"
@@ -264,6 +266,7 @@
 				<marker idKey="1" coords="map.marker">
 				</marker>
 			</ui-gmap-google-map>
+
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" ng-click="ok()">OK</button>

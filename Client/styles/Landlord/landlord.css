@@ -1,6 +1,6 @@
 
 body {
-     padding-top: 100px;
+    padding-top: 100px;
     background-color: #e7e7e7;
 	padding-bottom: 20px;
 
@@ -11,49 +11,7 @@ body {
     }
 }
 
-/* Panel */
 
-
-
-
-/* Wrappers */
-
-/* ------------------------------- */
-
-#sidebar-wrapper {
-  margin-left: -250px;
-  left: 250px;
-  width: 250px;
-  background-color: #f8f8f8;
-  position: fixed;
-  height: 100%;
-  overflow-y: auto;
-  z-index: 1000;
-  transition: all 0.4s ease 0s;
-}
-
-
-#wrapper {
-    width: 100%;
-
-}
-
-#page-wrapper {
-    padding: 0 15px;
-    min-height: 568px;
-    background-color: #e7e7e7;
-}
-
-@media(min-width:768px) {
-    #page-wrapper {
-        position: inherit;
-        margin: 0 0 0 250px;
-        padding: 0 30px;
-        min-height: 1300px;
-        border-left: 1px solid #e7e7e7;
-
-    }
-}
 
 .panel-default > .panel-heading {
   background-color: #999;

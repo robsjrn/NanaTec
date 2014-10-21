@@ -348,7 +348,7 @@ $http.post('/web/CheckPhonenumberExists',qerr)
 
 		   
             $scope.saveTenant=function(){
-         
+            $scope.tform.tenantnames.$setValidity("size", false);
 			       $scope.Tenant.plot={};
 				   $scope.Tenant.Landlordid=$rootScope.landlordDetails._id;
 				   $scope.Tenant.plot.Plotname =$scope.Tnt.plot.Plotname;
@@ -449,6 +449,9 @@ $scope.CheckHseNoExists=function(){
          $scope.House="";
   };
           $scope.saveHouse=function(){
+
+                $scope.userForm.hsenum.$setValidity("size", false);
+
 			     $scope.disableComponents=true;
 				 ngProgress.start();
 				 $scope.House.landlordid=$rootScope.landlordDetails._id;
@@ -501,6 +504,7 @@ landlordtmngt.controller('plotmngtctrl', function($scope,$http,$rootScope,ngProg
     geocoder = new google.maps.Geocoder();
     geocoder.geocode( { 'address': $scope.LandlordPlot.address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
+		  console.log("Testing "+$scope.map.control.getGMap().toString());
         $scope.map.control.getGMap().setCenter(results[0].geometry.location);
         $scope.map.marker.latitude = results[0].geometry.location.lat();
         $scope.map.marker.longitude = results[0].geometry.location.lng();
@@ -583,6 +587,7 @@ $scope.CheckplotExists=function(){
 		$scope.plotExist=false;
 	   }
    $scope.Saveplot=function(){  
+      $scope.userForm.plotname.$setValidity("size", false);
 
 		  $http.post('/web/Landlord/LandlordAddPlots', $scope.LandlordPlot)
 			  
@@ -605,12 +610,17 @@ $scope.CheckplotExists=function(){
   
 });
 
+landlordtmngt.controller('trxntypectrl', function($scope) {
+	    $scope.url='Singletransaction';
+			
+});
 
-landlordtmngt.controller('trxnmngtctrl', function($scope,$http,$rootScope,ngProgress, $window,$filter) {
+landlordtmngt.controller('trxnmngtctrl', function($scope,$http,$rootScope,ngProgress, $window,$filter,tenant,BatchTrxnService) {
 
 
 
 $scope.Transaction={};
+$scope.data=BatchTrxnService.list()
 $scope.Transaction.PostedDate=new Date();
 $scope.Transaction.transactiondate=new Date();
 $scope.paymentmethod=$rootScope.paymentMethod;
@@ -626,6 +636,7 @@ $scope.TenantNotFound=false;
 	  $scope.disableTenantid=true;
 	  $scope.ReceiptFound=false;
 	  $scope.ShowCharges=false;
+	   $scope.disablePosting=true;
 $scope.crit={};
 $scope.Tenant={};
 
@@ -662,7 +673,7 @@ $scope.Tenant={};
 $scope.SearchTenantid=function(){
 	$scope.disableSearchHse=true;
     ngProgress.start();
-         $http.post('/web/Landlord/tenantDataID',  $scope.search)
+        tenant.getTenantid($scope.search)
 						 .success(function(data) {
 							  $scope.Tenant=data
 							  $scope.search.housename=$scope.Tenant.housename;
@@ -680,8 +691,8 @@ $scope.SearchTenantid=function(){
 $scope.SearchHouseid=function(){
 	$scope.disableTenantid=true;
     ngProgress.start();
-	                  $http.post('/web/Landlord/tenantDataHseName',  $scope.search)
-						 .success(function(data) {
+	     tenant.gethouse($scope.search)
+			 .success(function(data) {
 							  $scope.Tenant=data
 								ngProgress.complete();
 							    $scope.disableSearchHse=true;
@@ -769,6 +780,7 @@ $scope.Receipt=function(){
  };
 
   function addpayment(){
+	  $scope.Charge={};
 	  $scope.disableComponents=false;
       $scope.disableSearchHse=false;
 	  $scope.disableTenantid=false;
@@ -793,6 +805,95 @@ $scope.Receipt=function(){
 		 $scope.Tenant="";
 		 $scope.search="";
  };
+
+
+$scope.InsertRec=function(){
+ $scope.disableComponents=true;
+ var charges={};
+ var today = $filter('date')(new Date(),'yyyy-MM-dd');
+ var trandate=$filter('date')($scope.Transaction.TransactionDate,'yyyy-MM-dd');
+
+     if ($scope.ApplyCharges)
+     {
+		charges ={
+			      "ApplyCharge":true,
+                  "body":{
+                  "receiptno":$scope.Transaction.receiptno,
+	              "tenantid":$scope.Tenant._id,
+	              "housenumber":$scope.Tenant.housename,
+	              "plotnumber":$scope.Tenant.plot.Plotname,
+                  "names":$scope.Tenant.names,
+                  "contact":$scope.Tenant.contact,
+	              "PostedDate":today,
+                  "transactiondate":trandate,
+	              "transactiontype":$scope.Charge.transactiontype,
+	              "paymentmethod":$scope.Transaction.paymentmethod.name,
+	              "Description":$scope.Charge.comment,
+	              "tranAmount":$scope.Charge.Amount,
+				  "currentBal":$scope.Tenant.balance,
+	              "balcf":$scope.Tenant.balance-$scope.Transaction.amount+$scope.Charge.Amount
+				  }
+		 };
+     }
+	 else{
+		   charges={
+			   "ApplyCharge":false
+		  };
+	 }
+
+  $scope.Payment={	             
+	              "receiptno":$scope.Transaction.receiptno,
+	              "tenantid":$scope.Tenant._id,
+	              "housenumber":$scope.Tenant.housename,
+	              "plotnumber":$scope.Tenant.plot.Plotname,
+                  "names":$scope.Tenant.names,
+                  "contact":$scope.Tenant.contact,
+	              "PostedDate":today,
+                  "transactiondate":trandate,
+	              "transactiontype":$scope.Transaction.transactiontype.name,
+	              "paymentmethod":$scope.Transaction.paymentmethod.name,
+	              "Description":$scope.Transaction.comments,
+	              "tranAmount":$scope.Transaction.amount,
+                  "currentBal":$scope.Tenant.balance,
+	              "balcf":$scope.Tenant.balance-$scope.Transaction.amount,
+                  "Charges":charges
+	 
+ };
+
+ 
+	
+
+  $scope.BatchTotal.Amount =$scope.BatchTotal.Amount-$scope.Payment.tranAmount;
+     if ($scope.BatchTotal.Amount==0){ $scope.disablePosting=false ; }
+	 else { BatchTrxnService.save($scope.Payment);}
+    
+}
+
+
+    $scope.delete = function (id) {
+        $scope.EditTenant=BatchTrxnService.delete(id); 
+		$scope.BatchTotal.Amount=$scope.BatchTotal.Amount+$scope.EditTenant.tranAmount;
+    }
+
+	 $scope.edit = function (id) {
+        $scope.EditTenant = BatchTrxnService.get(id);
+        $scope.Tenant.names=$scope.EditTenant.names;
+		$scope.Tenant._id=$scope.EditTenant.tenantid;
+        $scope.Tenant.housename=$scope.EditTenant.housenumber;
+        $scope.Tenant.plot.Plotname=$scope.EditTenant.plotnumber;
+		$scope.Tenant.housename=$scope.EditTenant.housenumber;
+		$scope.Tenant.balance=$scope.EditTenant.currentBal;
+		$scope.Transaction.receiptno=$scope.EditTenant.receiptno;
+		$scope.Transaction.comments=$scope.EditTenant.Description;
+		$scope.Transaction.amount=$scope.EditTenant.tranAmount;
+		$scope.Transaction.transactiontype=$scope.EditTenant.transactiontype;
+		$scope.Transaction.paymentmethod=$scope.EditTenant.paymentmethod;
+		$scope.Transaction.transactiondate=$scope.EditTenant.transactiondate
+		$scope.balcf=$scope.EditTenant.balcf;
+	//	$scope.Charge.Amount=$scope.EditTenant.Charges.body.tranAmount;
+		$scope.Transaction.PostedDate=$scope.EditTenant.PostedDate;
+	//	$scope.Charge.comment=$scope.EditTenant.Charges.body.Description;
+    };
 
 
 $scope.postPayment=function(){
@@ -875,6 +976,26 @@ $scope.paymentposted=false;
 $scope.paymenterror=false;
 $scope.disableComponents=true;
 $scope.Tenant={};
+
+ $scope.toggleMin = function() {
+  //  $scope.maxDate = $scope.maxDate ? null : new Date();
+  };
+  $scope.toggleMin();
+
+  $scope.open = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    $scope.opened = true;
+  };
+
+  $scope.dateOptions = {
+    formatYear: 'yyyy',
+    startingDay: 1
+  };
+
+  
+  $scope.format = 'yyyy-MM-dd';
 
  $scope.landlordplots=$rootScope.plot;
  $scope.Tenant.plot=$scope.landlordplots[0];
@@ -2026,7 +2147,80 @@ ngProgress.start();
 });
 
 
-//}
+//Services
+
+
+
+landlordtmngt.factory('tenant', function($http) {
+    var tenant={}    
+    var url='/web/Landlord';
+	 tenant.gethouse = function (Houseid) {
+		return $http.post(url + '/tenantDataHseName', Houseid);
+    };
+      tenant.getTenantid = function (Tenantid) {
+		return $http.post(url + '/tenantDataID', Tenantid);
+    };
+
+
+
+	
+	return tenant;
+});
+
+
+
+
+
+
+
+landlordtmngt.service('BatchTrxnService', function () {
+    //to create unique contact id
+    //contacts array to hold list of all contacts
+    var data = [];
+       var uid = 0;
+    //save method create a new contact if not already exists
+    //else update the existing object
+    this.save = function (user) {
+           user.traceid=uid++;
+		   data.push(user);
+       
+
+    }
+
+    //simply search contacts list for given id
+    //and returns the contact object if found
+    this.get = function (id) {
+        for (i in data) {
+            if (data[i].traceid == id) {	
+                return data[i];
+            }
+        }
+
+    }
+    
+    //iterate through contacts list and delete 
+    //contact if found
+    this.delete = function (id) {
+        for (i in data) {
+            if (data[i].traceid == id) {
+				var dt=data[i];
+                data.splice(i, 1);
+				return dt;
+            }
+        }
+    }
+
+    //simply returns the contacts list
+    this.list = function () {
+        return data;
+    }
+});
+
+
+
+
+
+
 
 //Routes 
 
@@ -2049,9 +2243,19 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
        controller: 'plotmngtctrl'
         })
    .when('/trxnmngt', {
+       templateUrl: 'views/Landlord/TransactionSelect.html',   
+       controller: 'trxntypectrl'
+        })
+    .when('/Singletransaction', {
        templateUrl: 'views/Landlord/landlordTrxnmgt.html',   
        controller: 'trxnmngtctrl'
         })
+
+    .when('/Batchtransaction', {
+       templateUrl: 'views/Landlord/LandlordBatchTrxn.html',   
+       controller: 'trxnmngtctrl'
+        })
+
     .when('/expensemngt', {
        templateUrl: 'views/Landlord/landlordExpensemngt.html',   
        controller: 'expensemngtctrl'
