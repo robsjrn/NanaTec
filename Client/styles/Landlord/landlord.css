@@ -11,13 +11,17 @@ body {
     }
 }
 
-
+#wrapper {
+  padding-top: 25px;
+  padding-left: 0;
+}
 
 .panel-default > .panel-heading {
   background-color: #999;
 }
 
 .nav {
+
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
