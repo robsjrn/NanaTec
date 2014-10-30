@@ -587,7 +587,7 @@ $scope.CheckplotExists=function(){
 		$scope.plotExist=false;
 	   }
    $scope.Saveplot=function(){  
-      $scope.userForm.plotname.$setValidity("size", false);
+    //9  $scope.userForm.plotname.$setValidity("size", false);
 
 		  $http.post('/web/Landlord/LandlordAddPlots', $scope.LandlordPlot)
 			  
