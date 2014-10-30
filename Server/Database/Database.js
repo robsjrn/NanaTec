@@ -10,7 +10,7 @@ var config=require('../Config/Config.js')
 , tokenSecret='1234567890QWERTY'
 , MongoClient = require('mongodb').MongoClient;
 var db;
-
+var S = require('string');
 
 MongoClient.connect("mongodb://localhost:27017/RentalDB", function(err, database) {
   if(err) throw err;
@@ -135,14 +135,13 @@ exports.GeneralSearch = function(req, res) {
 	var querry ;
 	if (req.body.id==1)	{ querry={"_id":req.body.detail};}
 	if (req.body.id==2)	{ querry={"housename":req.body.detail};}
-	if (req.body.id==3)	{ querry={"contact":req.body.detail};}
+	if (req.body.id==3)	{ querry={"contact":"+254"+ S(req.body.detail).right(9).s};}
 	if (req.body.id==4)	{ querry={"email":req.body.detail};}
 
  db.collection('user', function(err, collection) {
      collection.findOne({$and:[querry,{"hsestatus" : 1},{"Landlordid":req.user._id}]},{names:1,_id:1,housename:1,plot:1,balance:1,contact:1},function(err, item) {
 	   if(item){res.send(item);
 	   }else{
-		   console.log(err);
 		   DbError(res) ;
 		   }
 });

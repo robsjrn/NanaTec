@@ -1,5 +1,5 @@
 var twilio = require('twilio');
-var S = require('string');
+
  
 // Create a new REST API client to make authenticated requests against the
 // twilio back end
