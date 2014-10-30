@@ -131,6 +131,25 @@ exports.tenantDataHseName = function(req, res) {
 });
 };
 
+exports.GeneralSearch = function(req, res) {
+	var querry ;
+	if (req.body.id==1)	{ querry={"_id":req.body.detail};}
+	if (req.body.id==2)	{ querry={"housename":req.body.detail};}
+	if (req.body.id==3)	{ querry={"contact":req.body.detail};}
+	if (req.body.id==4)	{ querry={"email":req.body.detail};}
+
+ db.collection('user', function(err, collection) {
+     collection.findOne({$and:[querry,{"hsestatus" : 1},{"Landlordid":req.user._id}]},{names:1,_id:1,housename:1,plot:1,balance:1,contact:1},function(err, item) {
+	   if(item){res.send(item);
+	   }else{
+		   console.log(err);
+		   DbError(res) ;
+		   }
+});
+});
+};
+
+
 
 
 exports.listofHouse = function(req, res) {
@@ -726,7 +745,6 @@ exports.photoupload = function(req, res) {
 
    var tmp_path = req.files.file.path;
 
-    console.log("The path is "+req.files.file.path);
     // set where the file should actually exists - in this case it is in the "images" directory
    // var target_path = __dirname +  "/"  + req.files.file.name; 
 

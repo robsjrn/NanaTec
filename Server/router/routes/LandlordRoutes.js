@@ -49,14 +49,17 @@ router.post('/CheckHseNoExists',DatabaseConn.CheckHseNoExists);
 		router.post('/Rent',ensureAuthenticated,DatabaseConn.Rent);
 		router.post('/vacate',ensureAuthenticated,DatabaseConn.vacate);
 		router.post('/SaveDocument',ensureAuthenticated,DatabaseConn.Documents);
-
+//to delete this not used *************
         router.post('/tenantDataID',ensureAuthenticated,DatabaseConn.tenantDataID);
         router.post('/tenantDataHseName',ensureAuthenticated,DatabaseConn.tenantDataHseName);
+//********************
+
         router.post('/ServeEvictionNotice',ensureAuthenticated,DatabaseConn.EvictionNotice);
          router.post('/Mail',ensureAuthenticated,DatabaseConn.CreateMail);
          router.post('/CreateNotification',ensureAuthenticated,DatabaseConn.NotificationScheduling);
 
 
 
- router.post('/SearchReceipt',ensureAuthenticated,DatabaseConn.SearchReceipt);
+            router.post('/SearchReceipt',ensureAuthenticated,DatabaseConn.SearchReceipt);
+			router.post('/GeneralSearch',ensureAuthenticated,DatabaseConn.GeneralSearch);
 module.exports = router;

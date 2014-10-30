@@ -641,7 +641,32 @@ $scope.crit={};
 $scope.Tenant={};
 
 
+$scope.SearchType=[{id: 1, type: "_id", name: "Tenant Id"},
+	               {id: 2, type: "housename", name: "House Name"},
+	               {id: 3, type: "contact", name: "Tenant Telephone"},
+                   {id: 4, type: "email", name: "Email Address"}
+];
 
+$scope.search=function(searchtype){
+  var search ={}
+      search.id=searchtype.id;
+      search.detail=$scope.lookup;
+    tenant.Search(search)
+						 .success(function(data) {
+							  $scope.Tenant=data
+							  $scope.search.housename=$scope.Tenant.housename;
+							  $scope.TenantNotFound=false;
+								ngProgress.complete();
+							  $scope.disableTenantid=true;
+							 }) 
+						 .error(function(data) {
+							$scope.Tenants=data
+							$scope.TenantNotFound=true;
+							 ngProgress.complete();
+							 $scope.disableComponents=true;
+							 });
+
+}
 
   $scope.toggleMin = function() {
   //  $scope.maxDate = $scope.maxDate ? null : new Date();
@@ -670,41 +695,7 @@ $scope.Tenant={};
 	 alert("You Have to Add a Plot First..");
  }
 
-$scope.SearchTenantid=function(){
-	$scope.disableSearchHse=true;
-    ngProgress.start();
-        tenant.getTenantid($scope.search)
-						 .success(function(data) {
-							  $scope.Tenant=data
-							  $scope.search.housename=$scope.Tenant.housename;
-								ngProgress.complete();
-							  $scope.disableTenantid=true;
-							 }) 
-						 .error(function(data) {
-							$scope.Tenants=data
-							$scope.TenantNotFound=true;
-							 ngProgress.complete();
-							 $scope.disableComponents=true;
-							 });
 
-}
-$scope.SearchHouseid=function(){
-	$scope.disableTenantid=true;
-    ngProgress.start();
-	     tenant.gethouse($scope.search)
-			 .success(function(data) {
-							  $scope.Tenant=data
-								ngProgress.complete();
-							    $scope.disableSearchHse=true;
-									$scope.search.tenantid=$scope.Tenant._id;
-							 }) 
-						 .error(function(data) {
-							$scope.Tenants=data
-							 ngProgress.complete();
-							$scope.TenantNotFound=true;
-							$scope.disableComponents=true;
-							 });
-}
 
 $scope.CheckCharges=function(){
 
@@ -2161,7 +2152,9 @@ landlordtmngt.factory('tenant', function($http) {
 		return $http.post(url + '/tenantDataID', Tenantid);
     };
 
-
+    tenant.Search = function (search) {
+		return $http.post(url + '/GeneralSearch', search);
+    };
 
 	
 	return tenant;

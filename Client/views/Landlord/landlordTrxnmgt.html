@@ -10,18 +10,32 @@
 					  </div>
 					   <div class="panel-body">
 					<form name="userForm"  novalidate>		
-                            <div class="row">
-							   <div class="col-xs-6">
-							    <label for="hsename">Tenant id</label>
-							   <input type="text" class="form-control" placeholder="Tenant id" id="Tid" ng-model="search.tenantid"       ng-blur="SearchTenantid()" ng-disabled=disableTenantid >
-							   </div>
+                           
+							  <div class="row">
+								   <div class="col-xs-6">
+									Choose a Search Criteria
+									<select data-ng-model="search.searchType"
+											data-ng-options="s.name for s in SearchType">                
+									</select>
+                                  </div>
+                              </div>
+                               <div class="row">
+							    <div class="col-xs-6">
+                                   <label for="searchinput">Search Input</label>
+								   <input type="text" class="form-control" placeholder="Search Input" id="searchinput" ng-model="lookup"   />
+                                </div>
+                                 <div class="col-xs-6">
+								   <br>
+								   <button type="button" class="btn btn-success"  ng-disabled=!disableComponents ng-click="search(search.searchType)">Search..</button>
+								 </div>
+                                </div>
+                              
 
-							   <div class="col-xs-6">
-							      <label for="hsename">House Name</label>
-							   <input type="text" class="form-control" placeholder="House name" id="hsename" ng-model="search.housename" ng-blur="SearchHouseid()" ng-disabled=disableSearchHse>
-							   </div>
+						
 
-							</div>
+
+
+						
 							<div ng-show="TenantNotFound" class="alert alert-warning"><strong>Tenant Not Found</strong></div>
                                <hr>
 					     <div class="col-md-4">
