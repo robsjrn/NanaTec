@@ -587,7 +587,7 @@ $scope.CheckplotExists=function(){
 		$scope.plotExist=false;
 	   }
    $scope.Saveplot=function(){  
-    //9  $scope.userForm.plotname.$setValidity("size", false);
+      $scope.userForm.plotname.$setValidity("size", false);
 
 		  $http.post('/web/Landlord/LandlordAddPlots', $scope.LandlordPlot)
 			  
@@ -622,7 +622,7 @@ landlordtmngt.controller('trxnmngtctrl', function($scope,$http,$rootScope,ngProg
 $scope.Transaction={};
 $scope.data=BatchTrxnService.list()
 $scope.Transaction.PostedDate=new Date();
-$scope.Transaction.transactiondate=new Date();
+$scope.Transaction.TransactionDate=new Date();
 $scope.paymentmethod=$rootScope.paymentMethod;
 $scope.Transaction.paymentmethod=$scope.paymentmethod[0];
 $scope.transactiontype=$rootScope.TransactionType;
@@ -647,11 +647,11 @@ $scope.SearchType=[{id: 1, type: "_id", name: "Tenant Id"},
                    {id: 4, type: "email", name: "Email Address"}
 ];
 
-$scope.search=function(searchtype){
-  var search ={}
-      search.id=searchtype.id;
-      search.detail=$scope.lookup;
-    tenant.Search(search)
+$scope.searchData=function(searchtype){
+  var Datasearch ={}
+      Datasearch.id=searchtype.id;
+     Datasearch.detail=$scope.lookup;
+    tenant.Search(Datasearch)
 						 .success(function(data) {
 							  $scope.Tenant=data
 							  $scope.search.housename=$scope.Tenant.housename;
@@ -730,7 +730,7 @@ $scope.LatePaymentCharges=function(){
     $scope.LateCharge=true;
 	$scope.customDisable=true;
 	$scope.ApplyCharges=true;
-	$scope.Charge.Amount=1200;
+	$scope.Charge.Amount=1000;
 	$scope.Charge.comment="Late Payment Charge";
 	$scope.Charge.transactiontype="Late Rent Payment"
 };
@@ -767,7 +767,7 @@ $scope.Receipt=function(){
 
 
  $scope.AddPayment=function(){
-	 addpayment();
+		 addpayment();
  };
 
   function addpayment(){
@@ -802,7 +802,7 @@ $scope.InsertRec=function(){
  $scope.disableComponents=true;
  var charges={};
  var today = $filter('date')(new Date(),'yyyy-MM-dd');
- var trandate=$filter('date')($scope.Transaction.TransactionDate,'yyyy-MM-dd');
+ var trandate=$scope.Transaction.TransactionDate;
 
      if ($scope.ApplyCharges)
      {
@@ -893,8 +893,7 @@ ngProgress.start();
  $scope.disableComponents=true;
  var charges={};
  var today = $filter('date')(new Date(),'yyyy-MM-dd');
- var trandate=$filter('date')($scope.Transaction.TransactionDate,'yyyy-MM-dd');
-
+ var trandate=  $filter('date')($scope.Transaction.TransactionDate,'yyyy-MM-dd');
      if ($scope.ApplyCharges)
      {
 		charges ={

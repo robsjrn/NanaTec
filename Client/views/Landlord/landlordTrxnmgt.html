@@ -13,20 +13,22 @@
                            
 							  <div class="row">
 								   <div class="col-xs-6">
-									Choose a Search Criteria
+								   <label for="SearchCrit">Choose a Search Criteria</label>
+									
 									<select data-ng-model="search.searchType"
-											data-ng-options="s.name for s in SearchType">                
+											data-ng-options="s.name for s in SearchType"
+											ng-disabled=disableComponents>                
 									</select>
                                   </div>
                               </div>
                                <div class="row">
 							    <div class="col-xs-6">
                                    <label for="searchinput">Search Input</label>
-								   <input type="text" class="form-control" placeholder="Search Input" id="searchinput" ng-model="lookup"   />
+								   <input type="text" class="form-control" placeholder="Search Input" id="searchinput" ng-model="lookup"  ng-disabled=disableComponents />
                                 </div>
                                  <div class="col-xs-6">
 								   <br>
-								   <button type="button" class="btn btn-success"  ng-disabled=!disableComponents ng-click="search(search.searchType)">Search..</button>
+								   <button type="button" class="btn btn-success"  ng-disabled=disableComponents ng-click="searchData(search.searchType)">Search..</button>
 								 </div>
                                 </div>
                               
@@ -62,9 +64,13 @@
                               							 
                               <label for="date">Transaction Date</label>
                               
+
+
+
+
                      
 								  <p class="input-group">
-								  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="Transaction.transactiondate" is-open="opened" min-date="minDate" max-date="'2015-06-22'"  ng-required="true" close-text="Close" placeholder="YYYY-MM-DD"/>
+								  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="Transaction.TransactionDate" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions"  ng-required="true" close-text="Close" />
 								  <span class="input-group-btn">
 									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
 								  </span>

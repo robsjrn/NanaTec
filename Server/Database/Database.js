@@ -827,10 +827,10 @@ exports.Landlordphotoupload = function(req, res) {
 exports.TransactionReport= function(plot,start,end,fn) {
 // start="2014-10-04T07:11:16.255Z";
 // end="2014-10-10T07:11:16.255Z";
-console.log("Satrt Date ." + start);
-console.log("End Date ." + end);
+//console.log("Satrt Date ." + start);
+//console.log("End Date ." + end);
  db.collection('Transaction', function(err, collection) {
- collection.find( {$and: [{"plotnumber":plot},{"transactiondate": {$gte:start,$lt:end}}]}).toArray( function(err, item){
+ collection.find( {$and: [{"plotnumber":plot},{"transactiondate": {$gte:start,$lte:end}}]}).toArray( function(err, item){
   if(item){
 	 fn(null,item);}
   if (err) {fn(err,null);}
@@ -842,7 +842,7 @@ console.log("End Date ." + end);
 
 exports.TenantPaidReport= function(plot,fn) {
 db.collection('user', function(err, collection) {
- collection.find({$and: [{"plot.Plotname": plot},{"balance":{$lte: 0}}]}).toArray( function(err, item){
+ collection.find({$and: [{"plot.Plotname": plot},{"balance":{$lte: 0}}]},{ sort: "housename" }).toArray( function(err, item){
   if(item){
 	 fn(null,item);}
   if (err) {fn(err,null);}
@@ -856,7 +856,7 @@ db.collection('user', function(err, collection) {
 
 exports.TenantUnpaidReport= function(plot,fn) {
   db.collection('user', function(err, collection) {
-  collection.find({$and: [{"plot.Plotname": plot},{"hsestatus":1},{"balance":{$gte: 0}}]}).toArray( function(err, item){
+  collection.find({$and: [{"plot.Plotname": plot},{"hsestatus":1},{"balance":{$gt: 0}}]},{ sort: "housename" }).toArray( function(err, item){
   if(item){
 	  fn(null,item);
 }
@@ -871,7 +871,7 @@ exports.TenantUnpaidReport= function(plot,fn) {
 
 exports.TenantListReport= function(plot,fn) {
   db.collection('user', function(err, collection) {
- collection.find({$and: [{"plot.Plotname": plot},{"hsestatus":1}]}).toArray( function(err, item){
+ collection.find({$and: [{"plot.Plotname": plot},{"hsestatus":1}]},{ sort: "housename" }).toArray( function(err, item){
   if(item){
 	  fn(null,item);
 }
@@ -884,7 +884,7 @@ exports.TenantListReport= function(plot,fn) {
 
 exports.OccupiedHouseReport= function(plot,fn) {
   db.collection('House', function(err, collection) {
- collection.find({$and: [{"plot.Plotname": plot},{"status":"rented"}]},{plot:0,status:0,_id:0}).toArray( function(err, item){
+ collection.find({$and: [{"plot.Plotname": plot},{"status":"rented"}]},{plot:0,status:0,_id:0},{ sort: "number" }).toArray( function(err, item){
   if(item){
 	  fn(null,item);
 }
@@ -896,7 +896,7 @@ exports.OccupiedHouseReport= function(plot,fn) {
 
 exports.vacantHouseReport= function(plot,fn) {
   db.collection('House', function(err, collection) {
- collection.find({$and: [{"plot.Plotname": plot},{"status":"vacant"}]},{plot:0,status:0,_id:0}).toArray( function(err, item){
+ collection.find({$and: [{"plot.Plotname": plot},{"status":"vacant"}]},{plot:0,status:0,_id:0},{ sort: "number" }).toArray( function(err, item){
   if(item){
 	  fn(null,item);
 }
