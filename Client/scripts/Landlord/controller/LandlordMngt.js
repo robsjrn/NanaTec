@@ -1493,7 +1493,7 @@ $scope.ShowSentMailpopUp=function(mailinbox){
 	  }
 	};
 
-                  $http.post('Landlord/Mail',mail )
+                  $http.post('/web/Mail',mail )
 				 		 .success(function(data) {
 							ngProgress.complete();
 								   $scope.SuccessStatus=true;

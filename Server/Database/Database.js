@@ -661,8 +661,13 @@ var UpdateSenderInbox=function (id,SenderDet,callback){
 exports.Viewmail=function(req, res) {
  db.collection('Inbox', function(err, collection) {
   collection.findOne({"_id":req.user._id}, function(err, item){
-  if(item){res.send(item);}
-  if (err) {DbError(res);}
+  if(item){
+	   res.status(200).json(item);
+	  }
+  else { 
+
+	   res.status(200).json();
+	  }
 
 });
 });
