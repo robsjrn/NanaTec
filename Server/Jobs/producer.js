@@ -1,6 +1,7 @@
 var kue = require('kue')
  , jobs = kue.createQueue() ;
   var async =require('async');
+var DatabaseConn = require('../Database/Database');
 
 function newJob (job){
  job = job || 'Unknown job';
@@ -23,13 +24,24 @@ job
 
 
 exports.processJob=function(req,res){
-  var job={};
-    job.name='Monthly Posting Process';
-	job.plotname=req.body.plotName;
-	job.title='Monthly Posting For '+req.body.plotName;
-    job.month=req.body.Month;
-	newJob(job);
-	 res.json(200,{Status: "Job Submitted"});
+    
+	 DatabaseConn.CheckIfMonthPosted(req.body.plotName,req.body.Month,function(status,det){
+	               if (det) {
+					    res.json(500,{error: "Month Already Posted"});
+	               }
+				   else{
+                         var job={};
+						job.name='Monthly Posting Process';
+						job.plotname=req.body.plotName;
+						job.title='Monthly Posting For '+req.body.plotName;
+						job.month=req.body.Month;
+						newJob(job);
+						 res.json(200,{Status: "Job Submitted"});
+				   }
+	               });
+            
+ 
+ 
 };
 
 

@@ -3,7 +3,9 @@
    var async =require('async');
    var documents = [];
   
- MongoClient.connect("mongodb://localhost:27017/RentalDB", function(err, database) {
+
+
+   MongoClient.connect("mongodb://localhost:27017/RentalDB", function(err, database) {
 		  if(err) throw err;
 			    db=database;
 				 console.log("DB started Waiting for jobs..");
@@ -20,11 +22,16 @@ exports.ProccessRequest=function(plotname,month,fn){
 	  cursor  =collection.find({$and:[{"plot.Plotname":plotname},{"status":"rented"}]},{amount:1,tenantid:1,_id:0,number:1});
        cursor.toArray(function (err,items){
 		    Databal=items;
+			console.log("Items Length " + items.length);
 			BalanceUpdate(plotname,month,trxdate, function (err,status){
 				if (status)	{
 					ProcessTransaction(function (err,status){
 						if (err){db.close();fn(err,null);}
-						else{db.close(); fn(null,'ok');};
+						else{
+                            RentPosted(plotname,month);
+							
+							fn(null,'ok');
+							};
 					});
 					
 					}
@@ -81,12 +88,25 @@ function addtoDocument(item,plotname,month,trxdate){
 						 callback(err,null);
 					 }
 					 else{
+						 
+						 console.log("Transaction Done .");	
 						 callback(null,'ok');
-						 console.log("Transaction Done .");				 
 						  };
            });
 		  
     }
+
+function RentPosted(plot,month){
+ db.collection('MonthlyPosting', function(err, collection) {
+  collection.insert({"plotname":plot,"Month":month}, function(err, item) {
+     if(err){console.log("Error Inserting doc for Monthly posting" + err);}
+	 else {
+		 console.log("Rent Posted and Record Updated..");
+	    db.close(); 
+	 };
+      });
+   }); 
+};
 
 
  

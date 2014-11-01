@@ -648,6 +648,7 @@ $scope.SearchType=[{id: 1, type: "_id", name: "Tenant Id"},
 ];
 
 $scope.searchData=function(searchtype){
+	ngProgress.start();
   var Datasearch ={}
       Datasearch.id=searchtype.id;
      Datasearch.detail=$scope.lookup;

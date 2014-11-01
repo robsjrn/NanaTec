@@ -1292,6 +1292,25 @@ exports.Recoverpwd=function(req, res) {
 	
 }
 
+exports.CheckIfMonthPosted=function(plotname,month,fn) {
+  db.collection('MonthlyPosting', function(err, collection) {
+  collection.findOne({$and: [ {"plotname":plotname},{"Month" : month}]},function(err, item){
+  if(item){    
+
+	  if(item.Month==month) {
+			 fn(null,true);	  
+	  }
+	  else {
+               fn(null,false);
+	  }
+  }
+  else{
+	    fn(null,err); 
+      }
+  });
+  });
+}
+
 exports.ChekJobs=function(dt,fn) {
  db.collection('Schedules', function(err, collection) {
  collection.find({"Rundate":dt}).toArray( function(err, item){
@@ -1351,13 +1370,6 @@ function InsertMonthlyPosting(plot){
    }); 
 };
 
-function RentPosted(plot,month){
- db.collection('MonthlyPosting', function(err, collection) {
-  collection.insert({"plotname":plot,"Month":month}, function(err, item) {
-     if(err){console.log("Error Inserting doc for Monthly posting");}
-      });
-   }); 
-};
 
 
 function configureCounters(){
