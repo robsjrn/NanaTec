@@ -240,10 +240,6 @@ var updateTenant=function (tenantdetails,tenantid ,callback){
 };
 
 
-
-
-
-
 var updateAccessStatus=function (userid ,callback){
    db.collection('user', function(err, collection) {
     collection.update({"_id" : userid},{$set:{"AccessStatus" : 1}},{safe:true}, function(err, item) {
@@ -264,8 +260,6 @@ collection.insert(Trxn, function(err, item) {
 };
 
 var postCharges=function(data,callback){
-
-	console.log("Posting Charges");
    postTran(data,function(ok,status) {
 	    if (ok) {
 			// proceed now to post normal transaction
@@ -279,60 +273,77 @@ var postCharges=function(data,callback){
 	    
 }
 
+exports.BatchRentalPayment=function(req, res) {
+async.each(req.body, TransactionPosting, function (err) {
+  console.log("Finished!  posting batch");
+    res.status(200).json({Status: "Ok"});
+});
 
+};
 
 exports.postTransaction = function(req, res) {
-  if (req.body.Charges.ApplyCharge)
+   TransactionPosting(req.body,function(status,err){
+       if (status) {   res.status(200).json({Status: "Ok"});}
+	   else {DbError(res) };
+   });
+
+
+};
+
+ var TransactionPosting= function(req,fn){
+       if (req.Charges.ApplyCharge)
   {
-	 postCharges (req.body.Charges,function(status,data){
+	 postCharges (req.Charges,function(status,data){
 		      if (status)
 		      {
-				   req.body.Charges=null; 
-				postTran(req,function(ok,status) {
+				   req.Charges=null; 
+				  postTran(req,function(ok,status) {
 						if (ok) {		 
-							 sms.TenantTransactionSMS(req.body.names,req.body.contact,req.body.tranAmount,req.body.housenumber,req.body.balcf,function(message){
+							 sms.TenantTransactionSMS(req.names,req.contact,req.tranAmount,req.housenumber,req.balcf,function(message){
 								   SaveMessage(message);
 								});  
 							
 							Success(res);}
-						else{DbError(res) ;}
+						else{fn(null,null) ;}
 					});   
 		      }
 			  else{
 				  // charges not posted 
 
-                DbError(res);
+                fn(null,null) ;
 			  }
 	       }) 
   }
   else{ 
-	  req.body.Charges=null; 
+	  req.Charges=null; 
 	postTran(req,function(ok,status) {
 	    if (ok) {
 			
 			 
-			 sms.TenantTransactionSMS(req.body.names,req.body.contact,req.body.tranAmount,req.body.housenumber,req.body.balcf,function(message){
+			 sms.TenantTransactionSMS(req.names,req.contact,req.tranAmount,req.housenumber,req.balcf,function(message){
 			       SaveMessage(message);
 		        });  
 			
-			res.json(200,{Status: "Ok"});}
-		else{DbError(res) ;}
+			
+			fn(true,null) ;
+			}
+		else{fn(null,null) ;}
 	});
   };
-};
+ }
 
 var postTran=function(req,callback){
 
-if (req.body.receiptno==null || typeof req.body.receiptno =="undefined" )
+if (req.receiptno==null || typeof req.receiptno =="undefined" )
 {  //no receipt so get receipt
 	getNextSequenceValue("transactionid",function(err,receiptnumber){
 	 if(receiptnumber){
-       req.body.receiptno=receiptnumber;
+       req.receiptno=receiptnumber;
 		db.collection('Transaction', function(err, collection) {
-		collection.save(req.body,{safe:true}, function(err, item) {
+		collection.save(req,{safe:true}, function(err, item) {
 		   if (err) {return callback(false,err);}
 		   else{
-			   updateTenantBal(req.body.tranAmount,req.body.tenantid,function(ok,status) {if (ok){return callback(true,null); }	
+			   updateTenantBal(req.tranAmount,req.tenantid,function(ok,status) {if (ok){return callback(true,null); }	
 		   });}
 		   });
 		   });
@@ -341,10 +352,10 @@ if (req.body.receiptno==null || typeof req.body.receiptno =="undefined" )
 }else{
 
 	db.collection('Transaction', function(err, collection) {
-		collection.save(req.body,{safe:true}, function(err, item) {
+		collection.save(req,{safe:true}, function(err, item) {
 		   if (err) {return callback(false,err);}
 		   else{
-			   updateTenantBal(req.body.tranAmount,req.body.tenantid,function(ok,status) {if (ok){return callback(true,null); }	
+			   updateTenantBal(req.tranAmount,req.tenantid,function(ok,status) {if (ok){return callback(true,null); }	
 	 });}
 	});
 	});

@@ -3,6 +3,7 @@ body {
     padding-top: 100px;
     background-color: #e7e7e7;
 	padding-bottom: 20px;
+	font-size: 12px;  
 
 }
 @media(min-width:768px) {
@@ -10,6 +11,23 @@ body {
         padding-top: 50px;
     }
 }
+
+/* remove col spacing */
+
+
+    
+.row.no-gutter [class*='col-']:not(:first-child),.row.no-gutter [class*='col-']:not(:last-child) {
+  padding-right:1;
+  padding-left:1;
+}
+
+/***/
+
+/* remove vertical spacing */
+ 
+.vspace { margin-top: 2px; }
+
+/**/
 
 #wrapper {
   padding-top: 25px;

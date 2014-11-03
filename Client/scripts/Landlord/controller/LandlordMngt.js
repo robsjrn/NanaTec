@@ -617,10 +617,11 @@ landlordtmngt.controller('trxntypectrl', function($scope) {
 
 landlordtmngt.controller('trxnmngtctrl', function($scope,$http,$rootScope,ngProgress, $window,$filter,tenant,BatchTrxnService) {
 
-
+//first clear everything in the Batch Trxn Table 
+BatchTrxnService.Drop();
 
 $scope.Transaction={};
-$scope.data=BatchTrxnService.list()
+
 $scope.Transaction.PostedDate=new Date();
 $scope.Transaction.TransactionDate=new Date();
 $scope.paymentmethod=$rootScope.paymentMethod;
@@ -631,15 +632,17 @@ $scope.ApplyCharges=false;
 $scope.paymentposted=false;
 $scope.paymenterror=false;
 $scope.disableComponents=true;
+$scope.disableTotalAmount=true;
 $scope.TenantNotFound=false;
       $scope.disableSearchHse=true;
 	  $scope.disableTenantid=true;
 	  $scope.ReceiptFound=false;
 	  $scope.ShowCharges=false;
+	
 	   $scope.disablePosting=true;
 $scope.crit={};
 $scope.Tenant={};
-
+$scope.BatchTotal={};
 
 $scope.SearchType=[{id: 1, type: "_id", name: "Tenant Id"},
 	               {id: 2, type: "housename", name: "House Name"},
@@ -764,7 +767,9 @@ $scope.Receipt=function(){
 };
 
 
-
+$scope.EditAmount=function(){
+  $scope.disableTotalAmount=false;
+};
 
 
  $scope.AddPayment=function(){
@@ -784,6 +789,7 @@ $scope.Receipt=function(){
 		 $scope.Transaction.receiptno="";
 		  $scope.Tenant="";
 		  $scope.search="";
+		   $scope.lookup="";
   $scope.Tenant.balance=0;
 	  $scope.Transaction.amount =0;
 	  $scope.Charge.Amount=0;
@@ -796,10 +802,23 @@ $scope.Receipt=function(){
 		 $scope.Transaction.receiptno="";
 		 $scope.Tenant="";
 		 $scope.search="";
+		 $scope.lookup="";
  };
 
 
 $scope.InsertRec=function(){
+  $scope.disableTotalAmount=true;
+   if (typeof $scope.BatchTotal.Amount =="undefined") {
+	   alert("Kindly Enter the Total Amount");
+	    }
+else {	
+	 if ( $scope.Edited)
+	 {
+		     $scope.delete($scope.EditValue);
+		     $scope.Edited=false;
+
+	 }
+
  $scope.disableComponents=true;
  var charges={};
  var today = $filter('date')(new Date(),'yyyy-MM-dd');
@@ -833,7 +852,7 @@ $scope.InsertRec=function(){
 		  };
 	 }
 
-  $scope.Payment={	             
+       $scope.Payment={	             
 	              "receiptno":$scope.Transaction.receiptno,
 	              "tenantid":$scope.Tenant._id,
 	              "housenumber":$scope.Tenant.housename,
@@ -850,24 +869,29 @@ $scope.InsertRec=function(){
 	              "balcf":$scope.Tenant.balance-$scope.Transaction.amount,
                   "Charges":charges
 	 
- };
-
- 
+        };
 	
-
-  $scope.BatchTotal.Amount =$scope.BatchTotal.Amount-$scope.Payment.tranAmount;
-     if ($scope.BatchTotal.Amount==0){ $scope.disablePosting=false ; }
-	 else { BatchTrxnService.save($scope.Payment);}
-    
-}
+				 if ($scope.BatchTotal.Amount <=0){ 
+					 $scope.disablePosting=false ;
+					 }
+				 else {
+				    $scope.BatchTotal.Amount =$scope.BatchTotal.Amount-$scope.Payment.tranAmount; 
+					BatchTrxnService.save($scope.Payment);} 
+                    $scope.data=BatchTrxnService.list();
+                    }  
+};
 
 
     $scope.delete = function (id) {
-        $scope.EditTenant=BatchTrxnService.delete(id); 
-		$scope.BatchTotal.Amount=$scope.BatchTotal.Amount+$scope.EditTenant.tranAmount;
-    }
+        $scope.DelTenant=BatchTrxnService.delete(id); 
+		$scope.BatchTotal.Amount=$scope.BatchTotal.Amount+$scope.DelTenant.tranAmount;
+    };
+
+
 
 	 $scope.edit = function (id) {
+     $scope.Edited=true;
+		  $scope.EditTenant ={};
         $scope.EditTenant = BatchTrxnService.get(id);
         $scope.Tenant.names=$scope.EditTenant.names;
 		$scope.Tenant._id=$scope.EditTenant.tenantid;
@@ -885,9 +909,27 @@ $scope.InsertRec=function(){
 	//	$scope.Charge.Amount=$scope.EditTenant.Charges.body.tranAmount;
 		$scope.Transaction.PostedDate=$scope.EditTenant.PostedDate;
 	//	$scope.Charge.comment=$scope.EditTenant.Charges.body.Description;
+	    $scope.EditValue=$scope.EditTenant.traceid;
+	 $scope.disableComponents=false;
     };
 
 
+$scope.postBatchPayment=function(){
+	 $scope.disablePosting=true;
+	 $scope.BatchPayment=BatchTrxnService.list();
+     ngProgress.start();
+                  $http.post('/web/Landlord/BatchRentalPayment', $scope.BatchPayment)
+						 .success(function(data) {
+							    $scope.paymentposted=true;
+								$scope.msg=data.success;
+								ngProgress.complete();
+							 }) 
+						 .error(function(data) {
+							 $scope.paymenterror=true;
+							 $scope.msg=data.error;
+							 ngProgress.complete();
+							 });
+              }
 $scope.postPayment=function(){
 ngProgress.start();
  $scope.userForm.$invalid=true;
@@ -953,7 +995,7 @@ ngProgress.start();
 							 ngProgress.complete();
 							 });
 
-       }
+            }
 
 
 });
@@ -2167,21 +2209,17 @@ landlordtmngt.factory('tenant', function($http) {
 
 
 landlordtmngt.service('BatchTrxnService', function () {
-    //to create unique contact id
-    //contacts array to hold list of all contacts
+
     var data = [];
        var uid = 0;
-    //save method create a new contact if not already exists
-    //else update the existing object
+
     this.save = function (user) {
            user.traceid=uid++;
 		   data.push(user);
-       
 
     }
 
-    //simply search contacts list for given id
-    //and returns the contact object if found
+
     this.get = function (id) {
         for (i in data) {
             if (data[i].traceid == id) {	
@@ -2202,8 +2240,9 @@ landlordtmngt.service('BatchTrxnService', function () {
             }
         }
     }
-
-    //simply returns the contacts list
+    this.Drop=function(){
+         data.length = 0;
+       }
     this.list = function () {
         return data;
     }

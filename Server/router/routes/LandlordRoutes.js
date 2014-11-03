@@ -39,6 +39,7 @@ router.post('/CheckHseNoExists',DatabaseConn.CheckHseNoExists);
 		  router.get('/houseList/:plot',ensureAuthenticated,DatabaseConn.listofHouse);
 
 		 router.post('/RentalPayment',ensureAuthenticated,DatabaseConn.postTransaction);
+           router.post('/BatchRentalPayment',ensureAuthenticated,DatabaseConn.BatchRentalPayment);
 
 		 router.get('/bookedtenantList/:plot',ensureAuthenticated,DatabaseConn.listofbookedtenant);
 		 
@@ -62,4 +63,8 @@ router.post('/CheckHseNoExists',DatabaseConn.CheckHseNoExists);
 
             router.post('/SearchReceipt',ensureAuthenticated,DatabaseConn.SearchReceipt);
 			router.post('/GeneralSearch',ensureAuthenticated,DatabaseConn.GeneralSearch);
+           
+
+
+			
 module.exports = router;

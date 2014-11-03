@@ -17,7 +17,6 @@
 
 exports.ProccessRequest=function(plotname,month,fn){
 	var trxdate=new Date().toISOString();
-  console.log("the plot name is ."+plotname);
     db.collection('House', function(err, collection) {
 	  cursor  =collection.find({$and:[{"plot.Plotname":plotname},{"status":"rented"}]},{amount:1,tenantid:1,_id:0,number:1});
        cursor.toArray(function (err,items){

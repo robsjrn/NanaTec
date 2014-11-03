@@ -3,66 +3,111 @@
 					    <h5>Batch Transaction Entry</h5> 
 					</div>
 					<div class="panel-body">
-				<form name="userForm"  novalidate>		
+				<form name="userForm"  novalidate>	
+				<div class="row no-gutter vspace">
+				       <div class="col-xs-3">
 					     <button type="button" class="btn btn-info" ng-click="AddPayment()"    ng-disabled=!disableComponents >Add</button>
 					    <button type="button" class="btn btn-warning" ng-disabled=disableComponents ng-click="ClearPayment()">Clear</button>
-	                     <div class="pull-right">
-							   <input type="number" class="form-control" placeholder="Total Amount"  ng-model="BatchTotal.Amount" id="BtotalAmt" />
+						   <div ng-show="TenantNotFound" class="alert alert-warning"><strong>Tenant Not Found</strong></div>
+                       </div>
+                        <div class="col-xs-3">
+						    <label for="SearchCrit">Choose a Search Criteria</label>
+									<select data-ng-model="search.searchType"
+											data-ng-options="s.name for s in SearchType"
+											ng-disabled=disableComponents>                
+									</select>
+						   </div>
+                           <div class="col-xs-3">
+						    <label for="searchinput">Search Input</label>
+								   <input type="text" class="form-control" placeholder="Search Input" id="searchinput" ng-model="lookup"  ng-disabled=disableComponents />
+								    <button type="button" class="btn btn-success"  ng-disabled=disableComponents ng-click="searchData(search.searchType)">Search..</button>
+						   </div>
+
+	                     <div class="col-xs-3 ">
+						  <label for="BtotalAmt">Total Amount</label>
+							   <input type="number" class="form-control" placeholder="Total Amount"  ng-model="BatchTotal.Amount" id="BtotalAmt" ng-disabled=disableTotalAmount />
+							      <button type="button" class="btn btn-success"  ng-disabled=disableComponents ng-click="EditAmount()">Edit Amount</button>
+							
                         </div>
 					    
-					   
-					   <hr>
-                         <div class="row">
-                           <div class="col-xs-4">
-						     <label for="hsename">Tenant id</label>
-							  <input type="text" class="form-control" placeholder="Tenant id" id="Tid" ng-model="search.tenantid"       ng-blur="SearchTenantid()" ng-disabled=disableTenantid >
-						   </div>
-                           <div class="col-xs-4">
-						    <label for="hsename">House Name</label>
-							   <input type="text" class="form-control" placeholder="House name" id="hsename" ng-model="search.housename" ng-blur="SearchHouseid()" ng-disabled=disableSearchHse>
-						   </div>
-                           <div class="col-xs-4">
-                              <label class="pull-right" ng-model="balcf">Bal c/f {{Tenant.balance-Transaction.amount + Charge.Amount}}</label>
-                            </div>
-						</div>    
-						   <hr>
-						 <div class="row">
-                            <div class="col-xs-4">
+					</div>   
+			
+                         <div class="row no-gutter vspace">
+                           
+						   <div class="col-xs-3">
 							 <label for="tenant">Tenant Names</label>
 							         <input type="text" class="form-control" placeholder="Tenant names" id="tnames" ng-model="Tenant.names" disabled required>
 						   </div>
-
-                             <div class="col-xs-4">
+						      <div class="col-xs-3">
                            <label for="hsename">House Name</label>
 							   <input type="text" class="form-control" placeholder="House name" id="hsename" ng-model="Tenant.housename" disabled required>
                             </div>
-							  <div class="col-xs-4">
+							  <div class="col-xs-3">
 							    <label for="balamt">Balance Amt</label>
 							   <input type="number" class="form-control" placeholder="Balance Amount" id="balamt" ng-model="Tenant.balance" disabled required>
                               </div>
-                         </div>
-						    <hr>
-						 <div class="row">
-						   <div class="col-xs-4">
-						           <label for="paymethod">Payment Method</label>
+
+                           <div class="col-xs-3">
+                              <label class="pull-right" ng-model="balcf">Bal c/f {{Tenant.balance-Transaction.amount + Charge.Amount}}</label>
+                            </div>
+                          
+
+						</div>    
+				
+						 <div class="row no-gutter vspace">
+                          
+                          
+							  <div class="col-xs-3">
+                               <label for="paymethod">Payment Method</label>
 							       <select class="form-control"  ng-model="Transaction.paymentmethod" id="paymethod" ng-options="c.name for c in paymentmethod" ng-disabled=disableComponents required>  
 			                       </select>
-                                  <label for="trantype">Transaction Type</label>
+                               </div>
+                                <div class="col-xs-3">
+						           <label for="trantype">Transaction Type</label>
 							       <select class="form-control"  ng-model="Transaction.transactiontype" id="trantype" ng-options="c.name for c in transactiontype" ng-disabled=disableComponents required>  
 			                       </select>
+                               </div>
 
-								     <input type="checkbox" ng-model="ApplyCharges" ng-click="CheckCharges()">  Apply Charges
+                                  <div class="col-xs-3">
+							      <label for="rcpt">Receipt</label>
+							   <input type="text" class="form-control" placeholder="Receipt Number" id="rcpt" ng-model="Transaction.receiptno" ng-disabled=disableComponents ng-blur="Receipt()"> 
+                               <div ng-show="ReceiptFound" class="alert alert-danger"><strong>Receipt Already Paid to House {{Receiptdata.housenumber}} Amount {{Receiptdata.tranAmount}} Date {{Receiptdata.TransactionDate}}</strong></div>
 
-                             </div>
-							  <div class="col-xs-4">
+                              </div>
+
+							    <div class="col-xs-3">
 							     <label for="amt">Amount</label>
 							   <input type="number" class="form-control" placeholder="Amount" id="amt" ng-model="Transaction.amount" ng-disabled=disableComponents required>
+                              </div>
 
-                                 
+                         </div>
+						
+						 <div class="row no-gutter vspace">
+						     
+							
+                            <div class="col-xs-3">     
                               <label for="desc">comments</label>
 								 <textarea class="form-control" rows="1" id="desc" ng-model="Transaction.comments" ng-disabled=disableComponents></textarea>
+                             </div>
 
-							<div ng-show="ShowCharges" >
+							     <div class="col-xs-3">
+                                <label for="date">Transaction Date</label>
+                                                 		  <p class="input-group">
+								  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="Transaction.TransactionDate" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions"  ng-required="true" close-text="Close" />
+								  <span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								  </span>
+								</p>
+
+							   </div>
+
+							     <div class="col-xs-3">
+								 <label for="Ccharge">Apply Charges ?</label>
+								     <input id="Ccharge"  type="checkbox" ng-model="ApplyCharges" ng-click="CheckCharges()"> 
+                             </div>
+
+							    <div class="col-xs-3">  
+							    <div ng-show="ShowCharges" >
 						          <input type="checkbox" ng-model="LateCharge" ng-click="LatePaymentCharges()"> Late Payment
                                   <input type="checkbox" ng-model="CustomCharge" ng-click="CustomPaymentCharges()"  > Custom  
 								<label for="cAmt">Custom Charge Amount</label>
@@ -70,33 +115,15 @@
 							   <label for="Cmmt">Custom Charge Comments</label>
 							   <input type="text" class="form-control" placeholder="Custom Comments" id="Cmmt" ng-model="Charge.comment" ng-disabled="customDisable"/>
 									
-						  </div>
+					    	  </div>
 
 						     </div>
-							  
-
-							   <div class="col-xs-4">
-							      <label for="rcpt">Receipt</label>
-							   <input type="text" class="form-control" placeholder="Receipt Number" id="rcpt" ng-model="Transaction.receiptno" ng-disabled=disableComponents ng-blur="Receipt()"> 
-                               <div ng-show="ReceiptFound" class="alert alert-danger"><strong>Receipt Already Paid to House {{Receiptdata.housenumber}} Amount {{Receiptdata.tranAmount}} Date {{Receiptdata.TransactionDate}}</strong></div>
-
-
-                                <label for="date">Transaction Date</label>                 
-								  <p class="input-group">
-								  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="Transaction.transactiondate" is-open="opened" min-date="minDate" max-date="'2015-06-22'"  ng-required="true" close-text="Close" placeholder="YYYY-MM-DD"/>
-								  <span class="input-group-btn">
-									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-								  </span>
-								</p>
-
-							   </div>
                            </div>
 						    <button type="button" class="btn btn-success" ng-disabled=disableComponents ng-click="InsertRec()">Insert</button>
 						 </div>
-                            
-						 <hr>
+                  
 						
-						  <div class="row">
+						  <div class="row no-gutter vspace">
 						    
 							 <div class="col-xs-12">
 							 <table class="table table-responsive table-striped table-bordered table-hover">
@@ -111,6 +138,7 @@
 										<th>Action</th>
 									</tr>
 								</thead>
+								
 								<tbody>
 									<tr ng-repeat="dataRec in data">
 									   <td>{{ $index + 1 }}</td>
@@ -119,7 +147,7 @@
 										<td>{{ dataRec.balcf }}</td>
 										<td>{{ dataRec.tranAmount }}</td>
 										<td>{{ dataRec.receiptno }}</td>
-										<td> <a href="javascript:void(0)" ng-click="edit($index )">edit</a> | <a href="javascript:void(0)" ng-click="delete($index)">delete</a>
+										<td> <a href="javascript:void(0)" ng-click="edit(dataRec.traceid )">edit</a> | <a href="javascript:void(0)" ng-click="delete($index)">delete</a>
 
 										</td>
 									</tr>
@@ -130,11 +158,10 @@
 						  </form>
 						 </div>
 						    <div class="panel-footer">
-						 <button type="button" class="btn btn-success" ng-click="postPayment()" ng-disabled="disablePosting" >Post Payment</button>
+						 <button type="button" class="btn btn-success" ng-click="postBatchPayment()" ng-disabled="disablePosting" >Post Payment</button>
 						 </div>
-					</div>
-
-					 
-                    
-                     
+					</div>                     
 </div>
+
+            <div ng-show="paymentposted" class="alert alert-success"><strong>{{msg}} !!!</strong> Payment Successfully Posted</div>
+			<div ng-show="paymenterror" class="alert alert-danger"><strong>Error Occurred !!!</strong> {{msg}}</div>
