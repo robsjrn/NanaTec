@@ -614,6 +614,11 @@ landlordtmngt.controller('trxntypectrl', function($scope) {
 	    $scope.url='Singletransaction';
 			
 });
+landlordtmngt.controller('Edittransactiontctrl', function($scope) {
+				
+});
+
+
 
 landlordtmngt.controller('trxnmngtctrl', function($scope,$http,$rootScope,ngProgress, $window,$filter,tenant,BatchTrxnService) {
 
@@ -870,8 +875,9 @@ else {
                   "Charges":charges
 	 
         };
+		    
 	
-				 if ($scope.BatchTotal.Amount <=0){ 
+				 if ($scope.BatchTotal.Amount == 0){ 
 					 $scope.disablePosting=false ;
 					 }
 				 else {
@@ -2281,6 +2287,10 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
     .when('/Singletransaction', {
        templateUrl: 'views/Landlord/landlordTrxnmgt.html',   
        controller: 'trxnmngtctrl'
+        })
+        .when('/Edittransaction', {
+       templateUrl: 'views/Landlord/Edittransaction.html',   
+       controller: 'Edittransactiontctrl'
         })
 
     .when('/Batchtransaction', {

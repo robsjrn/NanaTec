@@ -31,13 +31,7 @@
 								   <button type="button" class="btn btn-success"  ng-disabled=disableComponents ng-click="searchData(search.searchType)">Search..</button>
 								 </div>
                                 </div>
-                              
 
-						
-
-
-
-						
 							<div ng-show="TenantNotFound" class="alert alert-warning"><strong>Tenant Not Found</strong></div>
                                <hr>
 					     <div class="col-md-4">
@@ -62,13 +56,7 @@
                               <label for="pstdate">Posted Date</label>
 							   <input type="text" class="form-control" placeholder="Date:YYYY-MM-DD" id="pstdate" ng-model="Transaction.PostedDate" disabled required>
                               							 
-                              <label for="date">Transaction Date</label>
-                              
-
-
-
-
-                     
+                              <label for="date">Transaction Date</label>                    
 								  <p class="input-group">
 								  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="Transaction.TransactionDate" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions"  ng-required="true" close-text="Close" />
 								  <span class="input-group-btn">
