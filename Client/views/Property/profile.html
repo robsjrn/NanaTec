@@ -1,7 +1,7 @@
  <br>
  <div class="row">
    <div class="col-md-4 col-md-offset-2">
-    <button type="button" class="btn btn-warning" ng-disabled="userForm.$invalid">Add</button>
+    <button type="button" class="btn btn-warning" ng-disabled="!userForm.$invalid" ng-click="addData()">Add</button>
    </div>
   </div>
   <br>
@@ -9,26 +9,21 @@
 
   <div class="col-md-4 col-md-offset-2">
   
-          <form role="form">
+          <form name="userForm"  novalidate>
              
 			  <div class="form-group">
-				  <label for="Names">Names</label>
-				  <input type="text" class="form-control" placeholder="Names" id="Names" ng-model="property.Owner.names" ng-disabled=disableComponents required/>
+				  <label for="Names">Company/Organisation Names</label>
+				  <input type="text" class="form-control" placeholder="Company/Organisation" id="Names" ng-model="property.Owner.company" ng-disabled=disableComponents required/>
 			  </div>
               
 			   <div class="form-group">
-                   <label for="cont">Contacts</label>
-					<span ng-show="ContactSpinner"><i class="fa fa-refresh fa-spin"></i></span>
-					 <input type="number" class="form-control" placeholder="Contact" name ="cont" ng-model="property.Owner.contact" ng-blur="CheckPhonenumberExists()" ng-disabled=disableComponents required ng-pattern="/^07[0-9]+$/" ng-minlength=10  ng-maxlength=10  />
-					 <div ng-show="userForm.cont.$error.pattern">e.g 0722111111</div>
-					 <div ng-show="userForm.cont.$error.minlength">Should be atleast 10 Characters</div>
-					 <div ng-show="userForm.cont.$error.maxlength">Cannot be more than 10 Characters</div>
-					<div ng-show="contactExist" class="alert alert-danger"><strong>Contact Already Used</strong> </div>
+                   <label for="cont">Identification</label>
+					  <input type="text" class="form-control" placeholder="Identification" id="Names" ng-model="property.Owner.identification" ng-disabled=disableComponents required/>
 			   </div>
 
                <div class="form-group">
                         <label for="Email">Email</label>
-						<input type="email" name="email" class="form-control" ng-model="property.Owner..email" placeholder="Email" ng-disabled=disableComponents required/>
+						<input type="email" name="email" class="form-control" ng-model="property.Owner.email" placeholder="Email" ng-disabled=disableComponents required/>
 						<p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block alert alert-danger">Enter a valid email.</p>
 			   </div>
              
@@ -41,7 +36,7 @@
 
        <div class="form-group">
               <label for="loc">Location</label>
-				  <input type="text" class="form-control" placeholder="Office Location" id="loc" ng-model="property.Owner.fax" ng-disabled=disableComponents required/>
+				  <input type="text" class="form-control" placeholder="Office Location" id="loc" ng-model="property.Owner.location" ng-disabled=disableComponents required/>
           </div>
          <div class="form-group">
               <label for="fax">Fax</label>
@@ -60,6 +55,11 @@
  <hr>
  <div class="row">
    <div class="col-md-4 col-md-offset-2">
-			    <button type="button" class="btn btn-success" ng-disabled="userForm.$invalid"  >Save</button>
+			    <button type="button" class="btn btn-success" ng-disabled="userForm.$invalid" ng-click="SaveProfile()" >Save</button>
    </div>
 </div>
+<br>
+
+
+	 <div ng-show="ProfilePosted" class="alert alert-warning"><strong>Profile Successfully Saved</strong> </div>
+	 <div ng-show="ProfileError" class="alert alert-warning"><strong>Error Occurred</strong> {{msg}} </div>

@@ -1,7 +1,7 @@
  <br>
  <div class="row">
    <div class="col-md-4 col-md-offset-2">
-    <button type="button" class="btn btn-warning" ng-disabled="userForm.$invalid">Add</button>
+    <button type="button" class="btn btn-warning" ng-disabled="!userForm.$invalid" ng-click="addData()">Add</button>
    </div>
   </div>
   <br>
@@ -9,22 +9,26 @@
 
   <div class="col-md-4 col-md-offset-2">
   
-          <form role="form">
-             
+          <form name="userForm"  novalidate>
+               <div class="form-group">
+				  <label class="control-label">Property Name</label>
+				  <input type="text" placeholder="Property Name"  class="form-control" ng-model="propertyDetails.propertyname" ng-disabled=disableComponents >
+	         </div>
+
 			  <div class="form-group">
 				  <label class="control-label">Property Location</label>
-				  <input type="text" placeholder="eg Kasarani,Nairobi" ng-blur="codeAddress()" class="form-control" ng-model="property.address" ng-disabled=disableComponents >
-	  </div>
+				  <input type="text" placeholder="eg Kasarani,Nairobi" ng-blur="codeAddress()" class="form-control" ng-model="propertyDetails.address" ng-disabled=disableComponents >
+	         </div>
              <div class="form-group">
                    <label >Property Type</label>
-					<select class="form-control"  ng-model="Property.type" ng-options="servicetype.name for servicetype in type">
+					<select class="form-control"  ng-model="propertyDetails.type" ng-options="servicetype.name for servicetype in type" ng-disabled=disableComponents>
 					</select>
 			   </div>
 
 		  <div class="form-group">
                         <label >Property Size</label>
                                     <div class="input-group">
-									 <input type="text" class="form-control" placeholder="Property Size" id="PropertySize" name="PropertySize" ng-model="Property.Size" required >
+									 <input type="text" class="form-control" placeholder="Property Size" id="PropertySize" name="PropertySize" ng-model="propertyDetails.Size" ng-disabled=disableComponents required >
                                       <div class="input-group-btn">
 										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Measurement<span class="caret"></span></button>
 										<ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -46,17 +50,17 @@
 
         <div class="form-group">
 				  <label class="control-label">Property Value</label>
-				  <input type="number" placeholder="price" ng-blur="codeAddress()" class="form-control" ng-model="property.value" ng-disabled=disableComponents >
+				  <input type="number" placeholder="price" ng-blur="codeAddress()" class="form-control" ng-model="propertyDetails.value" ng-disabled=disableComponents >
 	  </div>
             
 			   <div class="form-group">
 				  <label class="control-label">Property Ref</label>
-				  <input type="text" placeholder="Ref"  class="form-control" ng-model="property.ref" ng-disabled=disableComponents >
+				  <input type="text" placeholder="Ref"  class="form-control" ng-model="propertyDetails.ref" ng-disabled=disableComponents >
 	  </div>
 
 		  <div class="form-group">
                         <label >Property Description</label>
-                                     <textarea class="form-control" rows="4"  ng-model="property.description" ng-disabled=disableComponents title="Brief Property Description"></textarea>
+                                     <textarea class="form-control" rows="4"  ng-model="propertyDetails.description" ng-disabled=disableComponents title="Brief Property Description"></textarea>
 
 			   </div>
   </div>
@@ -67,6 +71,9 @@
  <hr>
  <div class="row">
    <div class="col-md-4 col-md-offset-2">
-			    <button type="button" class="btn btn-success" ng-disabled="userForm.$invalid"  >Save</button>
+			    <button type="button" class="btn btn-success" ng-disabled="userForm.$invalid" ng-click="addProperty()" >Save</button>
    </div>
 </div>
+<br>
+	 <div ng-show="PropertyPosted" class="alert alert-warning"><strong>Property Successfully Saved</strong> </div>
+	 <div ng-show="PropertyError" class="alert alert-warning"><strong>Error Occurred</strong> {{msg}} </div>

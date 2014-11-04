@@ -127,7 +127,10 @@
                                   <!-- Registration-->
 								  <br>
 								  <h4 class="label label-primary pull-right">Property Owner Registration</h4>
+
 								  <br>
+								    <button type="button" class="btn btn-primary" ng-click="Add()">Add</button>
+									<button type="button" class="btn btn-warning" ng-click="Clear()" >Clear</button>
 							      <form id="PropertyRegistration" name="PropertyRegistration" novalidate>
 										 <label for="Names">Names</label>
 											<input type="text" class="form-control" placeholder="Names" id="Names" ng-model="property.names" ng-disabled=disableComponents required/>
@@ -158,9 +161,8 @@
 											<p ng-show="PropertyRegistration.Confirmpwd.$error.pwcheck" class="help-block alert alert-danger">Passwords do not match </p>
 											</div>
                                           <hr>
-                                                    <button type="button" class="btn btn-primary" ng-click="Add()">Add</button>
-													<button type="button" class="btn btn-warning" ng-click="Clear()" >Clear</button>
-													<button type="button" class="btn btn-danger pull-right" ng-click="Save()" ng-disabled="PropertyRegistration.$invalid" >Save</button>
+                                                  
+													<button type="button" class="btn btn-danger" ng-click="Save()" ng-disabled="PropertyRegistration.$invalid" >Save</button>
 													<hr>
 													<div ng-show="ErrorStatus" class="alert alert-danger"><strong>Database Error</strong> </div>  
 														<div ng-show="SuccessStatus" class="alert alert-success"><strong>Details</strong> Successfully Saved </div>

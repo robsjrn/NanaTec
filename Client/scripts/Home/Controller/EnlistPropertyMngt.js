@@ -92,7 +92,7 @@ EnlistPropertyMngt.controller('loginCtrl', function ($scope,$http,$window) {
                 $http.post('/web/property/login',$scope.user)
 				 		 .success(function(data) {
 								     $scope.invalidcredential=false;
-									 $window.sessionStorage.token = data.token;
+									$window.sessionStorage.token = data.token;
 									  $window.location.href='/PropertyRegistration.html';
 									   
 							 }) 

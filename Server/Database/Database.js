@@ -558,7 +558,20 @@ exports.CreatePropertyOwner = function(req, res) {
 };
 
 
-
+exports.PropertyOwnerCredentials=function(userid,pwd,fn){	
+ db.collection('property', function(err, collection) { 
+     collection.findOne({$and: [ {"username":userid},{"AccessStatus" : 1}]},function(err, item) {
+	   if(item){
+		 bcrypt.compare(pwd, item.password, function(err, res) {
+              if (res) { return fn(null,item); }
+			  else{return fn(null,null);}
+         });  	   
+	   }else{return fn(null,null);}
+});
+	  
+ 
+});		
+};
 
 
 var GrantLandlordAccess=function (CredentialDet ,callback){
@@ -1006,8 +1019,6 @@ collection.insert(req.body, function(err, item) {
 
 
 exports.ServiceListing=function(req, res) {
-//	console.log("The Location " +req.body.location.name );
-//	console.log("The Type " +req.body.type.name );
 db.collection('Services', function(err, collection) {
  collection.find({$and:[{"location.name":req.body.location.name},{"type.name":req.body.type.name}]}).toArray( function(err, item){
   if(item){
@@ -1019,32 +1030,67 @@ db.collection('Services', function(err, collection) {
 };
 
 exports.PropertyRegistration=function(req, res) {
-db.collection('Property', function(err, collection) {
-collection.insert(req.body, function(err, item) {
+db.collection('PropertyDetails', function(err, collection) {
+  collection.insert(req.body, function(err, item) {
      if(err){DbError(res);}
-	  else{ Success(res)}
+	  else{ 
+         addProperty(req.user.username,req.body.propertyname,function (status,err){
+                    if (status){ Success(res);}
+					else{DbError(res);}
+		     });
+		     
+		  }
       });
    }); 
+};
+
+var addProperty=function(username,propertyname,fn){
+ db.collection('property', function(err, collection) {
+  collection.update({"username" : username},{$addToSet: {"Properties":propertyname}},function(err, item) {
+     if(err){fn(null,err);}
+	  else{ fn(true,null);}
+      });
+   });
+
 }
 
+
+exports.PropertyOwnerProfile=function(req, res) {
+  db.collection('property', function(err, collection) {
+ collection.update({"username" : req.user.username},{$set:{"Profile":req.body}},{safe:true},function(err, item) {
+     if(err){DbError(res);}
+	  else{ Success(res);}
+      });
+   }); 
+};
+
 exports.PropertyListing=function(req, res) {
-db.collection('Property', function(err, collection) {
+db.collection('PropertyDetails', function(err, collection) {
  collection.find({$and:[{"location.name":req.body.location.name},{"type.name":req.body.Propertytype.name}]}).toArray( function(err, item){
   if(item){
-	  //console.log("Querry Data "+ item);
   res.send(item);}
   if (err) {DbError(res);}
     });
   });
 };
 
+exports.PropertyOwnerDetails=function(req, res) {
+db.collection('property', function(err, collection) {
+	collection.findOne({"username":req.user.username},function(err, item){
+		if(item){res.send(item);}
+		else  {DbError(res);}
+	});
+	});
+};
+
+
+
 exports.VacantRentalListing=function(req, res) {
 var min=parseInt(req.body.Amount.Min);
 var max=parseInt(req.body.Amount.Max);
 
   console.log("Min Amount" + min);
- // console.log("Max Amount" + max);
-db.collection('House', function(err, collection) {
+ db.collection('House', function(err, collection) {
  collection.find({$and:[{"status":"vacant"},req.body.querry,{"amount":{$gte:min,$lte:max}}]}).toArray( function(err, item){
    
     console.log("Checking rental listing ....");

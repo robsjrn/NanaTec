@@ -1,14 +1,46 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express'),
+ router = express.Router(),
+ jwt = require('jwt-simple'),
+ tokenSecret='1234567890QWERTY',
+ DatabaseConn = require('../../Database/Database');
 
-var DatabaseConn = require('../../Database/Database');
+
+      function ensureAuthenticated(req, res, next) {
+				  try
+					  {
+						var decoded = jwt.decode(req.headers.token, tokenSecret);
+						  req.user={};
+						  req.user.username=decoded.username;
+						  return next();
+					  }
+					  catch (e)
+					  {
+						   console.error(e);
+						   res.json(401,{error: "Server Error"});
+					 }
+					  
+			}
+
 
 		  router.post('/CreatePropertyOwner',DatabaseConn.CreatePropertyOwner);
+		  router.post('/PropertyOwnerProfile',ensureAuthenticated,DatabaseConn.PropertyOwnerProfile);
+		  router.get('/PropertyOwnerDetails',ensureAuthenticated,DatabaseConn.PropertyOwnerDetails);
 		  router.post('/ContactExists',DatabaseConn.ContactExists);
-		  router.post('/PropertyListing',DatabaseConn.PropertyListing); 
-		  router.post('/PropertyRegistration',DatabaseConn.PropertyRegistration);
+		  router.post('/PropertyListing',ensureAuthenticated,DatabaseConn.PropertyListing); 
+		  router.post('/PropertyRegistration',ensureAuthenticated,DatabaseConn.PropertyRegistration);
 		  router.post('/login',function(req,res){
-			  res.send(200);
+			  DatabaseConn.PropertyOwnerCredentials(req.body.username,req.body.password, function(err, user) {
+				 if (err)  {  res.send(401);  }
+				 if (!user) {res.send(401); } 
+				 if (user !==null)
+				 {
+				   var token = jwt.encode({username: user.username}, tokenSecret);
+					  res.json({token : token});	
+						 }
+				});
+				   
 		  });
+
+		 router.get('/logout',DatabaseConn.logout);
 
 module.exports = router;
