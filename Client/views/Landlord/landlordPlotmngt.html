@@ -10,7 +10,7 @@
                            
                                    <label for="plotname">Plot Name</label>
 								   <span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>
-								   <input type="text" class="form-control" placeholder="Plot Name" id="plotname" ng-model="LandlordPlot.Plotname" ng-blur="CheckplotExists()"  ng-disabled=disableComponents required>	<div ng-show="plotExist" class="alert alert-danger"><strong>Plot Name Already in Use</strong> </div>
+								   <input type="text" class="form-control" placeholder="Plot Name" id="plotname" name="plotname"  ng-model="LandlordPlot.Plotname" ng-blur="CheckplotExists()"  ng-disabled=disableComponents required>	<div ng-show="plotExist" class="alert alert-danger"><strong>Plot Name Already in Use</strong> </div>
 								   <label for="contact">Contact Name</label>
 								   <input type="text" class="form-control" placeholder="Contact Name" id="contact" ng-model="LandlordPlot.contact.name" ng-disabled=disableComponents required>
 								   <label for="contactphone">Contact Phone</label>
@@ -56,7 +56,7 @@
 									</div>
 					   </form>
 					   <div class="panel-footer">
-					<button type="button" class="btn btn-success" ng-disabled=disableComponents ng-click="Saveplot()" >Save</button>
+					<button type="button" class="btn btn-success" ng-disabled="userForm.$invalid" ng-click="Saveplot()" >Save</button>
 						 </div>
                      
                   </div>

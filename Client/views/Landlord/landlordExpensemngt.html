@@ -6,45 +6,59 @@
 					    
 				     </div>
 					   <div class="panel-body">
-					     <div class="row"> 
-								<div class="col-md-8">
-									<div class="input-group">
-									  <span class="input-group-addon">Plot</span>
-									  <select class="form-control"  ng-model="Tenant.plot"  ng-options="c.Plotname for c in landlordplots"	ng-disabled=disableComponents>  
-											   </select>
-									  <span class="input-group-btn">
-										<button class="btn btn-danger" type="button" ng-click="GetDetails()" ng-disabled=disableComponents >Get!</button>
-									  </span>
-									</div><!-- /input-group -->
-								  </div><!-- /.col-lg-6 -->  
-							</div>	  
-                         <hr>
-						 
+					   <div class="row">
+							   <div class="col-xs-6">
+							    <label for="hsename">Tenant id</label>
+							   <input type="text" class="form-control" placeholder="Tenant id" id="Tid" ng-model="search.tenantid"       ng-blur="SearchTenantid()" ng-disabled=disableTenantid >
+							   </div>
+
+							   <div class="col-xs-6">
+							      <label for="hsename">House Name</label>
+							   <input type="text" class="form-control" placeholder="House name" id="hsename" ng-model="search.housename" ng-blur="SearchHouseid()" ng-disabled=disableSearchHse>
+							   </div>
+
+							</div>
+							<div ng-show="TenantNotFound" class="alert alert-warning"><strong>Tenant Not Found</strong></div>
+                               <hr>
 						 
 
 						 <div class="col-md-4">
-                            <label for="exptype">Expense Type</label>
-							       <select class="form-control"  ng-model="Expense.type" id="exptype" ng-options="c.name for c in expensetype" ng-disabled=disableComponents>  
-			                       </select>
+                               <label for="tenant">Tenant Names</label>
+							         <input type="text" class="form-control" placeholder="Tenant names" id="tnames" ng-model="Expense.names" disabled required>
+                              <label for="hsename">House Name</label>
+							   <input type="text" class="form-control" placeholder="House name" id="hsename" ng-model="Expense.housename" disabled required>
+
+							    <label for="balamt">Balance Amt</label>
+							   <input type="number" class="form-control" placeholder="Balance Amount" id="balamt" ng-model="Expense.balance" disabled required>
+
                              
                             <label for="amt">Amount</label>
 							   <input type="text" class="form-control" placeholder="Amount" id="amt" ng-model="Expense.amount" ng-disabled=disableComponents>
 
 
-							    <label for="tenant">House Name</label>
-							       <select class="form-control"  ng-model="crit" id="tenant" ng-options="c.housename for c in Tenants" ng-disabled=disableComponents >  
-			                       </select>
-
-							    <label for="hsename">Tenant Name</label>
-							   <input type="text" class="form-control" placeholder="Tenant name" id="hsename" ng-model="crit.name" disabled>
-
+							   
 						 </div>
 
 						 <div class="col-md-4">
+                                
+                            <label for="exptype">Expense Type</label>
+							       <select class="form-control"  ng-model="Expense.type" id="exptype" ng-options="c.name for c in expensetype" ng-disabled=disableComponents>  
+			                       </select>
+
                               <label for="date">Date</label>
-							   <input type="text" class="form-control" placeholder="Date" id="date" ng-model="Expense.date" disabled>                           
+							   <input type="text" class="form-control" placeholder="Date" id="date" ng-model="Expense.date" disabled> 
+							   <label for="date">Transaction Date</label>
+                              
+                     
+								  <p class="input-group">
+								  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="Transaction.transactiondate" is-open="opened" min-date="minDate" max-date="'2015-06-22'"  ng-required="true" close-text="Close" placeholder="YYYY-MM-DD"/>
+								  <span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								  </span>
+								</p>
+
                               <label for="desc">Description</label>
-								 <textarea class="form-control" rows="3" id="desc" ng-model="Expense.description" ng-disabled=disableComponents></textarea>
+								 <textarea class="form-control" rows="1" id="desc" ng-model="Expense.description" ng-disabled=disableComponents></textarea>
 
 						 </div>
                             

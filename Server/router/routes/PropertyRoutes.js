@@ -28,6 +28,12 @@ var express = require('express'),
 		  router.post('/ContactExists',DatabaseConn.ContactExists);
 		  router.post('/PropertyListing',ensureAuthenticated,DatabaseConn.PropertyListing); 
 		  router.post('/PropertyRegistration',ensureAuthenticated,DatabaseConn.PropertyRegistration);
+         router.post('/GetProperty',ensureAuthenticated,DatabaseConn.GetProperty);
+          router.post('/PropertyPhotoUpload',ensureAuthenticated,DatabaseConn.PropertyPhotoUpload);
+
+
+    
+
 		  router.post('/login',function(req,res){
 			  DatabaseConn.PropertyOwnerCredentials(req.body.username,req.body.password, function(err, user) {
 				 if (err)  {  res.send(401);  }

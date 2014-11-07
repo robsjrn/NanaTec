@@ -68,7 +68,7 @@ $locationProvider.hashPrefix("!");
 });
 
 
-PropertyRegistration.controller('MainCtrl', function ($scope,$http,$window) {
+PropertyRegistration.controller('MainCtrl', function ($scope,$http,$window,PropertyOwnerDetails,ngProgress) {
    $scope.Measurements=["Ha","sqft","M","Inches"]
    $scope.property={};
 	  $scope.loc = [
@@ -80,10 +80,23 @@ PropertyRegistration.controller('MainCtrl', function ($scope,$http,$window) {
     ];
 
 	 
-		$scope.$on('flow::fileAdded', function (event, $flow, flowFile) {
+  $scope.$on('flow::fileAdded', function (event, $flow, flowFile) {
 			console.log("prevented file from uploadding..");
   event.preventDefault();//prevent file from uploading
-});
+    });
+    ngProgress.start();
+     PropertyOwnerDetails.getDetails()
+	     .success(function(data) {							 
+			ngProgress.complete();
+			 $scope.properties=data.Properties;
+             $scope.property.Owner=data.Profile;
+							 }) 
+			.error(function(data) {
+			ngProgress.complete();
+							 });
+
+
+
 
 });
 
@@ -135,6 +148,7 @@ PropertyRegistration.controller('propertyctrl', function ($scope,$window,Propert
 	    $scope.disableComponents=false;
 	 };
 	 $scope.addProperty =function(){ 
+		 ngProgress.start();
         PropertyRegistration.save($scope.propertyDetails)
 		              .success(function(data) {							 
 								ngProgress.complete();
@@ -152,7 +166,8 @@ PropertyRegistration.controller('propertyctrl', function ($scope,$window,Propert
 							 });
 	       };
 	});
-PropertyRegistration.controller('photoctrl', function ($scope,$window,fileReader,DataEntry,PropertyOwnerDetails,ngProgress) {
+PropertyRegistration.controller('photoctrl', function ($scope,$window,fileReader,DataEntry,PropertyOwnerDetails,ngProgress,PropertyRegistration,$upload) {
+
 $scope.Props={};
 ngProgress.start();
   PropertyOwnerDetails.getDetails()
@@ -177,14 +192,16 @@ ngProgress.start();
        
 	    $scope.onFileSelect = function($files) {
 	         $scope.filess=$files;
+			 
          };
 
 
   $scope.addData= function (Property) {
+	  
 	    $scope.property={
 			 "name":$scope.Props.name,
 		     "view":$scope.Props.viewName,
-             "Description":$scope.Props.Description,
+             "Description":$scope.Props.PhotoDescription,
              "file":$scope.filess
 		    };
      	 DataEntry.save($scope.property);
@@ -194,7 +211,7 @@ ngProgress.start();
 
   function clear(){
    $scope.Props.viewName="";
-   $scope.Props.Description="";
+   $scope.Props.PhotoDescription="";
   }
 
    $scope.removeData=function (index) {
@@ -210,6 +227,27 @@ ngProgress.start();
                       });
     };
 
+
+   $scope.UploadPhoto=function(){
+   
+	var Photodata = DataEntry.list();
+for (var i = 0; i < Photodata.length; i++) {
+    $scope.upload = $upload.upload({
+        url: '/web/Property/PropertyPhotoUpload', 
+        method: 'POST',
+        data: {"name":Photodata[i].name,"view":Photodata[i].view,"Description":Photodata[i].Description},
+        file: Photodata[i].file, 
+      }).success(function(data, status, headers, config) {
+		     console.log("done " + i);
+        });
+    }
+   };
+
+      
+
+
+
+
 	});
 
 PropertyRegistration.directive("ngFileSelect",function(){    
@@ -222,7 +260,47 @@ PropertyRegistration.directive("ngFileSelect",function(){
     }        
   }
 });
-PropertyRegistration.controller('Viewsctrl', function ($scope,$http,$window) {
+PropertyRegistration.controller('Viewsctrl', function ($scope,$http,$window,PropertyRegistration,ngProgress) {
+  $scope.test={"view":"Testiiiing"};
+ 
+ $scope.checkProperty=function (prop) {
+	 var property={"propertyname":prop};
+	ngProgress.start();
+    PropertyRegistration.GetProperty(property)
+			.success(function (data){
+			    $scope.propertyData=data
+				 $scope.photos=$scope.propertyData.PhotoDetails;
+			  	$scope.Detail=$scope.photos[0];
+				ngProgress.complete();
+			   })
+		   .error(function(data) {
+			   ngProgress.complete();
+		   });
+
+ };
+   
+
+   $scope._Index = 0;
+
+    $scope.isActive = function (index) {
+		
+        return $scope._Index === index;
+    };
+    $scope.showPrev = function () {
+        $scope._Index = ($scope._Index > 0) ? --$scope._Index : $scope.photos.length - 1;
+		$scope.Detail=$scope.photos[$scope._Index];
+    };
+    $scope.showNext = function () {
+        $scope._Index = ($scope._Index < $scope.photos.length - 1) ? ++$scope._Index : 0;
+		$scope.Detail=$scope.photos[$scope._Index];
+    };
+    $scope.showPhoto = function (index) {
+        $scope._Index = index;
+		$scope.Detail=$scope.photos[$scope._Index];
+    };
+
+
+
 	});
 
 PropertyRegistration.factory('fileReader', function ($q, $log){
@@ -278,14 +356,14 @@ PropertyRegistration.factory('fileReader', function ($q, $log){
 
 
 PropertyRegistration.service('DataEntry', function () {
-
+    
     var data = [];
        var uid = 0;
         var i;
     this.save = function (property) {
            property.traceid=uid++;
 		   data.push(property);
-
+          
     }
 
 
@@ -313,22 +391,33 @@ PropertyRegistration.service('DataEntry', function () {
     this.list = function () {
         return data;
     }
+
+
 });
 
 
 PropertyRegistration.service('PropertyRegistration', function ($http) {
 
   var property={}    
-    var url='/web/Property';
+    var resource='/web/Property';
 
 	property.save = function (property) {
-		return $http.post(url + '/PropertyRegistration', property);
+		return $http.post(resource + '/PropertyRegistration', property);
     };
    property.SaveProfile = function (profile) {
-		return $http.post(url + '/PropertyOwnerProfile', profile);
+		return $http.post(resource + '/PropertyOwnerProfile', profile);
     };
     property.getProfile = function (username) {
-		return $http.post(url + '/PropertyOwnerProfile', username);
+		return $http.post(resource + '/PropertyOwnerProfile', username);
+    };
+
+    property.Uploadphoto = function (data) {
+		return $http.post(resource + '/PropertyPhotoUpload', data);
+       
+    };
+	  property.GetProperty = function (propertyname) {
+		return $http.post(resource + '/GetProperty', propertyname);
+       
     };
 
   return property;

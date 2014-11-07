@@ -13,10 +13,13 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
 	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="styles/Landlord/ngProgress.css">
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/Property/propertyRegistration.css">
+	<script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
     <!-- endbuild -->
   </head>
   <body ng-app="PropertyRegistration" >
@@ -61,7 +64,9 @@
 					 <li> <a href="#!/Profile">Profile</a>    </li>
 					 <li><a href="#!/Property">Add Property</a></li>
 					<li><a href="#!/Photos">Photos</a></li>
-					<li><a href="#!/Views">Views</a></li>														
+					<li><a href="#!/Views">Views</a></li>
+					
+					<li class="pull-right"><a href="#!">{{property.Owner.company}}</a></li>
 			   </ul>
              
 
@@ -82,13 +87,13 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="lib/jquery/dist/jquery.min.js"></script>
-    <script src="lib/angular/angular.js"></script>
+
     <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="lib/angular-route/angular-route.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script> 
     <script src="lib/ng-flow/dist/ng-flow-standalone.min.js"></script>
 	<script src="lib/ng-file-upload/angular-file-upload.min.js"></script>
+	<script src="lib/angular-touch/angular-touch.min.js"></script>
     <!-- <script src="public/angular-google-maps/dist/lodash.js"></script> -->
 	 <!--<script src="public/angular-google-maps/dist/angular-google-maps.min.js"></script> -->
 
@@ -98,6 +103,7 @@
 
 	 <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/Property/controller/PropertyRegisration.js"></script>
+		<script src="scripts/Landlord/controller/ngProgress.min.js"></script>
         <!-- endbuild -->
 
 <!-- Modal -->

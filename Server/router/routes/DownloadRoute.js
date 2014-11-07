@@ -6,6 +6,7 @@ var tokenSecret='1234567890QWERTY';
  var downloadDir= './Client/Downloads/';
 
 router.get('/pdf/:fname',function(req,res){
+	console.log("Downloading ..");
   var filename =req.params.fname+'.pdf';
 	res.download(downloadDir+filename);
 });

@@ -822,7 +822,7 @@ exports.Landlordphotoupload = function(req, res) {
 	  var dbpath='/uploads/Landlord/'+req.files.file.name;
 	
 
-	console.log("Image Path " + req.files.file.name);
+	//console.log("Image Path " + req.files.file.name);
     // move the file from the temporary location to the intended location
     fs.rename(tmp_path, target_path, function(err) {
         if (err) throw err;
@@ -1030,6 +1030,7 @@ db.collection('Services', function(err, collection) {
 };
 
 exports.PropertyRegistration=function(req, res) {
+	req.body.Owner=req.user.username;
 db.collection('PropertyDetails', function(err, collection) {
   collection.insert(req.body, function(err, item) {
      if(err){DbError(res);}
@@ -1082,6 +1083,43 @@ db.collection('property', function(err, collection) {
 	});
 	});
 };
+
+exports.GetProperty=function(req, res) {
+ db.collection('PropertyDetails', function(err, collection) {
+ collection.findOne({$and:[{"Owner":req.user.username},{"propertyname":req.body.propertyname}]}, function(err, item){
+  if(item){
+  res.send(item);}
+  if (err) {DbError(res);}
+    });
+  });
+};
+
+
+exports.PropertyPhotoUpload=function(req, res) {
+      var tmp_path = req.files.file.path;
+	  var target_path = './Client/uploads/Property/' + req.files.file.name;
+	  req.body.path='/uploads/Property/'+req.files.file.name;;
+    fs.rename(tmp_path, target_path, function(err) {
+        if (err) throw err;
+        fs.unlink(tmp_path, function() {
+            if (err) throw err;
+				   db.collection('PropertyDetails', function(err, collection) {
+				  collection.update({"propertyname" : req.body.name},{$addToSet: {"PhotoDetails":req.body}},function(err, item) {
+				   if (err) {
+				   DbError(res);}
+				   else{  Success(res);}
+				});
+				});
+         
+        });
+    });
+
+
+
+ 
+};
+
+
 
 
 

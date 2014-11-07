@@ -145,8 +145,8 @@
 
 								<label for="cont">Contacts</label>
 								 <span ng-show="ContactSpinner"><i class="fa fa-refresh fa-spin"></i></span>
-								   <input type="number" class="form-control" placeholder="Contact" name ="cont" ng-model="landlord.contact" ng-blur="CheckPhonenumberExists()" ng-disabled=disableComponents required  ng-minlength=10  ng-maxlength=10  />
-								
+								   <input type="number" class="form-control" placeholder="Contact" name ="cont" ng-model="landlord.contact" ng-blur="CheckPhonenumberExists()" ng-disabled=disableComponents required ng-pattern="/^07[0-9]+$/" ng-minlength=10  ng-maxlength=10  />
+								   <div ng-show="userForm.cont.$error.pattern">e.g 0722111111</div>
 								   <div ng-show="userForm.cont.$error.minlength">Should be atleast 10 Characters</div>
 								   <div ng-show="userForm.cont.$error.maxlength">Cannot be more than 10 Characters</div>
 								   <div ng-show="contactExist" class="alert alert-danger"><strong>Contact Already Used</strong> </div>
