@@ -167,7 +167,8 @@ PropertyRegistration.controller('propertyctrl', function ($scope,$window,Propert
 	       };
 	});
 PropertyRegistration.controller('photoctrl', function ($scope,$window,fileReader,DataEntry,PropertyOwnerDetails,ngProgress,PropertyRegistration,$upload) {
-
+		 $scope.PhotoPosted=false;
+				$scope.PhotoError=false;
 $scope.Props={};
 ngProgress.start();
   PropertyOwnerDetails.getDetails()
@@ -229,7 +230,7 @@ ngProgress.start();
 
 
    $scope.UploadPhoto=function(){
-   
+   ngProgress.start();
 	var Photodata = DataEntry.list();
 for (var i = 0; i < Photodata.length; i++) {
     $scope.upload = $upload.upload({
@@ -238,9 +239,26 @@ for (var i = 0; i < Photodata.length; i++) {
         data: {"name":Photodata[i].name,"view":Photodata[i].view,"Description":Photodata[i].Description},
         file: Photodata[i].file, 
       }).success(function(data, status, headers, config) {
-		     console.log("done " + i);
-        });
+		     var datauploaded=i;
+			 if (datauploaded==Photodata.length)
+			 {
+				 $scope.PhotoPosted=true;
+				$scope.PhotoError=false;
+				 ngProgress.complete();
+			 }
+			 
+        })
+		.error(function(data) {
+							 ngProgress.complete();
+							   $scope.PhotoPosted=false;
+									   $scope.PhotoError=true;
+									   $scope.disableComponents=true;
+                                        $scope.msg=data;
+
+							 });
     }
+        
+
    };
 
       

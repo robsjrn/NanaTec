@@ -72,10 +72,13 @@
 			  </table>
 				<hr>						
 							 
-			<button type="button " class="btn btn-danger" ng-click="UploadPhoto()">Upload</button>
+			<button type="button " class="btn btn-danger" ng-click="UploadPhoto()" ng-disabled=!disableComponents>Upload</button>
 							 
 										
       
 	   <hr>
+
+	    <div ng-show="PhotoPosted" class="alert alert-warning"><strong>Photo(s) Successfully Uploaded</strong> </div>
+	    <div ng-show="PhotoError" class="alert alert-warning"><strong>Error Occurred</strong> {{msg}} </div> 
  
 
