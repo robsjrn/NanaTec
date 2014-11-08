@@ -95,6 +95,18 @@ PropertyRegistration.controller('MainCtrl', function ($scope,$http,$window,Prope
 			ngProgress.complete();
 							 });
 
+ $scope.Logout=function(){
+            $http.get('/web/logout')
+              .success(function(data) {
+			    	delete $window.sessionStorage.token;
+					$window.location.href = "/";
+					}) 
+				 .error(function(data) {
+				   delete $window.sessionStorage.token;
+					$window.location.href = "/";
+					});	
+
+       } 
 
 
 

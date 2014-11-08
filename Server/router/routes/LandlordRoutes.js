@@ -64,7 +64,7 @@ router.post('/CheckHseNoExists',DatabaseConn.CheckHseNoExists);
             router.post('/SearchReceipt',ensureAuthenticated,DatabaseConn.SearchReceipt);
 			router.post('/GeneralSearch',ensureAuthenticated,DatabaseConn.GeneralSearch);
            
-
+          
 
 			
 module.exports = router;

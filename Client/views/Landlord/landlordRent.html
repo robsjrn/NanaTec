@@ -7,22 +7,22 @@
 
 
 		<div class="panel-body">
-		 <tabset>
-		 <tab heading="Rent">
+
 		     <br>
+			     <div class="row">
 					<div class="col-md-8">
-						<div class="input-group">
-						  <select class="form-control"  ng-model="Tenant.plot"  ng-options="c.Plotname for c in landlordplots"	ng-disabled=disableComponents>  
-			                       </select>
+						  <div class="input-group">
+						       <select class="form-control"  ng-model="Tenant.plot"  ng-options="c.Plotname for c in landlordplots"	ng-disabled=disableComponents>  
+			                   </select>
 						  <span class="input-group-btn">
 							<button class="btn btn-danger" type="button" ng-click="GetDetails()" ng-disabled=disableComponents >Get!</button>
 						  </span>
 						</div><!-- /input-group -->
 					  </div><!-- /.col-lg-6 -->
-			
-                    <hr>
+			      </div>
+             
       
-
+                   <div class="row">
                     <div class="col-md-4">
                             <label for="tname">Tenant Names</label>
 							       <select class="form-control"  ng-model="Tenant.names" id="tname" ng-options="c.names for c in tenantdata" ng-disabled=disableComponents>  
@@ -35,21 +35,30 @@
 					<div class="col-md-4">
                             <label for="exptype">House Name</label>
 							       <select class="form-control"  ng-model="House.housename" id="exptype" ng-options="k.number for k in housedata" ng-disabled=disableComponents>  
+			                       </select>							
+		            </div>
+	               </div>
+
+				   <div class="row">
+                    <div class="col-md-4">
+                         <label for="trxn">Payment Transaction </label>
+							       <select class="form-control"  ng-model="House.TransactionPayment" id="trxn" ng-options="k.name for k in TransactionPayment" ng-change="update(House.TransactionPayment.type)" ng-disabled=disableComponents>  
 			                       </select>	
-								   
-								
-		</div>
-	       
-           
-		</tab>
-		
-        
+					</div>
+
+                     <div class="col-md-4">
+					   <div ng-show="showCustom" >
+                            <label for="searchinput">Custom Payment</label>
+								   <input type="text" class="form-control" placeholder="Amount" id="amt" ng-model="custom.amount"   ng-disabled=disableComponents />	
+
+								    <input type="text" class="form-control" placeholder="Description" id="desc" ng-model="custom.description"  ng-disabled=disableComponents />
+                       </div>
+					</div>
+
+               </div>
+       		
+              </div>
               
-		 </tabset>
-
-		
- </div>
-
         <div class="panel-footer">
 		  	<button type="button" class="btn btn-success" ng-click="save()" ng-disabled=disableComponents>Save</button>
 		  </div>

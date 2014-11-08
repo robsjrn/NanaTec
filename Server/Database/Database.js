@@ -1283,7 +1283,7 @@ exports.GetTenantVacateNotice=function(req, res) {
 
 exports.SearchReceipt=function(req, res) {
  db.collection('Transaction', function(err, collection) {
- collection.findOne({"receiptno":req.body.receiptno},function(err, item){
+ collection.findOne({$and: [ {"Landlordid":req.user._id},{"receiptno":req.body.receiptno}]},function(err, item){
      if(err){DbError(res);}
 	  else{ res.send(item);}
       });

@@ -614,8 +614,40 @@ landlordtmngt.controller('trxntypectrl', function($scope) {
 	    $scope.url='Singletransaction';
 			
 });
-landlordtmngt.controller('Edittransactiontctrl', function($scope) {
-				
+landlordtmngt.controller('Edittransactiontctrl', function($scope,TrxnService, ngProgress) {
+	$scope.disableComponents=true;
+	$scope.RcptNotFound=false;
+	$scope.disableEdit=true;
+   $scope.GetDetails =function(){    
+          var data ={
+                    "receiptno":$scope.Receipt.number,
+                     }
+                ngProgress.start()
+                       TrxnService.getTransaction(data)
+					         .success(function(data) {
+					            ngProgress.complete();
+					        if (data===""){  $scope.RcptNotFound=true;  }
+							else {	
+								$scope.Detail =data;
+								$scope.RcptNotFound=false;
+								$scope.disableEdit=false;
+								}
+							  
+							 
+							 }) 
+						 .error(function(data) {
+							  ngProgress.complete();
+							  $scope.RcptNotFound=true;
+							  $scope.disableComponents=true;
+							  $scope.Detail="";
+							 });
+   }
+
+   $scope.Edit=function(){
+       $scope.disableComponents=false;
+   }
+
+	
 });
 
 
@@ -835,6 +867,7 @@ else {
 			      "ApplyCharge":true,
                   "body":{
                   "receiptno":$scope.Transaction.receiptno,
+				  "Landlordid":$rootScope.landlordDetails._id,
 	              "tenantid":$scope.Tenant._id,
 	              "housenumber":$scope.Tenant.housename,
 	              "plotnumber":$scope.Tenant.plot.Plotname,
@@ -859,6 +892,7 @@ else {
 
        $scope.Payment={	             
 	              "receiptno":$scope.Transaction.receiptno,
+                  "Landlordid":$rootScope.landlordDetails._id,
 	              "tenantid":$scope.Tenant._id,
 	              "housenumber":$scope.Tenant.housename,
 	              "plotnumber":$scope.Tenant.plot.Plotname,
@@ -949,6 +983,7 @@ ngProgress.start();
 			      "ApplyCharge":true,
                   "body":{
                   "receiptno":$scope.Transaction.receiptno,
+				  "Landlordid":$rootScope.landlordDetails._id,
 	              "tenantid":$scope.Tenant._id,
 	              "housenumber":$scope.Tenant.housename,
 	              "plotnumber":$scope.Tenant.plot.Plotname,
@@ -972,6 +1007,7 @@ ngProgress.start();
 
   $scope.Payment={
 	              "receiptno":$scope.Transaction.receiptno,
+				  "Landlordid":$rootScope.landlordDetails._id,
 	              "tenantid":$scope.Tenant._id,
 	              "housenumber":$scope.Tenant.housename,
 	              "plotnumber":$scope.Tenant.plot.Plotname,
@@ -1658,17 +1694,30 @@ landlordtmngt.controller('LandlordProfilectrl', function($scope,$http,$rootScope
 
 });
 
-landlordtmngt.controller('rentctrl', function($scope,$http,$rootScope,ngProgress) {
+landlordtmngt.controller('rentctrl', function($scope,$http,$rootScope,ngProgress,$filter) {
 $scope.Tenant={};
 $scope.House={};
 $scope.housetaken=false;
 $scope.housetakenerror=false;
  $scope.disableComponents=true;
-
+$scope.showCustom=false;
 
  $scope.landlordplots=$rootScope.plot;
-$scope.Tenant.plot=$scope.landlordplots[0];
+ $scope.Tenant.plot=$scope.landlordplots[0];
 
+
+  $scope.TransactionPayment =[
+	{"type":"RD","name":"Rent And Deposit"} ,
+    {"type":"R","name":"Rent Only"} ,
+    {"type":"C","name":"Custom"} 
+  ];
+
+  $scope.House.TransactionPayment=$scope.TransactionPayment[0];
+
+$scope.update=function(type){
+  if (type=="C"){ $scope.showCustom=true;}
+  else {$scope.showCustom=false;}
+};
 
 $scope.GetDetails=function(){
  // have this in a nested Promise
@@ -1685,16 +1734,35 @@ ngProgress.start();
 
  };
  $scope.save=function(){
-ngProgress.start();
+	ngProgress.start();
+	 var bal;
+	 var desc;
+	 var trxdate=$filter('date')(new Date(),'yyyy-MM-dd');
+   if ($scope.House.TransactionPayment.type=="RD")
+   {
+	  bal =($scope.House.housename.amount * 2);
+	  desc="Rent And Deposit";
+   }
+   else if ($scope.House.TransactionPayment.type=="R")
+   {
+	   bal =$scope.House.housename.amount ;
+	   desc="Rent Only";
+   }
+   else if ($scope.House.TransactionPayment.type=="C")
+   {
+	   bal =$scope.custom.amount;
+	   desc=$scope.custom.description;
+	  
+   }
 
 	  data={"update":{
-		 "tenantupdate":{"AgreementStatus":true,"AccessStatus":0,"hsestatus":1,"housename":$scope.House.housename.number,"balance":($scope.House.housename.amount * 2)},
+		 "tenantupdate":{"AgreementStatus":true,"AccessStatus":0,"hsestatus":1,"housename":$scope.House.housename.number,"balance":bal},
 		 "houseUpdate":{"status":"rented","tenantid":$scope.Tenant.names._id},
          "Trxn":{"tenantid":$scope.Tenant.names._id, "housenumber":$scope.House.housename.number,
-	             "plotnumber":$scope.Tenant.plot.name,"transactiondate":new Date(),
-	              "transactiontype":"Posting", "Description":"Rent And Deposit",
-	              "tranAmount":($scope.House.housename.amount * 2)},
-		 "details":{"_id":$scope.Tenant.names._id,"number":$scope.House.housename.number}
+	             "plotnumber":$scope.Tenant.plot.Plotname,"transactiondate":trxdate,
+	              "transactiontype":"Check In Posting", "Description":desc,
+	              "tranAmount":bal},
+		    "details":{"_id":$scope.Tenant.names._id,"number":$scope.House.housename.number}
                }
 		  };
 
@@ -1712,6 +1780,8 @@ ngProgress.start();
 	 });	
 	  
    $scope.disableComponents=true;
+
+
  }
   
 });
@@ -2209,7 +2279,13 @@ landlordtmngt.factory('tenant', function($http) {
 });
 
 
-
+landlordtmngt.service('TrxnService', function ($http) {
+    var transaction={};
+    var url='/web/Landlord';
+	  this.getTransaction = function (receipt) {
+		return $http.post(url + '/SearchReceipt', receipt);
+    };
+});
 
 
 
