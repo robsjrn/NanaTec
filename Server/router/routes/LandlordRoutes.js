@@ -63,8 +63,8 @@ router.post('/CheckHseNoExists',DatabaseConn.CheckHseNoExists);
 
             router.post('/SearchReceipt',ensureAuthenticated,DatabaseConn.SearchReceipt);
 			router.post('/GeneralSearch',ensureAuthenticated,DatabaseConn.GeneralSearch);
-           
-          
+            router.get('/TotalUnpaid',ensureAuthenticated,DatabaseConn.TotalUnpaid);
+             router.get('/PaymentDateAggregation',ensureAuthenticated,DatabaseConn.PaymentDateAggregation);
 
 			
 module.exports = router;

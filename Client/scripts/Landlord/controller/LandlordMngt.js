@@ -31,6 +31,8 @@ landlordtmngt.config(function ($httpProvider) {
   $httpProvider.interceptors.push('authInterceptor');
 });
 
+
+
 var ModalInstanceCtrl = function ($scope, $modalInstance, lat, lng, $timeout) {
 
   $scope.map = {
@@ -65,47 +67,9 @@ $scope.$watch("visible", function(newvalue) {
 
 };
 
-
-landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$rootScope,$window,ngProgress) {
-$scope.firsttimelogin=true;
-
- $http.get('/web/Landlord/LandLordDetails',{ cache: true })
-	 .success(function (data){
-			ngProgress.start();
-				 $rootScope.landlordDetails=data;
-				 if (typeof data.plots!="undefined")
-			{
-					  $rootScope.plot=data.plots;	
-			} else{
-
-              
-				$rootScope.plot=[];
-			}	 
-	 });
-  $http.get('/web/Landlord/LandLordConfiguration',{ cache: true }).success(function (data)
-	  {
-	   $scope.config=data;
-	  $rootScope.expenseType=$scope.config.expenseType;
-      $rootScope.paymentMethod=$scope.config.paymentmethod;
-	  $rootScope.TransactionType=$scope.config.transactiontype;
-	  $rootScope.hsetype=$scope.config.hsetype;
-     ngProgress.complete();
-  });
-  $scope.emails = {};
-
-
-$http.get('/web/Viewmail',{ cache: true })
-	.success(function (data){
-		$scope.UserMail=data; 
-		$scope.emails.messages=$scope.UserMail.Received;
-		ngProgress.complete();
-       })
-   .error(function(data) {
-	 ngProgress.complete();
-   });
-
- 
- $scope.Logout=function(){
+landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$window) {
+	 $scope.firsttimelogin=true;
+	 $scope.Logout=function(){
             $http.get('/web/logout')
               .success(function(data) {
 			    	delete $window.sessionStorage.token;
@@ -118,8 +82,64 @@ $http.get('/web/Viewmail',{ cache: true })
 
        } 
 
+});
 
-	  
+
+
+
+landlordtmngt.controller('PaymentSummaryDatectrl', function($scope,$http,$window,ngProgress,TrxnService) {
+  var d = new Date();
+	var month = new Array();
+	month[0] = "January";
+	month[1] = "February";
+	month[2] = "March";
+	month[3] = "April";
+	month[4] = "May";
+	month[5] = "June";
+	month[6] = "July";
+	month[7] = "August";
+	month[8] = "September";
+	month[9] = "October";
+	month[10] = "November";
+	month[11] = "December";
+	var n = month[d.getMonth()];
+   
+   $scope.month=n;
+ngProgress.start();
+      TrxnService.getpaymentSummary()
+			.success(function (data){
+					$scope.data=data.total;
+				   //  $scope.notice=$scope.noticelist[0];
+				ngProgress.complete();
+			   })
+		   .error(function(data) {
+			   ngProgress.complete();
+		   });
+
+
+});
+
+
+
+landlordtmngt.controller('HomeLandlordctrl', function($scope,$http,$rootScope,$window,ngProgress,Details,Configuration,Email,Totals) {
+ console.log();
+   $scope.emails = {};
+      $rootScope.landlordDetails=Details.data;
+		    if (typeof Details.data.plots!="undefined")
+			   {$rootScope.plot=Details.data.plots;	
+		  	   } else{$rootScope.plot=[];}	
+         
+      $scope.config=Configuration.data;
+	  $rootScope.expenseType=$scope.config.expenseType;
+      $rootScope.paymentMethod=$scope.config.paymentmethod;
+	  $rootScope.TransactionType=$scope.config.transactiontype;
+	  $rootScope.hsetype=$scope.config.hsetype;
+
+        $scope.UserMail=Email.data; 
+		$scope.emails.messages=$scope.UserMail.Received;
+
+     $scope.Total=Totals.data.total[0].total;
+
 });
 
 
@@ -128,7 +148,7 @@ landlordtmngt.controller('Noticectrl', function($scope,$rootScope,$http,ngProgre
 		$scope.noticeSentError=false;
 		$scope.btndisable=false;
 $scope.noticelist=[];
-
+ngProgress.start();
 		$http.get('/web/Landlord/GetLandlordNotice')
 			.success(function (data){
 					$scope.noticelist=data;
@@ -146,7 +166,7 @@ $scope.noticelist=[];
  };
 
   $scope.updateNotificationStatus=function(index){
-     
+    ngProgress.start(); 
 $scope.btndisable=true;
 	  
 		    var dt={"tenantid":$scope.notice.Tenantid};
@@ -156,10 +176,12 @@ $scope.btndisable=true;
 			                    $scope.noticeSent=true;
 								$scope.noticelist.splice(index, 1);
 								$scope.notice="";
+									ngProgress.complete();
 							 }) 
 						 .error(function(data) {
 								    $scope.btndisable=false;
 								 	$scope.noticeSentError=true;
+										ngProgress.complete();
 							   
 			});
  };
@@ -858,8 +880,10 @@ else {
 
  $scope.disableComponents=true;
  var charges={};
- var today = $filter('date')(new Date(),'yyyy-MM-dd');
+ var d = new Date();
+ var today = $filter('date')(d,'yyyy-MM-dd');
  var trandate=$scope.Transaction.TransactionDate;
+ var Month = d.getMonth();
 
      if ($scope.ApplyCharges)
      {
@@ -880,7 +904,8 @@ else {
 	              "Description":$scope.Charge.comment,
 	              "tranAmount":$scope.Charge.Amount,
 				  "currentBal":$scope.Tenant.balance,
-	              "balcf":$scope.Tenant.balance-$scope.Transaction.amount+$scope.Charge.Amount
+	              "balcf":$scope.Tenant.balance-$scope.Transaction.amount+$scope.Charge.Amount,
+                  "Month":Month
 				  }
 		 };
      }
@@ -906,7 +931,8 @@ else {
 	              "tranAmount":$scope.Transaction.amount,
                   "currentBal":$scope.Tenant.balance,
 	              "balcf":$scope.Tenant.balance-$scope.Transaction.amount,
-                  "Charges":charges
+                  "Charges":charges,
+                  "Month":Month
 	 
         };
 		    
@@ -975,8 +1001,10 @@ ngProgress.start();
  $scope.userForm.$invalid=true;
  $scope.disableComponents=true;
  var charges={};
- var today = $filter('date')(new Date(),'yyyy-MM-dd');
+ var d = new Date();
+ var today = $filter('date')(d,'yyyy-MM-dd');
  var trandate=  $filter('date')($scope.Transaction.TransactionDate,'yyyy-MM-dd');
+  var Month = d.getMonth();
      if ($scope.ApplyCharges)
      {
 		charges ={
@@ -995,7 +1023,8 @@ ngProgress.start();
 	              "paymentmethod":$scope.Transaction.paymentmethod.name,
 	              "Description":$scope.Charge.comment,
 	              "tranAmount":$scope.Charge.Amount,
-	              "balcf":$scope.Tenant.balance-$scope.Transaction.amount+$scope.Charge.Amount
+	              "balcf":$scope.Tenant.balance-$scope.Transaction.amount+$scope.Charge.Amount,
+				   "Month":Month
 				  }
 		 };
      }
@@ -1020,7 +1049,8 @@ ngProgress.start();
 	              "Description":$scope.Transaction.comments,
 	              "tranAmount":$scope.Transaction.amount,
 	              "balcf":$scope.Tenant.balance-$scope.Transaction.amount,
-                  "Charges":charges
+                  "Charges":charges,
+                  "Month":Month
 	 
  };
 
@@ -2061,7 +2091,6 @@ $scope.disablebtn=true;
 	  $scope.pname=name;
 	  $scope.disablebtn=false;
   };
-
    $scope.ShowReport=function(){
 	    ngProgress.start();
 	    $scope.reportData={
@@ -2285,9 +2314,46 @@ landlordtmngt.service('TrxnService', function ($http) {
 	  this.getTransaction = function (receipt) {
 		return $http.post(url + '/SearchReceipt', receipt);
     };
+
+	  this.getpaymentSummary = function () {
+		return $http.get('/web/Landlord/PaymentDateAggregation');
+    };
 });
 
 
+
+landlordtmngt.factory('LandlordFactory', ['$http', function($http) {
+	var url='/web/Landlord';
+	var data = {
+		getLordDetails: function() {
+			var promise = $http.get(url+ '/LandLordDetails',{ cache: true }).success(function(data, status, headers, config) {
+				return data;
+			});
+			return promise;
+		},
+		getLandLordConfiguration: function() {
+			var promise = $http.get(url+'/LandLordConfiguration',{ cache: true }).success(function(data, status, headers, config) {
+				return data;
+			});
+			return promise;
+		},
+
+        getEmail: function() {
+			var promise = $http.get('/web/Viewmail',{ cache: true }).success(function(data, status, headers, config) {
+				return data;
+			});
+			return promise;
+		} ,
+        getTotals: function() {
+			var promise = $http.get(url+'/TotalUnpaid').success(function(data, status, headers, config) {
+				return data;
+			});
+			return promise;
+		}   
+
+	}
+	return data;
+}]);
 
 
 landlordtmngt.service('BatchTrxnService', function () {
@@ -2343,7 +2409,25 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
   $locationProvider.hashPrefix("!");
 
   $routeProvider
-	 
+  .when('/LandlordHome', {
+      templateUrl: 'views/Landlord/LandlordHome.html',   
+      controller: 'HomeLandlordctrl',
+      resolve: {
+			Details: function(LandlordFactory) {
+				return LandlordFactory.getLordDetails();
+			},
+			Configuration: function(LandlordFactory) {
+				return LandlordFactory.getLandLordConfiguration();
+			},
+            Email: function(LandlordFactory) {
+				return LandlordFactory.getEmail();
+			},
+            Totals: function(LandlordFactory) {
+				return LandlordFactory.getTotals();
+			}
+	       }
+        })	
+  
  .when('/tenantsmngt', {
      templateUrl: 'views/Landlord/landlordTenantmngt.html',   
       controller: 'tenantctrl'
@@ -2354,7 +2438,7 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
         })
    .when('/plotmngt', {
        templateUrl: 'views/Landlord/landlordPlotmngt.html',   
-       controller: 'plotmngtctrl'
+       controller: 'plotmngtctrl'  
         })
    .when('/trxnmngt', {
        templateUrl: 'views/Landlord/TransactionSelect.html',   
@@ -2451,10 +2535,13 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
      templateUrl: 'views/Landlord/LandlordVacateNotice.html',   
      controller: 'VacateNoticectrl'
         })			
-		
+	.when('/PaymentSummaryDate', {
+     templateUrl: 'views/Landlord/SummaryPaymentDate.html',   
+     controller: 'PaymentSummaryDatectrl'
+        })	
 		
 	.otherwise({
-         redirectTo: '/plotmngt'
+         redirectTo: '/LandlordHome'
       });
 
 });

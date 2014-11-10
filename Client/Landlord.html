@@ -21,6 +21,8 @@
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/Landlord/landlord.css">
+	<script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
 	<link rel="stylesheet" href="styles/Landlord/ngProgress.css">
 	<link rel="stylesheet" href="styles/Reports/Report.css">
     <!-- endbuild -->
@@ -31,6 +33,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
+
 
 <div id="wrapper" data-ng-controller="MainLandlordctrl">
       <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="margin-bottom: 0">
@@ -67,6 +70,7 @@
                           <li role="presentation" class="divider"></li>
 						  <li role="presentation" class="dropdown-header">Transaction Report</li>
 						      <li><a href="#!/ReportsPortal">&nbsp Transaction Summary</a></li>
+							  <li><a href="#!/PaymentSummaryDate">&nbsp Transaction Summary By Payment Date</a></li>
                             
                         </ul>
                     </li>   <!-- /.Report Drop down -->
@@ -215,11 +219,9 @@
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
 		<script src='//maps.googleapis.com/maps/api/js?v=3.6&sensor=false&key=AIzaSyBEZrkDl1LuGxjnnI4WXC7U5nx41NOmxy8'></script>
-    <script src="lib/jquery/dist/jquery.min.js"></script>
-    <script src="lib/angular/angular.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
 	<script src="lib/ng-file-upload/angular-file-upload.min.js"></script>
-    <script src="lib/angular-route/angular-route.js"></script>
+    <script src="lib/angular-route/angular-route.min.js"></script>
     <script src="lib/angular-animate/angular-animate.js"></script>
 	<script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script> 
 	<script src="lib/angular-resource/angular-resource.js"></script>

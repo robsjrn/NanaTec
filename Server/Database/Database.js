@@ -853,11 +853,39 @@ exports.Landlordphotoupload = function(req, res) {
 };
 
 
+
+
+
+exports.TotalUnpaid= function(req, res) {
+
+  db.collection('user', function(err, collection) {
+    collection.aggregate([ { $match: { "Landlordid" : req.user._id ,"balance":{$gt: 0} }},{ $group: {_id: "$Landlordid" , total: { $sum: "$balance" } } } ] , function(err, result) {
+         if (result){  res.status(200).json({total: result}); }
+		 else{ DbError(res);}
+	});
+});
+
+};
+
+exports.PaymentDateAggregation= function(req, res) {
+	var d = new Date();
+    var month = d.getMonth();
+  db.collection('Transaction', function(err, collection) {
+    collection.aggregate([ { $match: { "Landlordid" : "3622036","Month":month }},
+		                   { $group: {_id: "$transactiondate" , total: { $sum: "$tranAmount" } } } 
+	                      ] , function(err, result) {
+         if (result){  res.status(200).json({total: result}); }
+		 else{ DbError(res);}
+	});
+});
+
+};
+
+
+
+
 exports.TransactionReport= function(plot,start,end,fn) {
-// start="2014-10-04T07:11:16.255Z";
-// end="2014-10-10T07:11:16.255Z";
-//console.log("Satrt Date ." + start);
-//console.log("End Date ." + end);
+
  db.collection('Transaction', function(err, collection) {
  collection.find( {$and: [{"plotnumber":plot},{"transactiondate": {$gte:start,$lte:end}}]}).toArray( function(err, item){
   if(item){
@@ -871,7 +899,7 @@ exports.TransactionReport= function(plot,start,end,fn) {
 
 exports.TenantPaidReport= function(plot,fn) {
 db.collection('user', function(err, collection) {
- collection.find({$and: [{"plot.Plotname": plot},{"balance":{$lte: 0}}]},{ sort: "housename" }).toArray( function(err, item){
+ collection.find({$and: [{"plot.Plotname": plot},{"balance":{$lte: 0}}]},{ sort:{ "housename" :1}}).toArray( function(err, item){
   if(item){
 	 fn(null,item);}
   if (err) {fn(err,null);}
