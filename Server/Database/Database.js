@@ -166,7 +166,7 @@ exports.listofHouse = function(req, res) {
 exports.listofUnbookedtenant = function(req, res) {
 	
  db.collection('user', function(err, collection) {
- collection.find({"plot.Plotname":req.params.plot,"hsestatus":0},{names:1}).toArray( function(err, item){
+ collection.find({$and: [{"id":req.user.username}, {"plot.Plotname":req.params.plot},{"hsestatus" : 0}]},{names:1}).toArray( function(err, item){
   if(item){res.send(item);}
   if (err) {DbError(res) ;}
 
@@ -190,7 +190,7 @@ exports.listofbookedtenant = function(req, res) {
 
 exports.listofVacantHouse = function(req, res) {
  db.collection('House', function(err, collection) {
- collection.find({"plot.Plotname":req.params.plot,"status":"vacant"},{number:1,amount:1}).toArray( function(err, item){
+ collection.find({$and: [{"id":req.user.username}, {"plot.Plotname":req.params.plot},{"status":"vacant"}]},{number:1,amount:1}).toArray( function(err, item){
   if(item){res.send(item);}
   if (err) {DbError(res) ;}
 
@@ -223,7 +223,10 @@ var details= update.details;
 var updateHouse=function (housedetails ,hsenumber,callback){
    db.collection('House', function(err, collection) {
     collection.update({"number" : hsenumber},{$set:housedetails},{safe:true}, function(err, item) {
-     if(err){return callback(false,err);}
+     if(err){
+		 console.log(err);
+		 return callback(false,err);
+		 }
 	  else{ return callback(true,null);}
       });
    });

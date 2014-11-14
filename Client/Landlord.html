@@ -71,6 +71,7 @@
 						  <li role="presentation" class="dropdown-header">Transaction Report</li>
 						      <li><a href="#!/ReportsPortal">&nbsp Transaction Summary</a></li>
 							  <li><a href="#!/PaymentSummaryDate">&nbsp Transaction Summary By Payment Date</a></li>
+							  <li><a href="#!/summarymngt">&nbsp Chart Summary</a></li>
                             
                         </ul>
                     </li>   <!-- /.Report Drop down -->
@@ -142,6 +143,8 @@
 		 <li ><a href="#!/Notice">Notice</a></li>
 		  <li ><a href="#!/VacateNotice">Vacate Notice</a></li>
 		<li><a href="#!/inbox">Inbox</a></li>
+		<li><a href="#!/map">Properties Map Location</a></li>
+		
    </ul>
 
 
@@ -185,7 +188,7 @@
 
 										<p>Number of Plots <span class="badge badge-success">{{landlordDetails.noplots}}</span></p>  
 										<p>Number of Houses <span class="badge badge-success">{{landlordDetails.nohse}}</span></p>  
-										<p>Expected Monthly Income <span class="badge badge-success">{{landlordDetails.expcMonthlyIncome}}</span></p>  
+										<p>Expected Monthly Income <span class="badge badge-success">{{landlordDetails.expcMonthlyIncome | currency:"KES " }}</span></p>  
 										 </div>
 										</div>  
                               </div>
@@ -193,7 +196,6 @@
 </div>
 
     
-		 
 
 
 
@@ -205,7 +207,6 @@
              <div class="navbar navbar-default navbar-fixed-bottom">
 		         <div class="container" >
 			       <p>copyrights @NanaTec 2014 </p>	
-				   
 				  </div>
                </div>
 
@@ -218,7 +219,6 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-		<script src='//maps.googleapis.com/maps/api/js?v=3.6&sensor=false&key=AIzaSyBEZrkDl1LuGxjnnI4WXC7U5nx41NOmxy8'></script>
     <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
 	<script src="lib/ng-file-upload/angular-file-upload.min.js"></script>
     <script src="lib/angular-route/angular-route.min.js"></script>
@@ -229,8 +229,9 @@
 	<script src="lib/textAngular/dist/textAngular-sanitize.min.js"></script>
 	<script src="lib/lodash/dist/lodash.min.js"></script>
 	<script src="Lib/bluebird/js/browser/bluebird.js"></script>
+	<script src="Lib/d3/d3.min.js"></script> 
+	<script src="Lib/angular-charts/dist/angular-charts.min.js"></script> 
 	
-	<script src="lib/angular-google-maps/dist/angular-google-maps.min.js"></script>
 	
 
     <!-- endbower -->
@@ -244,37 +245,8 @@
 
 <script>
 
-  $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("active");
-    });
-
 </script>
            
-
-
-  <script type="text/ng-template" id="map.html">
-       <div class="modal-header">
-            <h3 class="modal-title">Your Location in a Map</h3>
-		    	
-        </div>
-        <div class="modal-body">
-              <ui-gmap-google-map center="map.center" 
-				zoom="map.zoom" 
-				draggable="true"
-				options="map.options"
-				control="map.control"
-				>
-				<marker idKey="1" coords="map.marker">
-				</marker>
-			</ui-gmap-google-map>
-
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>	
 
 			
   </body>

@@ -42,15 +42,6 @@
 											<input type="number" class="form-control" placeholder="Location Latitude" id="location" ng-model="LandlordPlot.location.latitude" ng-disabled=true title="To Enable Map View">
 											<label >Location Longitude</label>
 											<input type="number" class="form-control" placeholder="Location Longitude" id="location" ng-model="LandlordPlot.location.longitude" ng-disabled=true title="To Enable Map View">
-                                          <div ng-show="false">
-											<google-map center="map.center" 
-												zoom="map.zoom" 
-												options="map.options"
-												control="map.control">
-												<marker idKey="1" coords="map.marker">
-												</marker>
-											</google-map>
-                                         </div>  
 										 </div>
                           
 									</div>
@@ -66,3 +57,29 @@
                
 <div ng-show="plotSuccess" class="alert alert-success"><strong>{{msg}} !!!</strong> Plot Added Successfully </div>
 <div ng-show="ploterror" class="alert alert-warning"><strong>Error Occurred !!!</strong> {{msg}}</div>
+ 
+   <div ng-show=false>
+	<div my-map="" lat="{{lat}}" lng="{{lng}}"></div>
+   </div>     
+		
+
+ <script type="text/ng-template" id="map.html">
+       <div class="modal-header">
+            <h3 class="modal-title">Your Location in a Map</h3>
+			<p><small>Click to Add you Location on Map</small></p>
+			<p><small>Double Click to Remove Location on Map</small></p>
+      </div>
+        <div class="modal-body">
+		
+          <div ng-if="render">	   
+            	 <div  my-map="" lat="{{lat}}" lng="{{lng}}"  locname="{{locationname}}" plotname="{{plotnames}}"></div>
+           </div>
+		 
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+
