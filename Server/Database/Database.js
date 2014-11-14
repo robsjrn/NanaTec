@@ -1321,6 +1321,27 @@ exports.SearchReceipt=function(req, res) {
    }); 
 };
 
+exports.DeleteReceipt=function(req, res) {
+ db.collection('Transaction', function(err, collection) {
+ collection.remove({$and: [ {"Landlordid":req.user._id},{"receiptno":req.body.receiptno}]},function(err, item){
+     if(err){DbError(res);}
+	  else{ 
+		   updateTenantBal(-req.body.Amount,req.body.tenantid,function(ok,status) {
+			    if (ok){
+					 Success(res);; 
+					 }	
+		         else {
+                     DbError(res);
+				 }
+            });
+	      }
+     }); 
+   }); 
+};
+
+
+
+
 exports.GetLandlordNotice=function(req, res) {
  db.collection('VacateNotice', function(err, collection) {
 collection.find({$and: [ {"Landlordid":req.user._id},{"LandlordProcessed" : 0}]}).toArray(function(err, item) {

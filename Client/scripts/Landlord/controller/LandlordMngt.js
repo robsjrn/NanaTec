@@ -57,10 +57,10 @@ $scope.plotnames="plot kasarani";
 
 landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$window,LandlordFactory,$rootScope) {
 
-     $rootScope.landlordDetails=LandlordFactory.getLordDetails()
+       LandlordFactory.getLordDetails()
 		 .success(function (data){
-			  $scope.landlordDetails=data;
-			   if (typeof data.plots!="undefined")
+			  $rootScope.landlordDetails=data
+			if (typeof data.plots!="undefined")
 			   {$rootScope.plot=data.plots;	
 		  	   } else{$rootScope.plot=[];}	
 			   })
@@ -648,11 +648,12 @@ landlordtmngt.controller('trxntypectrl', function($scope) {
 landlordtmngt.controller('Edittransactiontctrl', function($scope,TrxnService, ngProgress) {
 	$scope.disableComponents=true;
 	$scope.RcptNotFound=false;
+	$scope.RcptDeleted=false;
 	$scope.disableEdit=true;
    $scope.GetDetails =function(){    
           var data ={
-                    "receiptno":$scope.Receipt.number,
-                     }
+                    "receiptno":$scope.Receipt.number
+                     };
                 ngProgress.start()
                        TrxnService.getTransaction(data)
 					         .success(function(data) {
@@ -677,14 +678,34 @@ landlordtmngt.controller('Edittransactiontctrl', function($scope,TrxnService, ng
    $scope.Edit=function(){
        $scope.disableComponents=false;
    }
+   $scope.delete=function(){
+      $scope.disableComponents=false;
 
+             var data ={
+                    "receiptno":$scope.Receipt.number,
+                     "tenantid":$scope.Detail.tenantid,
+					 "Amount":$scope.Detail.tranAmount
+                     };
+           
+             ngProgress.start()
+                       TrxnService.DeleteReceipt(data)
+					         .success(function(data) {
+					      		  ngProgress.complete();
+								  $scope.disableComponents=true;
+								  $scope.RcptDeleted=true;
+							     }) 
+						 .error(function(data) {
+							       ngProgress.complete();
+							       $scope.disableComponents=true;
+								   $scope.RcptDeleted=false;
+							 });
+    }
 	
 });
 
 
 
 landlordtmngt.controller('trxnmngtctrl', function($scope,$http,$rootScope,ngProgress, $window,$filter,tenant,BatchTrxnService) {
-
 //first clear everything in the Batch Trxn Table 
 BatchTrxnService.Drop();
 
@@ -699,6 +720,7 @@ $scope.Transaction.transactiontype=$scope.transactiontype[0];
 $scope.ApplyCharges=false;
 $scope.paymentposted=false;
 $scope.paymenterror=false;
+$scope.btnPost=true;
 $scope.disableComponents=true;
 $scope.disableTotalAmount=true;
 $scope.TenantNotFound=false;
@@ -719,6 +741,11 @@ $scope.SearchType=[{id: 1, type: "_id", name: "Tenant Id"},
 ];
 
 $scope.searchData=function(searchtype){
+   if (typeof searchtype =="undefined") {
+	   alert("Kindly Choose a Search Criteria..");
+	    }
+ else {
+
 	ngProgress.start();
   var Datasearch ={}
       Datasearch.id=searchtype.id;
@@ -737,7 +764,7 @@ $scope.searchData=function(searchtype){
 							 ngProgress.complete();
 							 $scope.disableComponents=true;
 							 });
-
+ }
 }
 
   $scope.toggleMin = function() {
@@ -819,6 +846,7 @@ $scope.Receipt=function(){
 								  if (data === ""){
 									$scope.ReceiptFound=false;
 									$scope.userForm.$invalid=false;
+									 $scope.btnPost=false;
 								  }
 								  else{	
 									   $scope.Transaction.receiptno="";
@@ -831,6 +859,7 @@ $scope.Receipt=function(){
 						 .error(function(data) {
 							 ngProgress.complete();	
 							 $scope.ReceiptFound=false;
+							
 							 });
 };
 
@@ -846,6 +875,7 @@ $scope.EditAmount=function(){
 
   function addpayment(){
 	  $scope.Charge={};
+	  $scope.btnPost=true;
 	  $scope.disableComponents=false;
       $scope.disableSearchHse=false;
 	  $scope.disableTenantid=false;
@@ -858,7 +888,7 @@ $scope.EditAmount=function(){
 		  $scope.Tenant="";
 		  $scope.search="";
 		   $scope.lookup="";
-  $scope.Tenant.balance=0;
+          // $scope.Tenant.balance=0;
 	  $scope.Transaction.amount =0;
 	  $scope.Charge.Amount=0;
 
@@ -2303,8 +2333,15 @@ landlordtmngt.service('TrxnService', function ($http) {
     };
 
 	  this.getpaymentSummary = function () {
-		return $http.get('/web/Landlord/PaymentDateAggregation');
+		return $http.get(url + '/PaymentDateAggregation');
     };
+      this.DeleteReceipt = function (details) {
+		return $http.post(url + '/DeleteReceipt',details);
+
+      
+
+    };
+
 });
 
 
