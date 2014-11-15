@@ -3,7 +3,7 @@
 
 
 
-var landlordtmngt= angular.module('LandlordmngtApp', ['ngResource','ngRoute','ui.bootstrap','angularFileUpload','ngProgress','textAngular','angularCharts'] ); 
+var landlordtmngt= angular.module('LandlordmngtApp', ['ngResource','ngRoute','ui.bootstrap','angularFileUpload','ngProgress','textAngular'] ); 
 
 	landlordtmngt.factory('authInterceptor', function ($rootScope, $q, $window) {
 		  return {
