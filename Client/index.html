@@ -1,156 +1,37 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+<html  ng-app="RentmngtApp"> 
   <head>
     <meta charset="utf-8">
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
 	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="styles/Home/main.css">
-    <!-- endbuild -->
+    <link rel="stylesheet" href="Styles/Home/banner.css">
+	<script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+
    
    
 
   </head>
-  <body ng-app="RentmngtApp" >
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
-   
- <!-- Add your site or application content here -->
-
-
-	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-	  
-      <a class="navbar-brand" href="#">
-	   <span class="glyphicon glyphicon-home"></span>
-	   <strong>Nana</strong>
-	  </a>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="/SearchRentals.html">To Rent</a></li>
-		<li><a href="/LandlordAgents.html">Landlords/Agents</a></li>
-
-		
-		 <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Property <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="/Property.html">Search/View Property</a></li>
-			 <li class="divider"></li>
-            <li><a href="/EnlistProperty.html">Enlist Property</a></li>
-          </ul>
-        </li>
-       	<li><a href="/News.html">News</a></li>
-		<li><a href="/Services.html">Services</a></li>
-      </ul>
-	    
-      <ul class="nav navbar-nav navbar-right">
-
-	      <li><a href="/Login.html">Login</a></li>
-		<li><a href="#"></a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-
-<div data-ng-controller="MainCtrl" class="row cont">
-
- <div class="container-fluid">
-
-   <div class="col-md-3">
-    
-               <a href="#" class="list-group-item active">
-				  Property Types
-				</a>
-				<a href="/Property.html" class="list-group-item">Apartment</a>
-				<a href="/Property.html" class="list-group-item">Villa</a>
-				<a href="/Property.html" class="list-group-item">Loft</a>
-				<a href="/Property.html" class="list-group-item">Condos</a>
-
-               <br>
-
-
-				 <div class="list-group">
-				   <a href="#" class="list-group-item active">
-					  <h4 class="list-group-item-heading">
-						 Featured Listings 
-					  </h4>
-				   </a>
-
-
-                       <div class="media" ng-repeat="searchResult in Data">
-							<div class="col-xs-4">
-								<img width="80" height="80" ng-src={{searchResult.imgUrl}}  class="media-object" alt="Sample Image">
-								<br>
-								<button class="btn btn-primary btn-xs " type="button">View Details </button>
-							</div>
-							
-							<div class="col-xs-8">
-							   
-								<h4 >{{ searchResult.name}} </h4>
-								<h4>{{ searchResult.Amount}} Ksh</h4>									
-												
-								<h4> {{searchResult.location }}</h4>
-									<h4>{{ searchResult.contact}}</h4>									
-							</div>
-						</div>
-                     <button class="btn btn-success btn-xs pull-right" type="button">View All ... </button>
-				       <br>                  
-				</div>
-
-		
-  </div><!-- /.col-lg-3 -->
-
-
-    <div class="col-md-6">
-       <div class="well">
-				   <div class="row">
-						<div class="col-sm-12">
-						   <div class="form-group">
-								 <label>Location</label>
+  <body  >
+        <!-- Header -->
+		    <div ng-include="'Banner-Header.html'"></div>
+         <!-- Content -->
+		 <div class="container">
+		     <div class="row" >
+                 <div class="col-xs-12  col-md-4" >
+				    <div class="search">
+				         <form >
+                               <div class="form-group">
+								     <label>Location</label>
 								 <input type="text" class="form-control" placeholder="Where do you want to live?">
-							</div>
-						</div>
-					</div>
-
-					 <div class="row"> 
-						   <div class="col-sm-6">
-							  <div class="form-group">
-							    	<label>Search Location:</label>
-										<select class="form-control"  >
-											<option>Anywhere</option>
-											<option>Nairobi</option>
-											<option>Nakuru</option>										
-										</select>
-								</div>
-                             </div>
-
-                              <div class="col-sm-6">
-				                  <div class="form-group">
+						    	</div>
+								<hr>
+								 
+								 <div class="form-group">
 							    	<label>Property type:</label>
 										<select class="form-control">
 											<option>Any</option>
@@ -162,27 +43,7 @@
 											<option>Other</option>
 										</select>
 					                 </div>
-				                 </div>
-
-					   </div>
-                   <div class="row">						  
-						   <div class="col-sm-6">	
-								<div class="form-group">
-							    	<label >Bedrooms:</label>
-										<select class="form-control">
-											<option>Any</option>
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5+</option>
-										</select>
-								 </div>
-							</div>
-
-
-                           <div class="col-sm-6">	
-								<div class="form-group">
+                               <div class="form-group">
 							    	<label>Rent or Buy</label>
 										<select class="form-control">
 											<option>Any</option>
@@ -190,10 +51,7 @@
 											<option>Buy</option>
 										</select>
 								</div>
-							</div>
-
-					</div>		
-                    <div class="row">						  
+								<div class="row">						  
 						    <div class="col-sm-6">	
 								<div class="form-group">
 							    	<label >Minimum Price</label>
@@ -207,97 +65,22 @@
 							      <input type="text" class="form-control" placeholder="Max">
 						         </div>
 							</div>
-					</div>
-                   <div class="row">					
-						<div class="col-sm-6 pull-right" style="margin-top: 10px;">
-							<button class="btn btn-primary pull-right" ng-click="showResult()" >Search</button>					
-						</div>
-					</div>       
-            </div>
+					       </div>
 
-			 <div class="row">
-
-
-                  
-
-                     <div ng-show="showSearch" class="col-md-12">  
-					    <h5>Search Result</h5>
-						 <div data-ng-view ></div>
-					 </div>
-                    </div>
-  
-  </div><!-- /.col-lg-6 -->
-	<div  class="col-md-3">
-    	<div class="panel panel-primary">
-         	<div class="panel-heading">Contact Us</div>
-         	<div class="panel-body">
-				<h4 ><span class="hidden-xs">Customer service: </span>+254 763 626283</h4>
-				<h4><small>24 hours a day, 7 days a week</small></h4>
-			</div>
-         </div>
-        <hr>
-        <div class="panel panel-primary">
-         	<div class="panel-heading">Map</div>
-         	<div class="panel-body">
-			 <ui-gmap-google-map center="map.center" 
-				zoom="map.zoom" 
-				draggable="true"
-				options="map.options"
-				control="map.control"
-				>
-				<marker idKey="1" coords="map.marker">
-				</marker>
-			</ui-gmap-google-map>
-			</div>
+						   <div class="form-group">
+							    	<button class="btn btn-primary " ng-click="showResult()" >Search</button>
+						 </form>
+                      </div>
+				 </div>
+			 </div>
+			 
         </div>
-	</div>
-				
-			
-		 </div>
-		</div><!-- /.col-lg-4 -->
-	</div>
-</div>
-<hr />	
-<div class="row cont">
-<footer>
-	<p class="pull-right"><a href="#">All content &copy; NanaTec 2014 </a></p>
-	<p>
-		<a href="index.html">Home</a> |
-		<a href="index.html">About</a> |
-		<a href="index.html">Typography</a> |
-		<a href="terms.html">Terms and Conditions</a> |
-		<a href="contact.html">Contact Us</a><br />
-		 
-	</p>
-</footer>
-
-</div>
-
-
-		 <!--[if lt IE 9]>
-    <script src="public/es5-shim/es5-shim.js"></script>
-    <script src="public/json3/lib/json3.min.js"></script>
-    <![endif]-->
-
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-	<script src='//maps.googleapis.com/maps/api/js?key=AIzaSyBEZrkDl1LuGxjnnI4WXC7U5nx41NOmxy8'></script>
-    <script src="lib/jquery/dist/jquery.min.js"></script>
-    <script src="lib/angular/angular.js"></script>
-    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="lib/angular-route/angular-route.js"></script>
-    <script src="lib/lodash/dist/lodash.min.js"></script>
-	<script src="lib/angular-google-maps/dist/angular-google-maps.min.js"></script>
-
-    <!-- endbower -->
-    <!-- endbuild -->
-
-
-	 <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <!-- Footer -->
+		    <div ng-include="'footer.html'"></div>
+   
+        <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
         <script src="scripts/Home/controller/main.js"></script>
-        <!-- endbuild -->
 
-<!-- Modal -->
 
 
 

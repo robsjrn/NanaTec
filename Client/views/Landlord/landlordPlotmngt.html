@@ -1,4 +1,4 @@
-<h5>Plot Management</h5>
+
 <div class="panel panel-default">
 					<div class="panel-heading">
 					   <button type="button" class="btn btn-info" ng-click="Addplot()" ng-disabled=!disableComponents>Add</button>
@@ -21,6 +21,11 @@
 
 
 							  <div class="col-md-4">
+				
+								   <label >Property Type</label>
+									<select class="form-control"  ng-model="LandlordPlot.PropertyType" ng-options="servicetype.name for servicetype in type" ng-disabled=disableComponents>
+									</select>
+			 
                              
 							         <label for="location">Location Name</label>
 									 <select class="form-control" placeholder="Location Name"  ng-model="LandlordPlot.location" ng-options="loca.name for loca in loc" ng-disabled=disableComponents >

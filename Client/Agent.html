@@ -1,101 +1,41 @@
-
-<!DOCTYPE html>
-<html lang="en"  >
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+<html  ng-app=""> 
   <head>
     <meta charset="utf-8">
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="public/bootstrap/dist/css/bootstrap.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="styles/landlord.css">
-    <!-- endbuild -->
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="Styles/Home/banner.css">
+	<script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+
+   
+   
+
   </head>
-  <body ng-app="AgentmngtApp">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
-    <!-- Add your site or application content here -->
-
-<div class="container">
-             <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
-		      
-				  <div class="navbar-header">
-					   <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-					  <a class="navbar-brand" href="#">
-					   <span class="glyphicon glyphicon-home"></span>
-					   <strong>Nana Agent</strong>
-					  </a>
-				 </div>
-					<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-					  <ul class="nav navbar-nav navbar-right">
-					    <li ><a href="#!/help"><i class="fa fa-question fa-fw"></i> Help</a></li>
-						<li ><a href="#!/about">About</a></li>
-						<li ><a href="#!/settings"><i class="fa fa-cogs fa-fw"></i> Settings</a></li>
-						<li class="divider"></li>
-						<li><a type="button"  ng-click="Logout()">Logout</a></li>
-					 </ul>
-	                  </nav>
-  
-          
-
-        </header>
-</div>
+  <body  >
+        <!-- Header -->
+		    <div ng-include="'Banner-Header.html'"></div>
+         <!-- Content -->
+		 <div class="container">
+		 <div class="pull-right">
+						<a href="Registration.html" class="btn btn-warning"><i class="fa fa-plus"></i><span class="text"> Agent Registration</span></a>
+					</div>
+		     
+		 </div>
+			 
+      
+             <!-- Footer -->
+		    <div ng-include="'footer.html'"></div>
+   
+        <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
+        <script src="scripts/Home/controller/Agent.js"></script>
 
 
 
- <h1>Under Construction</h1>
-         
 
-<div class="navbar navbar-default navbar-fixed-bottom">
-		         <div class="container" >
-			       <p>copyrights @Softsol 2014 </p>				    	
-               </div>
-  </div>
-
-
-  <!--[if lt IE 9]>
-    <script src="public/es5-shim/es5-shim.js"></script>
-    <script src="public/json3/lib/json3.min.js"></script>
-    <![endif]-->
-
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="public/jquery/jquery.js"></script>
-    <script src="public/angular/angular.js"></script>
-    <script src="public/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="public/angular-resource/angular-resource.js"></script>
-    <script src="public/angular-cookies/angular-cookies.js"></script>
-    <script src="public/angular-sanitize/angular-sanitize.js"></script>
-    <script src="public/angular-route/angular-route.js"></script>
-    <script src="public/angular-animate/angular-animate.js"></script>
-    <script src="public/angular-touch/angular-touch.js"></script>
-    <script src="public/angular-bootstrap/ui-bootstrap-tpls.min.js"></script> 
-    <script src="public/d3/d3.min.js"></script> 
-	<script src="public/angular-charts/dist/angular-charts.min.js"></script> 
-    <!-- endbower -->
-    <!-- endbuild -->
-
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        	<script src="scripts/controllers/AgentMngt.js"></script>
-        <!-- endbuild -->
- 
-			
-  </body>
+</body>
 </html>

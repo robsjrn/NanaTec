@@ -1,6 +1,6 @@
 'use strict';
 
-var Rentmngt= angular.module('RentmngtApp', ['ngRoute','google-maps'.ns()] ); 
+var Rentmngt= angular.module('RentmngtApp', [] ); 
 
 
  Rentmngt.controller('MainCtrl', function ($scope,$http,$window) {

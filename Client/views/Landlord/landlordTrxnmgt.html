@@ -1,5 +1,4 @@
-          <h5>Transaction Management</h5> 
-		  
+	  
 <div class="panel panel-default">
 					<div class="panel-heading">
 					 <button type="button" class="btn btn-info" ng-click="AddPayment()" ng-disabled=!disableComponents >Add</button>
@@ -74,7 +73,7 @@
 
                               <label for="rcpt">Receipt</label>
 							   <input type="text" class="form-control" placeholder="Receipt Number" id="rcpt" ng-model="Transaction.receiptno" ng-disabled=disableComponents ng-blur="Receipt()"> 
-                               <div ng-show="ReceiptFound" class="alert alert-danger"><strong>Receipt Already Paid to House {{Receiptdata.housenumber}} Amount {{Receiptdata.tranAmount}} Date {{Receiptdata.TransactionDate}}</strong></div>
+                               <div ng-show="ReceiptFound" class="alert alert-danger"><strong>Receipt Already Paid to House {{Receiptdata.housenumber}} Amount {{Receiptdata.tranAmount}} Date {{Receiptdata.transactiondate}}</strong></div>
 						 </div>
 						 <div class="col-md-4">
                            

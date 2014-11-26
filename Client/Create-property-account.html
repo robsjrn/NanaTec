@@ -1,0 +1,132 @@
+<!doctype html>
+
+<html  ng-app="Registration"> 
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="Styles/Home/banner.css">
+	<script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+
+   
+   
+
+  </head>
+  <body  >
+        <!-- Header -->
+		    <div ng-include="'Banner-Header.html'"></div>
+        <!-- Footer -->
+		    <div ng-include="'footer.html'"></div>
+         <!-- Content -->
+		 <div class="container" data-ng-controller="Mainctrl">
+		    <br>
+				<div class="row">
+					<div class="col-md-3">
+					<h3>One</h3>
+					</div>
+                		<div class="col-md-5">
+                         	  <br>
+							     <ul class="nav nav-tabs">
+								   <li class="active"><a data-toggle="tab" href="#login">Login</a></li>
+								   <li><a data-toggle="tab" href="#registration">Register</a></li>
+								</ul>
+									<div class="tab-content">
+										<div id="login" class="tab-pane fade in active">
+											<div  >
+									    <form class="form-signin" id="login">
+										      <h3 class="form-signin-heading"> <span class="fa fa-sign-in">Login</h3>
+										      <span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>
+										     <input type="text" class="form-control" name="username" placeholder="User Name" required="" ng-model="user.username" autofocus="" />
+										     <input type="password" class="form-control" name="password" placeholder="Password" ng-model="user.password" required=""/>      
+										   <br>
+										     <button ng-disabled="login.$invalid" ng-click="Userlogin()" class="btn btn-lg btn-primary btn-block" type="submit">Login</button> 
+										    <hr>
+										    <p> By Signing in, you confirm that you've reviewed & accepted the <a href="/Terms.html">Terms & Conditions.</a></p>
+										    <a  href="/AccountRecovery.html">Forgot Password</a>
+										   <br>
+										 
+										</form>
+									 
+										<div ng-show="invalidcredential" class="alert alert-danger"><strong>Invalid Credential !!!</strong> </div>  
+										  <div ng-show="noAccess" class="alert alert-danger"><strong>Sorry But you have no Access..Contact The Administrator</strong> </div>    
+										
+									  </div>
+										</div>
+										<div id="registration" class="tab-pane fade">
+                   <div ng-if="SuccessStatus" class="alert alert-success" role="alert">Account Created Proceed to <a data-toggle="tab" href="#login" >Login</a></div>
+                   <div ng-if="ErrorStatus" class="alert alert-error" role="alert">Error Occurred Kindly Retry Later</div>
+											 <form  name="Registrationfrm" novalidate>
+                                     		   <div class="form-group">
+													<label for="Names">Names </label>
+													<input type="text" class="form-control" placeholder="Names" name="Names"  ng-model="Registration.names" ng-minlength="5" required ng-disabled="disableComponents" />
+													<div class="error-messages" ng-if="interacted(Registrationfrm.Names)" ng-messages="Registrationfrm.Names.$error" ng-messages-include="error-messages"></div>
+												  </div>
+												  <div class="form-group">
+													<label for="cont">Contacts</label>
+													<input type="text" class="form-control" placeholder="Contacts" name="contact"  ng-model="Registration.contacts"  required ng-disabled=disableComponents />
+													<div class="error-messages" ng-if="interacted(Registrationfrm.contact)" ng-messages="Registrationfrm.contact.$error" ng-messages-include="error-messages"></div>
+												  </div>
+												   <p>Login Details</p>
+												   <div class="form-group">
+													<label for="cont">User Name</label>
+													<input type="text" class="form-control" 
+													placeholder="user Name" 
+													name="username"  
+													ng-model="Registration.username"
+													ng-model-options="{ debounce: 500, blur : 0 }"
+													check-username
+													required
+													ng-disabled=disableComponents
+													/>
+													<div class="error-messages" ng-if="interacted(Registrationfrm.username)" ng-messages="Registrationfrm.username.$error" ng-messages-include="error-messages">
+													<div ng-message when="usernameAvailable">
+														User name Taken
+													  </div>
+													</div>
+													<span  ng-show="Registrationfrm.username.$pending">Checking Availability . . .</span>
+												  </div>
+												 <div class="form-group">
+													<label for="Password">Password</label>
+													<input type="password"  class="form-control" id="pwd" name="pwd" ng-model="Registration.password" ng-minlength="5"  placeholder="New Password" required ng-disabled=disableComponents />	<div class="error-messages" ng-if="interacted(Registrationfrm.pwd)" ng-messages="Registrationfrm.pwd.$error" ng-messages-include="error-messages"></div>									
+													 </div>
+													<div class="form-group">
+													  <label for="ConfirmPassword">Confirm Password</label>
+														<input type="password"  class="form-control" id="Confirmpwd" name="Confirmpwd" ng-model="confirmpwd" placeholder="Confirm Password"  required 
+														match-validator="Registration.password" ng-disabled=disableComponents />
+														<div class="error-messages" ng-if="interacted(Registrationfrm.Confirmpwd)" ng-messages="Registrationfrm.Confirmpwd.$error" ng-messages-include="error-messages">
+														   <div ng-message="match">The password do not match</div>
+														</div>
+												  </div>
+														
+													<div class="form-group">
+													  <button class="btn btn-primary btn-block" ng-click="Save()" >Create Account</button>	
+												</div>   	
+											  </form>
+										</div>
+									</div>
+							</div>
+
+					<div class="col-md-4">
+					<h4>Two</h4>
+					</div>
+			</div>
+			 
+        </div>
+
+   
+         <script src="lib/bootstrap/dist/js/bootstrap.js"></script> 
+		  <script src="lib/angular-messages/angular-messages.min.js"></script>
+         <script src="scripts/Home/controller/CreateAccount.js"></script>
+
+  <script type="text/ng-template" id="error-messages">
+      <div ng-message="required">This field is required</div>
+      <div ng-message="minlength">This field is too short</div>
+  </script>
+
+
+</body>
+</html>

@@ -1260,7 +1260,14 @@ exports.ContactExists=function(req, res) {
 });
 };
 
-
+exports.UsernameExists=function(req, res) {
+ db.collection('property', function(err, collection) {
+  collection.findOne({"username":req.body.username},function(err, item){
+  if(item){ res.status(200).json({exist: true})}
+  else {DbError(res);}
+});
+});
+};
 
 exports.Documents=function(req, res) {
  db.collection('Documents', function(err, collection) {

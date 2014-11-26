@@ -1,0 +1,112 @@
+<!doctype html>
+
+<html  ng-app="RentmngtAppLandlordAgent"> 
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="Styles/Home/banner.css">
+	<script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+
+   
+   
+
+  </head>
+  <body  >
+        <!-- Header -->
+		    <div ng-include="'Banner-Header.html'"></div>
+         <!-- Content -->
+		 <div class="container">
+		    <br>
+			<div class="container">
+				    <div class="row">
+					    <div class="col-md-8">
+                             <div class="well"> 
+							     <h5>What we Do for You</h5>
+								 <hr>
+								 <p>We Help You Reach qualified renters at the best time during the rental search.</p>
+                                 <p>Save time and money by getting new tenants as soon as possible after someone moves  out. </p> 
+								 <p>Get reliable, accurate reports.	</p>
+								 <p>Close vacancies faster.	</p>
+									
+						     </div> 
+						</div>  
+						 <div class="col-md-4">
+						   <div class="panel panel-default">
+							  <div class="panel-heading">
+								<h4 class="label label-primary">Landlord Registration</h4>
+							 </div>
+							  <div class="panel-body">
+						<form name="userForm"  novalidate>
+							    <label for="idnumber">ID Number</label>
+								<span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>	
+								<input type="text" class="form-control" placeholder="Identification Document" name="idnumber" ng-blur="CheckidExists()" ng-model="landlord.id"  ng-disabled=disableComponents required />
+                              	<div ng-show="userExist" class="alert alert-danger"><strong>ID Already Used</strong> </div>
+											
+								<label for="Names">Names</label>
+								<input type="text" class="form-control" placeholder="Names" id="Names" ng-model="landlord.names" ng-disabled=disableComponents required/>
+
+								
+								<label for="cont">Contacts</label>
+								 <span ng-show="ContactSpinner"><i class="fa fa-refresh fa-spin"></i></span>
+								   <input type="number" class="form-control" placeholder="Contact" name ="cont" ng-model="landlord.contact" ng-blur="CheckPhonenumberExists()" ng-disabled=disableComponents required ng-pattern="/^07[0-9]+$/" ng-minlength=10  ng-maxlength=10  />
+								   <div ng-show="userForm.cont.$error.pattern">e.g 0722111111</div>
+								   <div ng-show="userForm.cont.$error.minlength">Should be atleast 10 Characters</div>
+								   <div ng-show="userForm.cont.$error.maxlength">Cannot be more than 10 Characters</div>
+								   <div ng-show="contactExist" class="alert alert-danger"><strong>Contact Already Used</strong> </div>
+                                
+                             <hr>
+                               <p>Create Password </p> 
+								<label for="Password">Password</label>
+								<input type="password"  class="form-control" id="pwd" name="pwd" ng-model="landlord.password" ng-minlength="5" ng-disabled=disableComponents placeholder="New Password" required/>
+								<div ng-show="userForm.cont.$dirty">
+								<p ng-show="userForm.pwd.$error.required" class="help-block alert alert-danger">Password Required</p>
+								<p ng-show="userForm.pwd.$error.minlength" class="help-block alert alert-danger">Password too Short</p>
+                                </div>
+
+								<label for="ConfirmPassword">Confirm Password</label>
+								<input type="password"  class="form-control" id="Confirmpwd" name="Confirmpwd" ng-model="confirmpwd" placeholder="Confirm Password" ng-disabled=disableComponents required pw-check="pwd"/>
+								<div ng-show="userForm.Confirmpwd.$dirty">
+								<p ng-show="userForm.Confirmpwd.$error.required" class="help-block alert alert-danger">Please Confirm your password</p>
+								<p ng-show="userForm.Confirmpwd.$error.pwcheck" class="help-block alert alert-danger">Passwords do not match </p>
+								</div>
+								 <hr>
+
+
+						</form>				 
+							  </div>
+							   <div class="panel-footer">
+									 <button type="button" class="btn btn-warning" ng-click="AddLandlord()">Add</button>
+									<button type="button" class="btn btn-primary " ng-click="SaveLandlord()" ng-disabled="userForm.$invalid"  >Save</button>
+							<button type="button" class="btn btn-danger" ng-click="Clear()" ng-disabled=disableComponents>Clear</button>
+									 </div>
+				
+							</div>
+							<div ng-show="ErrorStatus" class="alert alert-danger"><strong>Database Error</strong> </div>  
+							<div ng-show="SuccessStatus" class="alert alert-success"><strong>Landlord</strong> Successfully Saved</div>
+						</div>
+					
+					</div>  
+               </div>  
+			 
+        </div>
+
+         <!-- Footer -->
+		<div ng-include="'footer.html'"></div>
+
+
+
+
+        <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
+        <script src="lib/angular-route/angular-route.js"></script>
+        <script src="scripts/Home/controller/LandlordAgentMngt.js"></script>
+
+
+
+
+</body>
+</html>

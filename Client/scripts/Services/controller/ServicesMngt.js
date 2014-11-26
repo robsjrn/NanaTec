@@ -2,31 +2,13 @@
 
 'use strict';
 
-var ServiceMngt= angular.module('RentmngtAppServices', ['ngRoute'] ); 
+var ServiceMngt= angular.module('RentmngtAppServices', [] ); 
 
 
-ServiceMngt.config(function($routeProvider,$locationProvider)	{
 
-$locationProvider.hashPrefix("!");
-
-  $routeProvider
-	 
- .when('/enlistService', {
-     templateUrl: '/templates/Enlist.html',   
-      controller: 'Enlistctrl'
-        })
-  .when('/ViewService', {
-     templateUrl: '/templates/ViewServices.html',   
-     controller: 'ViewServicectrl'
-        })
-	.otherwise({
-         redirectTo: '/ViewService'
-      });
-
-});
 
  ServiceMngt.controller('mainctrl', function ($scope,$http) {
-
+  $scope.errorMsg="mt test error msg";
 	
   });
 
@@ -114,3 +96,23 @@ $scope.add=function(){
   
      
  });
+
+
+  ServiceMngt.directive('eqValidate', function( ) {
+      var link = function($scope, element, attrs,ngModel) {
+            console.log(attrs.eqValidate);
+		  if (attrs.eqValidate)
+		    { doValidation(attrs.type); }	  
+	       };
+		  function doValidation(type){
+			   console.log("Doing valdation....on type ." + type);
+			}
+
+	   return {
+        restrict: 'A',
+        require: 'ngModel',    
+        link: link
+    };
+ });
+
+   

@@ -58,23 +58,6 @@ $http.post('/web/property/ContactExists',qerr)
 
 	
 
-		 $scope.Save=function(){
-			  $scope.property.AccessStatus=1;
-              $scope.property.datecreated=new Date().toISOString();
-           var data={"PropertyDet":$scope.property};
-			   $http.post('/web/property/CreatePropertyOwner', data)
-						 .success(function(data) {
-                                 $scope.SuccessStatus=true; 
-								 $scope.ErrorStatus=false;
-								  $scope.disableComponents=true;
-								  $scope.property="";
-							 }) 
-						 .error(function(data) {
-								 $scope.ErrorStatus=true;
-								  $scope.disableComponents=true;
-							 });
-
-     };
 
 	$scope. clear=function(){
 
@@ -83,25 +66,6 @@ $http.post('/web/property/ContactExists',qerr)
 		 
 	
   });
-EnlistPropertyMngt.controller('loginCtrl', function ($scope,$http,$window) {
-	
-     $scope.noFullyConfigured=false;
-    $scope.showSpinner=false;
-       $scope.Userlogin=function(){
-               $scope.showSpinner=true;
-                $http.post('/web/property/login',$scope.user)
-				 		 .success(function(data) {
-								     $scope.invalidcredential=false;
-									$window.sessionStorage.token = data.token;
-									  $window.location.href='/PropertyRegistration.html';
-									   
-							 }) 
-						 .error(function(data) {
-							   $scope.invalidcredential=true;
-							    $scope.showSpinner=false;
-							    delete $window.sessionStorage.token;
-							 });	
-      };
 
 
 
