@@ -3,7 +3,7 @@
 var Registration= angular.module('Registration', ['ngMessages'] ); 
 
 Registration.controller('Mainctrl', function($scope,$http,$window,CreateAcctService) {
-
+//remove
  $scope.Registration={};
  $scope.Registration="";
  $scope.submitted = false;
