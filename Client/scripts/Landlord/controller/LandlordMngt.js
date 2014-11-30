@@ -1901,7 +1901,7 @@ ngProgress.start();
 	  
    }
 
-	  data={"update":{
+	 var data={"update":{
 		 "tenantupdate":{"AgreementStatus":true,"AccessStatus":0,"hsestatus":1,"housename":$scope.House.housename.number,"balance":bal},
 		 "houseUpdate":{"status":"rented","tenantid":$scope.Tenant.names._id},
          "Trxn":{"tenantid":$scope.Tenant.names._id, "housenumber":$scope.House.housename.number,
