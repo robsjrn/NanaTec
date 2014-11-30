@@ -860,9 +860,8 @@ exports.Landlordphotoupload = function(req, res) {
 
 
 exports.TotalUnpaid= function(req, res) {
-
   db.collection('user', function(err, collection) {
-    collection.aggregate([ { $match: { "Landlordid" : req.user._id ,"balance":{$gte: 0} }},{ $group: {_id: "$Landlordid" , total: { $sum: "$balance" } } } ] , function(err, result) {
+    collection.aggregate([ { $match: { "Landlordid" : req.user._id ,"balance":{$gte: 0},"hsestatus" : 1 }},{ $group: {_id: "$Landlordid" , total: { $sum: "$balance" } } } ] , function(err, result) {
          if (result){  res.status(200).json({total: result}); }
 		 else{ DbError(res);}
 	});
