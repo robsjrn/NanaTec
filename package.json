@@ -16,7 +16,7 @@
     "handlebars": "^2.0.0",
     "jade": "latest",
     "jwt-simple": "latest",
-    "kue": "latest",
+    "kue": "^0.8.9",
     "moment": "^2.8.3",
     "mongodb": "latest",
     "multer": "latest",

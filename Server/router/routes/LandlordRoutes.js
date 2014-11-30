@@ -27,7 +27,10 @@ router.get('/LandlordTenants',ensureAuthenticated,DatabaseConn.LandlordTenants);
 router.post('/createTenant',ensureAuthenticated,DatabaseConn.CreateTenant);
 router.post('/createHouse',ensureAuthenticated,DatabaseConn.CreateHouse);
 router.post('/CheckPlotExist',DatabaseConn.CheckPlotExist);
-router.post('/CheckHseNoExists',DatabaseConn.CheckHseNoExists);
+router.post('/CheckHseNoExists',ensureAuthenticated,DatabaseConn.CheckHseNoExists);
+router.post('/hseLookup',ensureAuthenticated,DatabaseConn.hseLookup);
+router.post('/updateHsedetails',ensureAuthenticated,DatabaseConn.updateHsedetails);
+
 
 	router.post('/LandlordAddPlots',ensureAuthenticated,DatabaseConn.LandlordAddPlots);
 	router.post('/Landlordphotoupload',ensureAuthenticated,DatabaseConn.Landlordphotoupload);

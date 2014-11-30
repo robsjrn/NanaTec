@@ -431,7 +431,50 @@ $http.post('/web/CheckPhonenumberExists',qerr)
   
 });
 
+landlordtmngt.controller('housemngtEditctrl', function($scope,$rootScope,$http,ngProgress) {
+   $scope.hsetype=$rootScope.hsetype;
+   $scope.house={};
+   $scope.disableComponents=true;
 
+       $scope.houseupdate=false;
+	   $scope.houseupdateError=false;
+
+      $scope.searchHse=function(){
+		  ngProgress.start();
+		  var data={"id":$scope.house.id}      
+	             $http.post('/web/Landlord/hseLookup',data)
+				 		 .success(function(data) {
+			                  $scope.house=data;
+							  $scope.disableComponents=false;
+							   ngProgress.complete();
+							   $scope.housenotfound=false;
+
+							 }) 
+						 .error(function(data) {
+							  ngProgress.complete();
+                              $scope.housenotfound=true
+			            });
+		   
+       };
+
+	   $scope.update=function(){
+		   ngProgress.start();
+		          $http.post('/web/Landlord/updateHsedetails',$scope.house)
+				 		 .success(function(data) {
+							    $scope.houseupdateError=false;
+								$scope.houseupdate=true;
+							  ngProgress.complete();
+							 }) 
+						 .error(function(data) {
+							 console.log(data);
+							  ngProgress.complete();
+							  $scope.houseupdateError=true;
+							   $scope.houseupdate=false;
+			            });
+
+       };
+
+});
 landlordtmngt.controller('housemngtctrl', function($scope,$rootScope,$http,ngProgress) {
    $scope.House={};
      $scope.housecreated=false;
@@ -441,17 +484,13 @@ landlordtmngt.controller('housemngtctrl', function($scope,$rootScope,$http,ngPro
  
     $scope.House.status="vacant";
 	$scope.plot=$rootScope.plot;
- 
 	$scope.hsetype=$rootScope.hsetype;
-
-
      $scope.addHouse=function(){
           $scope.disableComponents=false; 
 		  $scope.housecreated=false;
 			 $scope.houseterror=false;
 			    $scope.House.plot=$scope.plot[0];
 				$scope.House.type=$scope.hsetype[0];
-
 				$scope.House.number="";
 				$scope.House.amount="";
                 $scope.House.description="";
@@ -484,11 +523,13 @@ $scope.CheckHseNoExists=function(){
   $scope.clearTenant=function(){
          $scope.House="";
   };
-          $scope.saveHouse=function(){
 
-                $scope.userForm.hsenum.$setValidity("size", false);
-
-			     $scope.disableComponents=true;
+  $scope.edithouse=function(){
+         alert("editing house..");
+  };
+     $scope.saveHouse=function(){
+     $scope.userForm.hsenum.$setValidity("size", false);
+     $scope.disableComponents=true;
 				 ngProgress.start();
 				 $scope.House.landlordid=$rootScope.landlordDetails._id;
                    $http.post('/web/Landlord/createHouse', $scope.House)
@@ -1736,7 +1777,7 @@ $scope.Update=function(){
 
 ngProgress.start();
 
-	 data={"update":{
+	var data={"update":{
 		 "tenantupdate":{"hsestatus":0,"housename":$scope.crit.housename},
 		 "houseUpdate":{"status":"vacant","tenantid":$scope.crit._id},
 		 "details":{"_id":$scope.crit._id,"number":$scope.crit.housename}
@@ -2619,9 +2660,19 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
       controller: 'tenantctrl'
         })
   .when('/housemngt', {
+     templateUrl: 'views/Landlord/Houseselect.html',   
+     controller: 'housemngtctrl'
+        })
+
+    .when('/landlordHousemngt', {
      templateUrl: 'views/Landlord/landlordHousemngt.html',   
      controller: 'housemngtctrl'
         })
+     .when('/landlordEditHousemngt', {
+     templateUrl: 'views/Landlord/landlordEditHousemngt.html',   
+     controller: 'housemngtEditctrl'
+        })
+			
    .when('/plotmngt', {
        templateUrl: 'views/Landlord/landlordPlotmngt.html',   
        controller: 'plotmngtctrl'  

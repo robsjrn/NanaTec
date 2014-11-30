@@ -1,0 +1,44 @@
+<div class="panel panel-default">
+					<div class="panel-heading">
+					    <h5>Edit House Details</h5> 
+					</div>
+				    	<div class="panel-body">
+					      <div class="row">
+							 <div class="col-xs-4 ">
+							   <input type="text" class="form-control" placeholder="House Id" id="houseid"   ng-model="house.id" />
+							</div>
+							  <div class="col-xs-4 ">
+								 <button type="button" class="btn btn-warning"   ng-click="searchHse()">Search</button>
+							  </div>
+							  <div class="col-xs-4 ">
+							   <div ng-show="housenotfound" class="alert alert-danger"><strong>House Not Found</strong></div>
+                             </div>
+					     </div>	
+                        <hr>
+                       <div class="row">
+                              <div class="col-xs-4">
+							     <label for="pltname">Plot Name</label>
+							       <input type="text" class="form-control" placeholder="Plot Name" id="pltname" ng-model="house.plot.Plotname" disabled />
+							    <label for="hseno">House Number</label>
+							      <input type="text" class="form-control" placeholder="House Number" id="hseno" ng-model="house.number" disabled />
+
+                                    <label for="desc">Description </label>
+								 <textarea class="form-control" rows="3" id="desc" ng-model="house.description" ng-disabled=disableComponents required></textarea>
+
+							 </div>
+							   <div class="col-xs-4">
+								   <label for="hseno">House Type</label>
+									<select class="form-control"  ng-model="house.type" id="hsetype" ng-options="h.name for h in hsetype" ng-disabled=disableComponents required>    
+			                       </select>
+								  <label for="trxn">Amount</label>
+							      <input type="number" class="form-control" placeholder="Amount" id="amt" ng-model="house.amount" ng-disabled=disableComponents />
+							   </div>
+                     </div>
+					 </div>
+					 <div class="panel-footer">
+					   <button type="button" class="btn btn-success" ng-click="update()" ng-disabled=disableComponents>Update</button>
+					</div>
+                                     
+ </div>
+ <div ng-show="houseupdate" class="alert alert-success"><strong>Update Successfull</strong></div>	
+ <div ng-show="houseupdateError" class="alert alert-danger"><strong>Error Occurred</strong></div>

@@ -38,7 +38,7 @@ MongoClient.connect("mongodb://localhost:27017/RentalDB", function(err, database
 });
 
 function DbError(res){
-	res.status(500).json({error: "database Error"}) ;
+	res.status(404).json({error: "database Error"}) ;
 }
 
 function Success(res){
@@ -1202,6 +1202,27 @@ exports.findEmail=function(id,callback) {
   
 };
 
+
+exports.hseLookup=function(req, res) {
+ db.collection('House', function(err, collection) {
+	collection.findOne({$and: [ { "landlordid":req.user._id},{"number" : req.body.id}]},{_id:0},function(err, item){
+		if(item){res.send(item);}
+		else  {DbError(res);}
+	});
+	});
+};
+
+exports.updateHsedetails=function(req, res) {
+	
+ db.collection('House', function(err, collection) {
+	collection.update( { "landlordid":req.user._id,"number" : req.body.number},req.body,function(err, item){
+		if(err){
+			console.log(err);
+			DbError(res);}
+		else  {Success(res);}
+	});
+	});
+};
 
 
 exports.CheckPlotExist=function(req, res) {
