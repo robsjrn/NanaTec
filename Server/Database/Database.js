@@ -953,6 +953,20 @@ exports.OccupiedHouseReport= function(plot,fn) {
 });
 };
 
+exports.AllHouses= function(plot,fn) {
+  db.collection('House', function(err, collection) {
+ collection.find({"plot.Plotname": plot},{plot:0,status:0,_id:0},{ sort: "number" }).toArray( function(err, item){
+  if(item){
+	  fn(null,item);
+}
+  if (err) {fn(err,null);}
+
+});
+});
+};
+
+
+
 exports.vacantHouseReport= function(plot,fn) {
   db.collection('House', function(err, collection) {
  collection.find({$and: [{"plot.Plotname": plot},{"status":"vacant"}]},{plot:0,status:0,_id:0},{ sort: "number" }).toArray( function(err, item){

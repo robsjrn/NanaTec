@@ -29,6 +29,6 @@ var tokenSecret='1234567890QWERTY';
   router.post('/OccupiedHouses',reports.OccupiedHouses);
   router.post('/VacantHouses',reports.VacantHouses);
   router.post('/TransactionReport',reports.TransactionReport);
-
+router.post('/AllHouses',reports.AllHouses);
 
 module.exports = router;

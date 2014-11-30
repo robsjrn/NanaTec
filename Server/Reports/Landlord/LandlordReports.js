@@ -346,3 +346,63 @@ exports.TransactionReport=function(req,res) {
 
 
 };
+
+
+
+exports.AllHouses=function(req,res) {
+
+
+
+   
+   fs.readFile(__dirname + '/Templates/AllHouses.html', 'utf8', function(err, html){
+	   if (err){ res.status(501);}
+	  
+      else{
+		     
+             DatabaseConn.AllHouses(req.body.plot,function(err,data){
+			     if (data)
+					 {
+					     var template = Handlebars.compile(html);
+
+					     var tenant ={"ReportFor":req.body.plot, "data1":data};
+					     var result = template(tenant); 
+                         var dat={};
+
+					dat.result=result;
+                 
+				   if (req.body.option==="view")
+				   {  
+					   res.status(200).json(dat)
+				   }
+					   else{
+                         var id =uuid.v4(),
+							 reportname='./Client/Downloads/'+id+'.pdf'
+						  
+						        var options={
+								   "html" : result,
+								   "css"  :'./Client/styles/Reports/Report.css'
+									   };
+							pdf.convert(options, function(result) {
+								result.toFile(reportname, function() {								
+									    var file={};
+										   file.filename=id,
+										   file.filelocation=reportname
+									    res.status(200).json(file) 
+								  
+								
+								});
+							});
+					   }
+                     
+			    	 }
+				 else{res.status(501);};
+		    
+	            });
+	        }
+
+		});
+
+
+
+
+};

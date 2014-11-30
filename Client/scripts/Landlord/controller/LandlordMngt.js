@@ -2332,6 +2332,81 @@ ngProgress.start();
 	};
 
 });
+
+
+
+landlordtmngt.controller('AllHousectrl', function($scope,$http,$rootScope,$window,ngProgress) {
+
+
+                    $scope.landlordplots=$rootScope.plot;
+   $scope.numPerPage=6;
+  $scope.showData=false;
+  $scope.showError=false;
+  $scope.ViewReport=false;
+  $scope.ViewDownloadReport=false;
+$scope.disablebtn=true;
+
+  $scope.selectReport=function(name){
+	  $scope.pname=name;
+	  $scope.disablebtn=false;
+  };
+
+   $scope.ShowReport=function(){
+	    ngProgress.start();
+	    $scope.reportData={
+	                   "plot":$scope.pname,
+                       "option":"view"
+                    };
+	  
+               $http.post('/web/Reports/AllHouses', $scope.reportData)
+						 .success(function(data) {
+				    ngProgress.complete();
+                       $scope.ViewReport=true;
+					   $scope.ViewDownloadReport=false;
+                       $scope.content=data.result;
+					
+								
+							 }) 
+						 .error(function(data) {
+
+							$scope.ViewReport=false;
+							$scope.ViewDownloadReport=false;
+							 ngProgress.complete();
+								  $scope.showData=false;
+							 });
+							   
+	
+   }
+
+
+    $scope.DownloadReport=function(){
+            
+ngProgress.start();
+			$scope.reportData={
+	                   "plot":$scope.pname,
+                       "option":"download"
+                    };
+               $http.post('/web/Reports/AllHouses', $scope.reportData)
+						 .success(function(data) {
+				    ngProgress.complete();
+                      $scope.ViewReport=false;
+		         	$scope.ViewDownloadReport=true;
+					    $scope.file=data;
+								
+							 }) 
+						 .error(function(data) {
+							$scope.ViewReport=false;
+							$scope.ViewDownloadReport=false;
+							 ngProgress.complete();
+								  $scope.showData=false;
+							 });
+        
+
+	};
+
+
+});
+
 landlordtmngt.controller('VacantHousectrl', function($scope,$http,$rootScope,$window,ngProgress) {
                     $scope.landlordplots=$rootScope.plot;
    $scope.numPerPage=6;
@@ -2763,6 +2838,10 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
   .when('/VacantHouseReport', {
      templateUrl: 'views/Landlord/ReportsViews/VacantHouseReport.html',   
      controller: 'VacantHousectrl'
+        })
+    .when('/AllHouseReport', {
+     templateUrl: 'views/Landlord/ReportsViews/AllHouseReport.html',   
+     controller: 'AllHousectrl'
         })
 .when('/Notice', {
      templateUrl: 'views/Landlord/LandlordNotice.html',   
