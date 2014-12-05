@@ -917,7 +917,8 @@ exports.TenantUnpaidReport= function(plot,fn) {
   db.collection('user', function(err, collection) {
   collection.find({$and: [{"plot.Plotname": plot},{"hsestatus":1},{"balance":{$gt: 0}}]},{ sort: "housename" }).toArray( function(err, item){
   if(item){
-	  fn(null,item);
+	  //added the sort capability ..
+	  fn(null,item.sort(function(a,b){return Number(a.housename) -Number(b.housename)}));
 }
   if (err) {fn(err,null);}
 
