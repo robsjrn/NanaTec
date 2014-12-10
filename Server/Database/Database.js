@@ -1133,7 +1133,9 @@ exports.GetProperty=function(req, res) {
  db.collection('PropertyDetails', function(err, collection) {
  collection.findOne({$and:[{"Owner":req.user.username},{"propertyname":req.body.propertyname}]}, function(err, item){
   if(item){
-  res.send(item);}
+	  res.status(200).json(item);}
+   else{DbError(res);}
+  
   if (err) {DbError(res);}
     });
   });
