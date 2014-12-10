@@ -108,6 +108,7 @@ $http.post('/web/CheckPhonenumberExists',qerr)
 };
 
 $scope.SaveLandlord=function(){
+	alert("yesssss");
       $scope.landlord._id= $scope.landlord.id;
 	  $scope.landlord.role="landlord";
 	  $scope.landlord.AccessStatus=1;

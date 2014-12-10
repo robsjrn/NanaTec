@@ -291,7 +291,6 @@ PropertyRegistration.directive("ngFileSelect",function(){
   }
 });
 PropertyRegistration.controller('Viewsctrl', function ($scope,$http,$window,PropertyRegistration,ngProgress) {
-  $scope.test={"view":"Testiiiing"};
  
  $scope.checkProperty=function (prop) {
 	 var property={"propertyname":prop};
@@ -300,11 +299,17 @@ PropertyRegistration.controller('Viewsctrl', function ($scope,$http,$window,Prop
 			.success(function (data){
 			    $scope.propertyData=data
 				 $scope.photos=$scope.propertyData.PhotoDetails;
+				if (typeof $scope.photos==="undefined"){
+				  $scope.photoavailable=false;
+				}else{
 			  	$scope.Detail=$scope.photos[0];
+				$scope.photoavailable=true;
+				}
 				ngProgress.complete();
 			   })
 		   .error(function(data) {
 			   ngProgress.complete();
+			   $scope.photoavailable=false;
 		   });
 
  };

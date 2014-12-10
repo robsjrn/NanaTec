@@ -21,6 +21,17 @@ $scope.Data=[{"name":"Elgon Apartments","location":"Kahawa Sukari","contact":"07
     marker: {}
 };
 
+$scope.clickToast=function(){
+	
+    toastr.info('Testing mic one two three ...yeaaah')
+};
+
+$scope.closeToast=function(){
+	toastr['error']("Bad Bad Bad")
+	
+};
+
+
 $scope.showResult=function(){
 	$scope.showSearch=true;
 };

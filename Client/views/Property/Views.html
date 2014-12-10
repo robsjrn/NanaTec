@@ -6,6 +6,12 @@
 					<li class="list-group-item" ng-repeat="prop in properties"><a href="javascript:void(0)" ng-click="checkProperty(prop)">{{prop}}</a></li>			
 				  </ul>
 	  </div>
+	  <div data-ng-if="!photoavailable">
+	     <div class="col-lg-6">
+		    <h3>Photo(s) Unavailable ..<a href="#!/Photos">Upload</a></h3>
+		 </div>
+       </div>  
+      <div data-ng-if="photoavailable">
 		  <div class="col-lg-6">
 			<div class="slider">
 			<div  >
@@ -36,11 +42,12 @@
 			
 		   </div>
 		</div>
-
+    </div>
 		<div class="col-lg-4">
 		<br>
 		<div class="well">
 		       <h3>Property Details..</h3>
+            Name <p> {{propertyData.propertyname}} </p>
 		    Price <p> {{propertyData.value| currency:"KES "}} </p>
 			Size  <p>{{propertyData.Size}} </p>
 		   Description <p> {{propertyData.description}} </p>

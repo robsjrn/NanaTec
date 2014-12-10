@@ -29,7 +29,9 @@ var landlordtmngt= angular.module('LandlordmngtApp', ['ngResource','ngRoute','ui
 
 landlordtmngt.config(function ($httpProvider) {
   $httpProvider.interceptors.push('authInterceptor');
-});
+    });
+
+
 
 
 var ModalInstanceCtrl = function ($scope, $modalInstance, lat, lng,$timeout) {
@@ -53,8 +55,8 @@ $scope.plotnames="plot kasarani";
 
 };
 
-landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$window,LandlordFactory,$rootScope) {
-
+landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$window,LandlordFactory,$rootScope,notificationFactory) {
+ 
        LandlordFactory.getLordDetails()
 		 .success(function (data){
 			  $rootScope.landlordDetails=data
@@ -63,7 +65,7 @@ landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$window,Landl
 		  	   } else{$rootScope.plot=[];}	
 			   })
 		   .error(function(data) {
-		      console.log("Error Configuring landlord Details");
+			  notificationFactory.error("Error Configuring Your Details Refresh");
 		   });
 		   
          
@@ -75,7 +77,7 @@ landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$window,Landl
 	          $rootScope.hsetype=data.hsetype;
 			  })
 		   .error(function(data) {
-		     console.log("Error Configuring Configuration Details");
+		     notificationFactory.error("Error Configuring Your Details Refresh");
 		   });
 	 
 
@@ -103,8 +105,8 @@ landlordtmngt.controller('mapViewctrl', function($scope,$http,$window) {
 
   $scope.lat=0.2280945;
   $scope.lng=34.81523390000007;
-$scope.locationname="Kahawa";
-$scope.plotnames="plot Kahawa";
+  $scope.locationname="Kahawa";
+  $scope.plotnames="plot Kahawa";
  
 });
 
@@ -217,7 +219,7 @@ landlordtmngt.controller('editTenantCtrl', function modalController ($scope, $mo
 
 
 
-landlordtmngt.controller('VacateNoticectrl', function($scope,$rootScope,$http,ngProgress) {
+landlordtmngt.controller('VacateNoticectrl', function($scope,$rootScope,$http,ngProgress,notificationFactory) {
       $scope.disableSearchHse=true;
 	  $scope.disableTenantid=true;
   	 $scope.NoticeSent=false;
@@ -236,7 +238,7 @@ landlordtmngt.controller('VacateNoticectrl', function($scope,$rootScope,$http,ng
     ngProgress.start();
          $http.post('/web/Landlord/tenantDataID',  $scope.search)
 						 .success(function(data) {
-								
+							notificationFactory.success("Tenant Found.. "+data.names);	
 							  $scope.disableTenantid=true;
 							  $scope.search.housename=data.housename;
 							  $scope.search.names=data.names;
@@ -245,6 +247,7 @@ landlordtmngt.controller('VacateNoticectrl', function($scope,$rootScope,$http,ng
 						 .error(function(data) {
 							$scope.TenantNotFound=true;
 							 ngProgress.complete();
+							 notificationFactory.error("Tenant Not Found.. ");
 							 $scope.disableComponents=true;
 							 });
 
@@ -256,12 +259,14 @@ $scope.SearchHouseid=function(){
 						 .success(function(data) {
 							 
 								ngProgress.complete();
+								notificationFactory.success("House Found.. "+data.names);
 							    $scope.disableSearchHse=true;
 								$scope.search.tenantid=data._id;
 								 $scope.search.names=data.names;
 							 }) 
 						 .error(function(data) {
 							 ngProgress.complete();
+							 notificationFactory.error("House Not Found.. ");
 							$scope.TenantNotFound=true;
 							$scope.disableComponents=true;
 							 });
@@ -291,16 +296,19 @@ $scope.SearchHouseid=function(){
 						   .success(function(data) {
 							   ngProgress.complete();
 							  $scope.NoticeSent=true;
-	
+	                            notificationFactory.success("Notice Sent..");
 							 }) 
 							.error(function(data) {
 								 ngProgress.complete();
 								 $scope.btndisable=true;
 								 	$scope.NoticeSentError=true;
+									notificationFactory.error("Ooops Error Occurred..");
 								});
   }
   else{
+	  notificationFactory.error("Select a Tenant..");
 	  alert("You have to Select a Tenant");
+	  
   }
 	 
   };
@@ -311,7 +319,7 @@ $scope.SearchHouseid=function(){
 
 
 
-landlordtmngt.controller('tenantctrl', function($scope,$modal,$rootScope,$http,tenantlist,ngProgress) {
+landlordtmngt.controller('tenantctrl', function($scope,$modal,$rootScope,$http,tenantlist,ngProgress,notificationFactory) {
  $scope.tenantcreated=false;
  $scope.tenanterror=false;
  $scope.plots=$rootScope.plot;
@@ -330,6 +338,7 @@ $scope.CheckidExists=function(){
 				 		 .success(function(data) {
 			                  if (data.exist)
 			                     { $scope.userExist=true;
+							        notificationFactory.error("User Exists..");
 							        $scope.disableComponents=true;
 									$scope.Tenant._id="";
 							      }
@@ -353,6 +362,7 @@ $http.post('/web/CheckPhonenumberExists',qerr)
 			                  if (data.exist)
 			                     { $scope.contactExist=true;
 							        $scope.disableComponents=true;
+									notificationFactory.error("The Given PhoneNumber Exists..");
 									$scope.Tenant.contact="";
 							      }
 							   else{ $scope.contactExist=false; 
@@ -402,12 +412,14 @@ $http.post('/web/CheckPhonenumberExists',qerr)
 						 .success(function(data) {
 							    $scope.tenantcreated=true;
 								$scope.msg=data.success;
+								notificationFactory.success("New Tenant Saved Successfully..");
 								ngProgress.complete();
 							 }) 
 						 .error(function(data) {
 							 $scope.tenanterror=true;
 							 $scope.msg=data.error;
 							 ngProgress.complete();
+							 notificationFactory.success("Ooops Error Saving Details");
 							 });	
 
                      }
@@ -431,7 +443,7 @@ $http.post('/web/CheckPhonenumberExists',qerr)
   
 });
 
-landlordtmngt.controller('housemngtEditctrl', function($scope,$rootScope,$http,ngProgress) {
+landlordtmngt.controller('housemngtEditctrl', function($scope,$rootScope,$http,ngProgress,notificationFactory) {
    $scope.hsetype=$rootScope.hsetype;
    $scope.house={};
    $scope.disableComponents=true;
@@ -464,18 +476,21 @@ landlordtmngt.controller('housemngtEditctrl', function($scope,$rootScope,$http,n
 							    $scope.houseupdateError=false;
 								$scope.houseupdate=true;
 							  ngProgress.complete();
+							  notificationFactory.success("Details Saved Successfully");
 							 }) 
 						 .error(function(data) {
 							 console.log(data);
 							  ngProgress.complete();
 							  $scope.houseupdateError=true;
 							   $scope.houseupdate=false;
+							   notificationFactory.success("Ooops an Error Occurred");
+
 			            });
 
        };
 
 });
-landlordtmngt.controller('housemngtctrl', function($scope,$rootScope,$http,ngProgress) {
+landlordtmngt.controller('housemngtctrl', function($scope,$rootScope,$http,ngProgress,notificationFactory) {
    $scope.House={};
      $scope.housecreated=false;
 	 $scope.houseterror=false;
@@ -506,6 +521,7 @@ $scope.CheckHseNoExists=function(){
 			                     { $scope.HsenoExist=true;
 							        $scope.disableComponents=true;
 									$scope.House.number="";
+									notificationFactory.error("House Already Exists..")
 							      }
 							   else{ $scope.HsenoExist=false; 
 								      $scope.disableComponents=false;
@@ -544,6 +560,7 @@ $scope.CheckHseNoExists=function(){
 							   else{
 								$rootScope.landlordDetails.nohse =$rootScope.landlordDetails.nohse + 1;
                                 $rootScope.landlordDetails.expcMonthlyIncome=$rootScope.landlordDetails.expcMonthlyIncome+ $scope.House.amount;
+								    notificationFactory.success("House Saved...");
 								   }
 
 								
@@ -554,6 +571,7 @@ $scope.CheckHseNoExists=function(){
 							 $scope.houseterror=true;
 							 $scope.msg=data.error;
 							 ngProgress.complete();
+							  notificationFactory.error("Ooops Error Occured..");
 							 });	
                      }
 
@@ -693,7 +711,7 @@ landlordtmngt.controller('trxntypectrl', function($scope) {
 	    $scope.url='Singletransaction';
 			
 });
-landlordtmngt.controller('Edittransactiontctrl', function($scope,TrxnService, ngProgress) {
+landlordtmngt.controller('Edittransactiontctrl', function($scope,TrxnService, ngProgress, notificationFactory) {
 	$scope.disableComponents=true;
 	$scope.RcptNotFound=false;
 	$scope.RcptDeleted=false;
@@ -706,7 +724,7 @@ landlordtmngt.controller('Edittransactiontctrl', function($scope,TrxnService, ng
                        TrxnService.getTransaction(data)
 					         .success(function(data) {
 					            ngProgress.complete();
-					        if (data===""){  $scope.RcptNotFound=true;  }
+					        if (data===""){  $scope.RcptNotFound=true;  notificationFactory.error("Receipt Not Found..."); }
 							else {	
 								$scope.Detail =data;
 								$scope.RcptNotFound=false;
@@ -753,7 +771,7 @@ landlordtmngt.controller('Edittransactiontctrl', function($scope,TrxnService, ng
 
 
 
-landlordtmngt.controller('trxnmngtctrl', function($scope,$http,$rootScope,ngProgress, $window,$filter,tenant,BatchTrxnService,TrxnService) {
+landlordtmngt.controller('trxnmngtctrl', function($scope,$http,$rootScope,ngProgress, $window,$filter,tenant,BatchTrxnService,TrxnService,notificationFactory) {
 //first clear everything in the Batch Trxn Table 
 BatchTrxnService.Drop();
 
@@ -790,7 +808,9 @@ $scope.SearchType=[{id: 1, type: "_id", name: "Tenant Id"},
 
 $scope.searchData=function(searchtype){
    if (typeof searchtype =="undefined") {
+	    notificationFactory.error("Kindly Choose a Search Criteria..");
 	   alert("Kindly Choose a Search Criteria..");
+
 	    }
  else {
 
@@ -839,7 +859,9 @@ $scope.searchData=function(searchtype){
  try{
  $scope.Tenant.plot=$scope.landlordplots[0];
  }catch(e){
+	 notificationFactory.error("You Have to Add a Plot First..");
 	 alert("You Have to Add a Plot First..");
+
  }
 
 
@@ -901,6 +923,7 @@ $scope.Receipt=function(){
 									    $scope.userForm.$invalid=true;						   
 					                    $scope.Receiptdata=data;
 										$scope.ReceiptFound=true;
+										notificationFactory.error("Receipt Already Exists");
 										  ;}
 		  
 							 }) 
@@ -955,6 +978,7 @@ $scope.EditAmount=function(){
 $scope.InsertRec=function(){
   $scope.disableTotalAmount=true;
    if (typeof $scope.BatchTotal.Amount =="undefined") {
+	   notificationFactory.error("Kindly Enter the Total Amount");
 	   alert("Kindly Enter the Total Amount");
 	    }
 else {	
@@ -1071,20 +1095,26 @@ $scope.postBatchPayment=function(){
 	 $scope.disablePosting=true;
 	 $scope.BatchPayment=BatchTrxnService.list();
      ngProgress.start();
+	 notificationFactory.inprogress("Posting Data..");
                   $http.post('/web/Landlord/BatchRentalPayment', $scope.BatchPayment)
 						 .success(function(data) {
 							    $scope.paymentposted=true;
 								$scope.msg=data.success;
+								notificationFactory.clear();
 								ngProgress.complete();
+								notificationFactory.success("Data Successfully Posted.");
 							 }) 
 						 .error(function(data) {
 							 $scope.paymenterror=true;
 							 $scope.msg=data.error;
 							 ngProgress.complete();
+							 notificationFactory.error("Ooops Error Occurred..");
 							 });
               }
 $scope.postPayment=function(){
+
 ngProgress.start();
+notificationFactory.inprogress("Posting Data..");
  $scope.userForm.$invalid=true;
  $scope.disableComponents=true;
  var charges={};
@@ -1147,11 +1177,13 @@ ngProgress.start();
 							    $scope.paymentposted=true;
 								$scope.msg=data.success;
 								ngProgress.complete();
+								notificationFactory.success("Data Successfully Posted.");
 							 }) 
 						 .error(function(data) {
 							 $scope.paymenterror=true;
 							 $scope.msg=data.error;
 							 ngProgress.complete();
+							 notificationFactory.error("oops Error Occurred.");
 							 });
 
             }
@@ -1162,7 +1194,7 @@ ngProgress.start();
 
 
 
-landlordtmngt.controller('expensemngtctrl', function($scope,$http,$rootScope,ngProgress,tenant,$filter) {
+landlordtmngt.controller('expensemngtctrl', function($scope,$http,$rootScope,ngProgress,tenant,$filter,notificationFactory) {
 
 $scope.paymentposted=false;
 $scope.paymenterror=false;
@@ -1180,6 +1212,7 @@ $scope.SearchType=[{id: 1, type: "_id", name: "Tenant Id"},
 $scope.searchData=function(searchtype){
    if (typeof searchtype =="undefined") {
 	   alert("Kindly Choose a Search Criteria..");
+	   notificationFactory.error("Kindly Choose a Search Criteria..");
 	    }
  else {
 
@@ -1294,11 +1327,13 @@ $scope.AddExpense=function(){
 							    $scope.paymentposted=true;
 								$scope.msg=data.success;
 								ngProgress.complete();
+								notificationFactory.success("Expense Posted ..");
 							 }) 
 						 .error(function(data) {
 							 $scope.paymenterror=true;
 							 $scope.msg=data.error;
 							 ngProgress.complete();
+							 notificationFactory.error("Oooops Error occurred ..");
 							 });
 
 $scope.disableComponents=true;
@@ -1743,7 +1778,7 @@ $scope.ShowSentMailpopUp=function(mailinbox){
 
 
 
-landlordtmngt.controller('vacatectrl', function($scope,$http,$rootScope,ngProgress) {
+landlordtmngt.controller('vacatectrl', function($scope,$http,$rootScope,ngProgress,notificationFactory) {
 
 
  $scope.disableComponents=true;
@@ -1789,6 +1824,7 @@ ngProgress.start();
 	.success(function(data){
 		  ngProgress.complete();
       $scope.vacateupdate=true;
+	  notificationFactory.success("Vacation Success ..");
        
   })
 	.error(function(data) {
@@ -1840,7 +1876,7 @@ landlordtmngt.controller('LandlordProfilectrl', function($scope,$http,$rootScope
 
 });
 
-landlordtmngt.controller('rentctrl', function($scope,$http,$rootScope,ngProgress,$filter) {
+landlordtmngt.controller('rentctrl', function($scope,$http,$rootScope,ngProgress,$filter,notificationFactory) {
 $scope.Tenant={};
 $scope.House={};
 $scope.housetaken=false;
@@ -1916,13 +1952,14 @@ ngProgress.start();
 	.success(function(data){
 	  ngProgress.complete();
       $scope.housetaken=true;
-
+   notificationFactory.success("House Occupied Successfully ..");
        
   })
 	.error(function(data) {
 	  ngProgress.complete();
 		$scope.housetakenerror=true;
 		$scope.msg=data.error;
+		notificationFactory.error("Ooops Error Occurred ..");
 	 });	
 	  
    $scope.disableComponents=true;
@@ -2627,6 +2664,30 @@ landlordtmngt.directive('myMap', function(GoogleMapApi ) {
     };
 });
 
+landlordtmngt.factory('notificationFactory', function () {
+    toastr.options.positionClass = 'toast-top-right';
+    toastr.options.extendedTimeOut = 1000; //1000;	
+	toastr.options.hideMethod='fadeOut';
+	
+	return {
+        success: function (text) {
+			toastr.options.timeOut=600;
+            toastr.success(text,"Success");
+        },
+        error: function (text) {
+			toastr.options.timeOut=2000;
+            toastr.error(text, "Error");
+        },
+        inprogress: function (text) {
+			toastr.options.progressBar= true;
+			toastr.options.timeOut=5000;
+			toastr.options.hideDuration=1000;
+			toastr.options.showDuration=300;
+            toastr.warning(text, "Progress");
+        }
+    };
+});
+
 
 landlordtmngt.factory('LandlordFactory', ['$http','$rootScope', function($http,$rootScope) {
 	var url='/web/Landlord';
@@ -2667,7 +2728,7 @@ landlordtmngt.service('BatchTrxnService', function () {
 
     var data = [];
        var uid = 0;
-
+          var i;
     this.save = function (user) {
            user.traceid=uid++;
 		   data.push(user);

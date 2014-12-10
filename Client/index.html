@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="styles/Home/banner.css">
 	 <link rel="stylesheet" href="styles/Home/index.css">
+
 	<script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/angular/angular.js"></script>
 
@@ -21,7 +22,9 @@
         <!-- Header -->
 		    <div ng-include="'Banner-Header.html'"></div>
          <!-- Content -->
-		 <div class="container">
+		 <div class="container" data-ng-controller="MainCtrl">
+
+
 		     <div class="row" >
                  <div class="col-xs-12  col-md-4" >
 				    <div class="search">
@@ -76,13 +79,17 @@
 			 </div>
 			 
         </div>
+
+
+<button class="btn btn-primary" ng-click="clickToast()">test toast</button>
+<button class="btn btn-primary" ng-click="closeToast()">Cloase Toast</button>
     <!-- Footer -->
 		    <div ng-include="'footer.html'"></div>
    
         <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
         <script src="scripts/Home/controller/main.js"></script>
-
-
+ 
+   <script src="lib/toastr/toastr.min.js"></script> 
 
 
 </body>

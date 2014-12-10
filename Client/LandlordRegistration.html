@@ -12,93 +12,122 @@
 	<script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/angular/angular.js"></script>
 
-   
+                               
    
 
   </head>
   <body  >
         <!-- Header -->
 		    <div ng-include="'Banner-Header.html'"></div>
-         <!-- Content -->
-		 <div class="container">
-		    <br>
-			<div class="container">
-				    <div class="row">
-					    <div class="col-md-8">
-                             <div class="well"> 
-							     <h5>What we Do for You</h5>
-								 <hr>
-								 <p>We Help You Reach qualified renters at the best time during the rental search.</p>
-                                 <p>Save time and money by getting new tenants as soon as possible after someone moves  out. </p> 
-								 <p>Get reliable, accurate reports.	</p>
-								 <p>Close vacancies faster.	</p>
-									
-						     </div> 
-						</div>  
-						 <div class="col-md-4">
-						   <div class="panel panel-default">
-							  <div class="panel-heading">
-								<h4 class="label label-primary">Landlord Registration</h4>
-							 </div>
-							  <div class="panel-body">
-						<form name="userForm"  novalidate>
-							    <label for="idnumber">ID Number</label>
-								<span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>	
-								<input type="text" class="form-control" placeholder="Identification Document" name="idnumber" ng-blur="CheckidExists()" ng-model="landlord.id"  ng-disabled=disableComponents required />
-                              	<div ng-show="userExist" class="alert alert-danger"><strong>ID Already Used</strong> </div>
-											
-								<label for="Names">Names</label>
-								<input type="text" class="form-control" placeholder="Names" id="Names" ng-model="landlord.names" ng-disabled=disableComponents required/>
+           <!-- Content -->
+		    
+			<div class="container"  data-ng-controller="landlordctrl" >
 
-								
-								<label for="cont">Contacts</label>
-								 <span ng-show="ContactSpinner"><i class="fa fa-refresh fa-spin"></i></span>
-								   <input type="number" class="form-control" placeholder="Contact" name ="cont" ng-model="landlord.contact" ng-blur="CheckPhonenumberExists()" ng-disabled=disableComponents required ng-pattern="/^07[0-9]+$/" ng-minlength=10  ng-maxlength=10  />
-								   <div ng-show="userForm.cont.$error.pattern">e.g 0722111111</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+		<form role="form" name="userForm"  novalidate>
+			<h2>Please Sign Up <small>It's free and always will be.</small></h2>
+			<hr class="colorgraph">
+			<div class="row">
+				<div class="col-xs-6 col-sm-6 col-md-6">
+
+					<div class="form-group">
+                                <label for="idnumber">ID Number</label>
+								<span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>	
+								<input type="text" class="form-control input-lg" placeholder="Identification" name="idnumber" ng-blur="CheckidExists()" tabindex="1" ng-model="landlord.id"  ng-disabled=disableComponents required />
+                              	<div ng-show="userExist" class="alert alert-danger"><strong>ID Already Used</strong> </div>
+					</div>
+
+                 </div>
+				<div class="col-xs-6 col-sm-6 col-md-6">
+					      <div class="form-group">
+				                 <label for="cont">Contacts</label>
+							 	 <span ng-show="ContactSpinner"><i class="fa fa-refresh fa-spin"></i></span>
+								   <input type="number" class="form-control input-lg" placeholder="Contact" name ="cont" tabindex="2" ng-model="landlord.contact" ng-blur="CheckPhonenumberExists()" ng-disabled=disableComponents required  ng-minlength=10  ng-maxlength=10  />
 								   <div ng-show="userForm.cont.$error.minlength">Should be atleast 10 Characters</div>
 								   <div ng-show="userForm.cont.$error.maxlength">Cannot be more than 10 Characters</div>
-								   <div ng-show="contactExist" class="alert alert-danger"><strong>Contact Already Used</strong> </div>
-                                
-                             <hr>
-                               <p>Create Password </p> 
-								<label for="Password">Password</label>
-								<input type="password"  class="form-control" id="pwd" name="pwd" ng-model="landlord.password" ng-minlength="5" ng-disabled=disableComponents placeholder="New Password" required/>
+								   <div ng-show="contactExist" class="alert alert-danger"><strong>Contact Already Used</strong>
+								   </div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+                               <label for="Names">Names</label>
+								<input type="text" class="form-control input-lg" placeholder="Names" id="Names" tabindex="3" ng-model="landlord.names" ng-disabled=disableComponents required/>
+			</div>
+			<div class="form-group">
+			 <label for="idnumber">Email</label>
+				<input type="email" name="email" id="email" ng-model="landlord.email" class="form-control input-lg" placeholder="Email Address" tabindex="4" ng-disabled=disableComponents />
+			</div>
+
+
+
+			<div class="row">
+				<div class="col-xs-6 col-sm-6 col-md-6">
+					<div class="form-group">
+					          <label for="Password">Password</label>
+								<input type="password"  class="form-control input-lg" id="pwd" name="pwd" ng-model="landlord.password" ng-minlength="5" ng-disabled=disableComponents placeholder="New Password" tabindex="5" required/>
 								<div ng-show="userForm.cont.$dirty">
 								<p ng-show="userForm.pwd.$error.required" class="help-block alert alert-danger">Password Required</p>
-								<p ng-show="userForm.pwd.$error.minlength" class="help-block alert alert-danger">Password too Short</p>
-                                </div>
+								<p ng-show="userForm.pwd.$error.minlength" class="help-block alert alert-danger">Password too Short</p></div>
+					</div>
+				</div>
 
-								<label for="ConfirmPassword">Confirm Password</label>
-								<input type="password"  class="form-control" id="Confirmpwd" name="Confirmpwd" ng-model="confirmpwd" placeholder="Confirm Password" ng-disabled=disableComponents required pw-check="pwd"/>
+                                
+							
+
+				<div class="col-xs-6 col-sm-6 col-md-6">
+					<div class="form-group">
+					              <label for="ConfirmPassword">Confirm Password</label>
+								<input type="password"  class="form-control input-lg" id="Confirmpwd" name="Confirmpwd" ng-model="confirmpwd" tabindex="6" placeholder="Confirm Password" ng-disabled=disableComponents required pw-check="pwd"/>
 								<div ng-show="userForm.Confirmpwd.$dirty">
 								<p ng-show="userForm.Confirmpwd.$error.required" class="help-block alert alert-danger">Please Confirm your password</p>
-								<p ng-show="userForm.Confirmpwd.$error.pwcheck" class="help-block alert alert-danger">Passwords do not match </p>
-								</div>
-								 <hr>
-
-
-						</form>				 
-							  </div>
-							   <div class="panel-footer">
-									 <button type="button" class="btn btn-warning" ng-click="AddLandlord()">Add</button>
-									<button type="button" class="btn btn-primary " ng-click="SaveLandlord()" ng-disabled="userForm.$invalid"  >Save</button>
-							<button type="button" class="btn btn-danger" ng-click="Clear()" ng-disabled=disableComponents>Clear</button>
-									 </div>
+								<p ng-show="userForm.Confirmpwd.$error.pwcheck" class="help-block alert alert-danger">Passwords do not match </p></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
 				
-							</div>
-							<div ng-show="ErrorStatus" class="alert alert-danger"><strong>Database Error</strong> </div>  
+				<div class="col-xs-12 col-sm-9 col-md-9">
+					 By clicking <strong class="label label-primary">Register</strong>, you agree to the <a href="#" data-toggle="modal" data-target="#t_and_c_m">Terms and Conditions</a> set out by this site
+				</div>
+			</div>
+			                <div ng-show="ErrorStatus" class="alert alert-danger"><strong>Database Error</strong> </div>  
 							<div ng-show="SuccessStatus" class="alert alert-success"><strong>Landlord</strong> Successfully Saved</div>
-						</div>
-					
-					</div>  
-               </div>  
-			 
-        </div>
-
+			<hr class="colorgraph">
+			<div class="row">
+				<div class="col-xs-4 col-md-4"><button type="button"  class="btn btn-warning btn-block btn-lg" ng-click="AddLandlord()" tabindex="7" >Add</button></div>
+				<div class="col-xs-4 col-md-4"><button type="button"  class="btn btn-primary btn-block btn-lg" ng-click="SaveLandlord()" ng-disabled="userForm.$invalid" tabindex="8" >Save</button></div>
+				<div class="col-xs-4 col-md-4"><button type="button" class="btn btn-success btn-block btn-lg" ng-click="Clear()" ng-disabled=disableComponents >Clear</button></div>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel">Terms & Conditions</h4>
+			</div>
+			<div class="modal-body">
+			
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">I Agree</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</div>
+		
+          <!-- end content -->
          <!-- Footer -->
 		<div ng-include="'footer.html'"></div>
 
-
+          <!--End Footer -->
 
 
         <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
