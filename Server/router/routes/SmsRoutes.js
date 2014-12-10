@@ -21,10 +21,10 @@ router.post('/inboundVoice', function(request, response) {
          this.say('For balance inquiry, press 1. For support, press 2.');
  
     });
-	 res.writeHead(200, {
+	 response.writeHead(200, {
         'Content-Type':'text/xml'
     });
-    res.end(resp.toString());
+    response.end(resp.toString());
 
 });
 
