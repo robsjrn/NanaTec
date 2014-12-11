@@ -8,3 +8,12 @@
   height: 80%;
   margin-top: 15px
  }
+
+
+
+ @media all and (min-width: 481px) and (max-width: 768px) {
+  .cont{
+    height: 80%;
+    margin-top: 5px
+  }
+}
