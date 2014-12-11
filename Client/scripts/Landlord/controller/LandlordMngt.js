@@ -2558,8 +2558,8 @@ landlordtmngt.service('TrxnService', function ($http) {
 
 
 
-landlordtmngt.service('GoogleMapApi', ['$window', '$q', 
-    function ( $window, $q ) {
+  landlordtmngt.service('GoogleMapApi', ['$window', '$q', 
+      function ( $window, $q ) {
         var deferred = $q.defer();
         function loadScript() {  
 		

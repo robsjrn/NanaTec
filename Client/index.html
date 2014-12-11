@@ -8,83 +8,28 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
 	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="styles/Home/banner.css">
+  <link rel="stylesheet" href="styles/Home/banner.css">
 	 <link rel="stylesheet" href="styles/Home/index.css">
 
 	<script src="lib/jquery/dist/jquery.min.js"></script>
-    <script src="lib/angular/angular.js"></script>
-
-   
-   
+    <script src="lib/angular/angular.js"></script>  
 
   </head>
-  <body  >
-        <!-- Header -->
+  <body>
+              <!-- Header -->
 		    <div ng-include="'Banner-Header.html'"></div>
          <!-- Content -->
-		 <div class="container" data-ng-controller="MainCtrl">
-
-
-		     <div class="row" >
-                 <div class="col-xs-12  col-md-4" >
-				    <div class="search">
-				         <form >
-                               <div class="form-group">
-								     <label>Location</label>
-								 <input type="text" class="form-control" placeholder="Where do you want to live?">
-						    	</div>
-								<hr>
-								 
-								 <div class="form-group">
-							    	<label>Property type:</label>
-										<select class="form-control">
-											<option>Any</option>
-											<option>Houses</option>
-											<option>Flats/ Apartments</option>
-											<option>Bungalows</option>
-											<option>Land</option>
-											<option>Commercial property</option>
-											<option>Other</option>
-										</select>
-					                 </div>
-                               <div class="form-group">
-							    	<label>Rent or Buy</label>
-										<select class="form-control">
-											<option>Any</option>
-											<option>Rent</option>
-											<option>Buy</option>
-										</select>
-								</div>
-								<div class="row">						  
-						    <div class="col-sm-6">	
-								<div class="form-group">
-							    	<label >Minimum Price</label>
-								<input type="text" class="form-control" placeholder="Min">
-								</div>
-							</div>
-                           
-						   <div class="col-sm-6">	
-								<div class="form-group">
-							    	<label>Maximum Price</label>
-							      <input type="text" class="form-control" placeholder="Max">
-						         </div>
-							</div>
-					       </div>
-
-						   <div class="form-group">
-							    	<button class="btn btn-primary " ng-click="showResult()" >Search</button>
-						 </form>
-                      </div>
-				 </div>
-			 </div>
-			 
-        </div>
-
-
-<button class="btn btn-primary" ng-click="clickToast()">test toast</button>
-<button class="btn btn-primary" ng-click="closeToast()">Cloase Toast</button>
-    <!-- Footer -->
+		      <div class="cont" data-ng-controller="MainCtrl">
+				  <div class="col-xs-12" style="height: 100%;">
+					  <div style="height: 100%;"  my-map="" lat="{{lat}}" lng="{{lng}}" locname="test" plotname="test">
+                     </div>
+                </div>
+             </div>
+	
+          <!-- Content End -->
+	  		    <!-- Footer -->
 		    <div ng-include="'footer.html'"></div>
+		   
    
         <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
         <script src="scripts/Home/controller/main.js"></script>
