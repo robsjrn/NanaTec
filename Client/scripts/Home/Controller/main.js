@@ -5,30 +5,53 @@ var Rentmngt= angular.module('RentmngtApp', [] );
 
  Rentmngt.controller('MainCtrl', function ($scope,$http,$window) {
 
-// default values
+	           if (navigator.geolocation) {
+						navigator.geolocation.getCurrentPosition(function(position){		 
+						  $scope.$apply(function(){
+							 $scope.lat=position.coords.latitude;
+							 $scope.lng=position.coords.longitude;
+                               $scope.loc="Your Location";
+							   $scope.plotname ="Your Location";
+						  });
+						});
+				  }
+				  else {
+					  toastr['error']('Sorry We Could not get Your Location..');
+					   $scope.lat="-1.2920658999999999";
+	                   $scope.lng="36.8219462";
+                      }
 
-	 $scope.lat="0.2280945";
-	 $scope.lng="34.81523390000007";
+			         
 
- if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position){		 
-      $scope.$apply(function(){
-		console.log(position);
-		 $scope.lat=position.coords.latitude;
-         $scope.lng=position.coords.longitude;
-      });
+            
+ $scope.codeAddress = function () {
+   var geocoder = new google.maps.Geocoder();
+    geocoder.geocode( { 'address': $scope.addr}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+		   $scope.$apply(function(){
+		     $scope.lng=results[0].geometry.location.lng();
+             $scope.lat=results[0].geometry.location.lat();
+			 $scope.loc=$scope.addr;
+			 $scope.plotname =$scope.addr;
+			 $scope.mymarkers=[{"test":"test"},{"test":"test"}];
+         });
+      } else {
+	
+           toastr['error']('Sorry We could not get The Location')
+
+		   // default to nairobi kenya
+			$scope.lat="-1.2920658999999999";
+	        $scope.lng="36.8219462";
+
+      }
     });
-  }
+    return;
+  };
+                    
 
-$scope.clickToast=function(){
-	
-    toastr.info('Testing mic one two three ...yeaaah')
-};
 
-$scope.closeToast=function(){
-	toastr['error']("Bad Bad Bad")
-	
-};
+                           
+					  
 
 
   });
@@ -73,6 +96,7 @@ $scope.closeToast=function(){
 
         // Script loaded callback, send resolve
         $window.initMap = function () {
+		
             deferred.resolve();
         }
         loadScript();
@@ -84,7 +108,7 @@ $scope.closeToast=function(){
 Rentmngt.directive('myMap', function(GoogleMapApi ) {
     // directive link function
     var link = function($scope, element, attrs) {
-        var map, infoWindow,marker;
+        var map, infoWindow,marker,markerBounds;
         var markers = [];
 		       
 	          //initialise map	
@@ -96,30 +120,56 @@ Rentmngt.directive('myMap', function(GoogleMapApi ) {
 							zoom: 10,
 							mapTypeId: google.maps.MapTypeId.ROADMAP
 						};
-                     
-						map = new google.maps.Map(element[0], mapOptions);
-                         setMarker(map, new google.maps.LatLng($scope.lat, $scope.lng), $scope.locname, $scope.plotname);
-                          google.maps.event.addListener(map, 'click', function(event) {
-                                 setMarker(map,event.latLng,"testLoc","Test Cont");
-                            });
+                        
+						map = new google.maps.Map(element[0], mapOptions);                     
+                             google.maps.event.addDomListener(window, 'resize', function() { 
+								    map.setCenter(new google.maps.LatLng($scope.lat,$scope.lng));
+								}); 
+                      
                        }
-		        	}
 
-                 GoogleMapApi.then(function () {
+
+                     $scope.$watch('lat + lng', function (newValue, oldValue) {
+						  if (newValue !== oldValue) { 
+							var center = map.getCenter(),
+							  latitude = center.lat(),
+							  longitude = center.lng();
+							if ($scope.lat !== latitude || $scope.lng !== longitude)
+                             setMarker(map, new google.maps.LatLng($scope.lat, $scope.lng), $scope.locname, $scope.plotname,'https://maps.google.com/mapfiles/ms/icons/green-dot.png');
+							  map.setCenter(new google.maps.LatLng($scope.lat, $scope.lng));
+							  
+						  }
+						});
+
+		        	}
+				function addSearchbox(){
+                   var input = (document.getElementById('pac-input'));
+                     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+				    }
+
+				
+                   GoogleMapApi.then(function () {
                       initMap();
-					 
+				     addSearchbox();
+                    
+
                     }, function () {
                         console.log("promise Rejected map not initialised");
+						toastr['error']('Sorry Error in Initialising Map..');
                     });
-
-                  function setMarker(map, position, title, content) {
+            
+                 
+                 
+                  function setMarker(map, position, title, content,iconimg) {
 					var marker;
 					var markerOptions = {
 						position: position,
 						map: map,
 						title: title,
-						icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+						icon: iconimg
 					};
+
                    function DeleteMarker(obj){
 					   var i;
                              for (i in markers) {
@@ -137,6 +187,9 @@ Rentmngt.directive('myMap', function(GoogleMapApi ) {
                               //right click on marker to delete
 							  DeleteMarker(this);
 					});
+                     
+           
+
 					google.maps.event.addListener(marker, 'click', function () {
 						// close window if not undefined
 						if (infoWindow !== void 0) {
@@ -149,6 +202,8 @@ Rentmngt.directive('myMap', function(GoogleMapApi ) {
 						infoWindow = new google.maps.InfoWindow(infoWindowOptions);
 						infoWindow.open(map, marker);
 					});
+
+              
 				}
                       
     };
@@ -161,7 +216,8 @@ Rentmngt.directive('myMap', function(GoogleMapApi ) {
                 lat: '@',     // latitude
                 lng: '@',     // longitude
 				locname:'@',
-				plotname:'@'
+				plotname:'@',
+				mymarkers:'@'
             },
         link: link
     };
