@@ -1,0 +1,47 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+      
+   <div class="btn-group panel-title">
+  
+		   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+		   Select Message Type .. <span class="caret"></span>
+		   
+		  </button>
+		  <ul class="dropdown-menu" role="menu">
+			<li ng-repeat="name in messageType">
+			   <a ng-click="selectType(name.name)">{{name.name}}</a>
+			</li>
+			
+		  </ul>
+				<input type="text" ng-model="tname" ng-disabled="true"/>
+				<button type="button" class="btn btn-primary pull-right" ng-click="getData()" ng-disabled="disablebtn">
+				 View Report
+			   </button>
+
+		</div>
+   </div>
+<div class="panel-body">
+<div class="table-responsive"> 
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Row</th>
+                <th>to</th>
+				<th>date_created</th>
+                <th>Message</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="rec in data">
+                <td>{{ $index + 1 }}</td>
+                <td>{{rec.Details.to}}</td>
+                <td>{{rec.Details.date_created}}</td>
+                <td>{{rec.Details.body}}</td>
+            </tr>
+         
+        
+        </tbody>
+    </table>
+</div>   
+</div>

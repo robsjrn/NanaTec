@@ -185,6 +185,17 @@ exports.listofbookedtenant = function(req, res) {
 });
 };
 
+exports.ViewMessages = function(req, res) {
+ db.collection('Messages', function(err, collection) {
+ collection.find({"Details.from":"+17746332190"},{"Details.to":1,"Details.date_created":1,"Details.body":1}).toArray( function(err, item){
+  if(item){
+	  res.send(item);
+	  }
+  if (err) {DbError(res) ;}
+
+});
+});
+};
 
 
 
@@ -278,7 +289,6 @@ var postCharges=function(data,callback){
 
 exports.BatchRentalPayment=function(req, res) {
 async.each(req.body, TransactionPosting, function (err) {
-  console.log("Finished!  posting batch");
     res.status(200).json({Status: "Ok"});
 });
 
@@ -294,6 +304,7 @@ exports.postTransaction = function(req, res) {
 };
 
  var TransactionPosting= function(req,fn){
+
        if (req.Charges.ApplyCharge)
   {
 	 postCharges (req.Charges,function(status,data){
@@ -303,6 +314,7 @@ exports.postTransaction = function(req, res) {
 				  postTran(req,function(ok,status) {
 						if (ok) {		 
 							 sms.TenantTransactionSMS(req.names,req.contact,req.tranAmount,req.housenumber,req.balcf,function(message){
+								   message.Landlordid=req.Landlordid;
 								   SaveMessage(message);
 								});  
 							
@@ -324,7 +336,8 @@ exports.postTransaction = function(req, res) {
 			
 			 
 			 sms.TenantTransactionSMS(req.names,req.contact,req.tranAmount,req.housenumber,req.balcf,function(message){
-			       SaveMessage(message);
+			       message.Landlordid=req.Landlordid;
+				   SaveMessage(message);
 		        });  
 			
 			
@@ -1334,7 +1347,8 @@ collection.insert(req.body, function(err, item) {
 		      if (status)
 		      {
 				 sms.EvictionNoticeSMS(item.names,item.contact,item.housename,function(message){
-			       SaveMessage(message);
+			       message.Landlordid=req.user.username
+				   SaveMessage(message);
 		        });
 		      }
 		   })
@@ -1553,7 +1567,9 @@ exports.SaveMsg=function(msg) {
 function SaveMessage(msg){
  db.collection('Messages', function(err, collection) {
   collection.insert(msg, function(err, item) {
-     if(err){console.log("Error Saving Message");}
+     if(err){
+		 console.log("Error Saving Message" + err);
+		 }
       });
    }); 
 };

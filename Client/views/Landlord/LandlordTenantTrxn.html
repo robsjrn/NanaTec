@@ -1,0 +1,66 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">Tenant Statements</h4>
+  </div>
+  <div class="panel-body">
+         <div class="row">
+			<div class="col-xs-6">
+				<label for="SearchCrit">Choose a Search Criteria</label>
+							<select data-ng-model="search.searchType"
+											data-ng-options="s.name for s in SearchType"
+											ng-disabled=disableComponents>                
+							</select>
+              </div>
+           </div>
+		   <hr>
+		               <div class="row">
+							    <div class="col-xs-6">
+								   <input type="text" class="form-control" placeholder="Search Input" id="searchinput"  ng-model="lookup"  ng-disabled=disableComponents />
+                                </div>
+                                 <div class="col-xs-6">
+								   <button type="button" class="btn btn-success"  ng-disabled=disableComponents ng-click="searchData(search.searchType)">Search..</button>
+								 </div>
+                         </div>
+						 <hr>
+						  <div class="row">
+                                 <div class="table-responsive">
+    <table class="table table-hover table-striped">  
+        <thead>  
+          <tr>  
+            <th>Receipt No.</th>  
+            <th>Payment Date</th>
+			<th>Transaction Type</th> 
+			<th>Payment Method</th> 
+            <th>Amount</th>  
+            <th>Description</th>  			
+          </tr>  
+        </thead>  
+
+
+        <tbody> 
+		
+
+		<tr data-ng-repeat="stmt in statement">
+             <td>{{stmt.receiptno}}</td>
+			 <td>{{stmt.transactiondate |date:'yyyy-MM-dd' }}</td>
+			  <td>{{stmt.transactiontype}}</td>
+			 <td>{{stmt.paymentmethod}}</td>
+			 <td>{{stmt.tranAmount}}</td>
+			 <td>{{stmt.Description}}</td>
+		</tr>
+         
+		
+        </tbody>  
+
+</table>
+ </div> 
+
+						  </div>
+			  
+
+        </div>
+		
+
+  </div>
+</div>

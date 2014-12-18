@@ -100,6 +100,62 @@ landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$window,Landl
 
 
 
+landlordtmngt.controller('Messagesctrl', function($scope,$http,$window) {
+   $scope.messageType=[{"type":1,"name":"Sent"},{"type":2,"name":"Un-Sent"}];
+   
+   $scope.getData=function(){
+          $http.get('/web/Landlord/ViewMessages')
+              .success(function(data) {
+			           $scope.data=data;
+					}) 
+				 .error(function(data) {
+				  
+					});	
+   };
+
+ 
+
+    $scope.selectType=function(name){
+	   $scope.tname=name;
+	   $scope.disablebtn=false;
+  };
+});
+
+
+
+
+landlordtmngt.controller('TenantTrxnctrl', function($scope,$window,ngProgress,tenant) {
+	$scope.SearchType=[{id: 1, type: "_id", name: "Tenant Id"},
+	               {id: 2, type: "housename", name: "House Name"},
+	               {id: 3, type: "contact", name: "Tenant Telephone"},
+                   {id: 4, type: "email", name: "Email Address"}
+];  
+
+$scope.searchData=function(searchtype){
+   if (typeof searchtype =="undefined") {
+	    notificationFactory.error("Kindly Choose a Search Criteria..");
+	   alert("Kindly Choose a Search Criteria..");
+
+	    }
+ else {
+
+	ngProgress.start();
+  var Datasearch ={}
+      Datasearch.id=searchtype.id;
+      Datasearch.detail=$scope.lookup;
+      tenant.Search(Datasearch)
+						 .success(function(data) {
+								ngProgress.complete();
+							 }) 
+						 .error(function(data) {
+							 ngProgress.complete();
+							 });
+ }
+}
+
+ 
+});
+
 landlordtmngt.controller('mapViewctrl', function($scope,$http,$window) {
 	  
 
@@ -2918,10 +2974,16 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
         })	
 	.when('/map', {
      templateUrl: 'views/Landlord/mapView.html',   
-     controller: 'mapViewctrl'
-	  
-			
-        })	
+     controller: 'mapViewctrl'		
+        })
+   .when('/messages', {
+     templateUrl: 'views/Landlord/LandlordMessages.html',   
+     controller: 'Messagesctrl'	 
+       })
+    .when('/TenantTrxn', {
+     templateUrl: 'views/Landlord/LandlordTenantTrxn.html',   
+     controller: 'TenantTrxnctrl'	 
+       })
 	.otherwise({
          redirectTo: '/LandlordHome'
       });
