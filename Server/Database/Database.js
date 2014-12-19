@@ -148,6 +148,23 @@ exports.GeneralSearch = function(req, res) {
 });
 };
 
+exports.statement = function(req, res) {
+	var querry ;
+	if (req.body.id==1)	{ querry={"tenantid":req.body.detail};}
+	if (req.body.id==2)	{ querry={"housenumber":req.body.detail};}
+	if (req.body.id==3)	{ querry={"contact":"+254"+ S(req.body.detail).right(9).s};}
+
+
+ db.collection('Transaction', function(err, collection) {
+      collection.find(querry).toArray( function(err, item) {
+	   if(item){
+		   res.send(item);
+	   }else{
+		   DbError(res) ;
+		   }
+});
+});
+};
 
 
 

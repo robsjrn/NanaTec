@@ -1,47 +1,94 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-      
-   <div class="btn-group panel-title">
-  
-		   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-		   Select Message Type .. <span class="caret"></span>
-		   
-		  </button>
-		  <ul class="dropdown-menu" role="menu">
-			<li ng-repeat="name in messageType">
-			   <a ng-click="selectType(name.name)">{{name.name}}</a>
-			</li>
-			
-		  </ul>
-				<input type="text" ng-model="tname" ng-disabled="true"/>
-				<button type="button" class="btn btn-primary pull-right" ng-click="getData()" ng-disabled="disablebtn">
-				 View Report
-			   </button>
+      <div class="btn-group" role="group" aria-label="...">
+		  <button type="button" class="btn btn-default" ng-click="Selecttype('calls')">Calls</button>
+		  <button type="button" class="btn btn-default" ng-click="Selecttype('messages')">Messages</button>
+		  <button type="button" class="btn btn-default" ng-click="Selecttype('usage')">Usage</button>
+     </div>
+  </div>
+  <div class="panel-body">
+     <div>
+     
+      <div ng-if=message >
+         <ul class="nav nav-tabs">
+			  <li class="active"><a href="!#received" data-toggle="tab">Sent by Me</a></li>
+			  <li><a href="!#sent" data-toggle="tab">Sent By Tenant</a></li>
+		</ul>
+        <br>
+          <div class="tab-content">
+                   <div class="tab-pane active" id="received">
+					 <div class="panel panel-default">
+						<div class="panel-body">
+						    <div class="col-xs-12" >
+									<div class="table-responsive">
+										<table class="table table-striped " >
+										  <thead>
+											<td><a>From</a></td>
+											<td><a>To</a></td>
+											<td><a>Date</a></td>
+											<td><a>status</a></td>
+											<td><a>Price($)</a></td>
+											<td><a>Message</a></td>
+										  </thead>
+											   <tr data-ng-repeat="msg in messages | filter:isOutbound" >
+												<td>{{msg.from}}</td>
+												<td>{{msg.to}}</td>
+												<td>{{msg.date_sent}}</td>
+												<td>{{msg.status}}</td>
+												<td>{{msg.price}}</td>
+												<td>{{msg.body}}</td>
+												</tr>
+										</table>
+									</div>
+								</div>
+						</div>
+                      </div>
+                   </div>
 
-		</div>
-   </div>
-<div class="panel-body">
-<div class="table-responsive"> 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Row</th>
-                <th>to</th>
-				<th>date_created</th>
-                <th>Message</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="rec in data">
-                <td>{{ $index + 1 }}</td>
-                <td>{{rec.Details.to}}</td>
-                <td>{{rec.Details.date_created}}</td>
-                <td>{{rec.Details.body}}</td>
-            </tr>
-         
+                   <div class="tab-pane" id="sent">
+					 <div class="panel panel-default">
+						<div class="panel-body">
+						 <div class="col-xs-12" >
+									<div class="table-responsive">
+										<table class="table table-striped " >
+										  <thead>
+											<td><a>From</a></td>
+											<td><a>To</a></td>
+											<td><a>Date</a></td>
+											<td><a>status</a></td>
+											<td><a>Price($)</a></td>
+											<td><a>Message</a></td>
+										  </thead>
+											   <tr data-ng-repeat="msg in messages | filter:isInbound" >
+												<td>{{msg.from}}</td>
+												<td>{{msg.to}}</td>
+												<td>{{msg.date_sent}}</td>
+												<td>{{msg.status}}</td>
+												<td>{{msg.price}}</td>
+												<td>{{msg.body}}</td>
+												</tr>
+										</table>
+									</div>
+								</div>
+						</div>
+                      </div>
+                   </div>
+
+		  </div>
+
+
+      </div>
+	    <div ng-if=calls >
+         Under Construction
+      </div>
+	  <div ng-if=usage >
+         Under Construction
+      </div>
         
-        </tbody>
-    </table>
-</div>   
+
+	 </div>
+     
+  </div>
+
+
 </div>

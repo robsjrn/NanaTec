@@ -3,16 +3,33 @@ var express = require('express'),
   twilio = require('twilio'),
 
  DatabaseConn = require('../../Database/Database');
-
+var client = new twilio.RestClient('AC5dabe402352ad3b7eadad650dccd3c8c', '4ffa6f3ff6fb7f461996e4a992e24b93');
 
   
  router.get('/test', function(req, res){
 	 res.send("Sms Server Up and Running..");
 	 ;});
 
+
+
+ router.get('/getMsg', function(req, res){
+  client.sms.messages("").get(function(err, sms) {
+	if (sms){res.send(sms);	}
+	  else{res.send("oooppps");	}
+ });
+});
+
+ router.get('/getUsage', function(req, res){
+  client.sms.messages("").get(function(err, sms) {
+	if (sms){res.send(sms);	}
+	  else{res.send("oooppps");	}
+ });
+});
+
+
+
 router.post('/inboundVoice', function(request, response) {
   
-   // response.send('<Response><Say>Hello there! Thanks for calling.</Say></Response>');
 
        var resp = new twilio.TwimlResponse();
     resp.say({voice:'woman'}, 'Welcome to Nana !');

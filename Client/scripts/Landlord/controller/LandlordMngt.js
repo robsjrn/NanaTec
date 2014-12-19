@@ -100,35 +100,51 @@ landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$window,Landl
 
 
 
-landlordtmngt.controller('Messagesctrl', function($scope,$http,$window) {
+landlordtmngt.controller('Messagesctrl', function($scope,$http,$window,smsmessages) {
    $scope.messageType=[{"type":1,"name":"Sent"},{"type":2,"name":"Un-Sent"}];
    
-   $scope.getData=function(){
-          $http.get('/web/Landlord/ViewMessages')
-              .success(function(data) {
-			           $scope.data=data;
-					}) 
-				 .error(function(data) {
-				  
-					});	
-   };
+   $scope.message=false; 
+   $scope.calls=false; 
+   $scope.usage=false; 
 
- 
+$scope.messages=smsmessages.data.smsMessages;
+$scope.Selecttype=function(name){
+    if (name==="calls") { 
+	   $scope.message=false; 
+	   $scope.calls=true; 
+	   $scope.usage=false; 
+		}
+	else if (name==="usage"){
+		 $scope.message=false; 
+         $scope.calls=false; 
+         $scope.usage=true; 
+		}
+	else {
+		 $scope.message=true; 
+         $scope.calls=false; 
+         $scope.usage=false; 
+		 
+        $scope.isInbound = function(sms) {
+              return sms.direction === "inbound";
+         };
+        $scope.isOutbound = function(sms) {
+              return sms.direction !== "inbound";
+         };
 
-    $scope.selectType=function(name){
-	   $scope.tname=name;
-	   $scope.disablebtn=false;
-  };
+		}
+   }
+
+
 });
 
 
 
 
 landlordtmngt.controller('TenantTrxnctrl', function($scope,$window,ngProgress,tenant) {
-	$scope.SearchType=[{id: 1, type: "_id", name: "Tenant Id"},
-	               {id: 2, type: "housename", name: "House Name"},
-	               {id: 3, type: "contact", name: "Tenant Telephone"},
-                   {id: 4, type: "email", name: "Email Address"}
+	$scope.SearchType=[{id: 1, type: "tenantid", name: "Tenant Id"},
+	               {id: 2, type: "housenumber", name: "House Name"},
+	               {id: 3, type: "contact", name: "Tenant Telephone"}
+             
 ];  
 
 $scope.searchData=function(searchtype){
@@ -143,8 +159,9 @@ $scope.searchData=function(searchtype){
   var Datasearch ={}
       Datasearch.id=searchtype.id;
       Datasearch.detail=$scope.lookup;
-      tenant.Search(Datasearch)
+      tenant.statement(Datasearch)
 						 .success(function(data) {
+		                    $scope.statement=data;
 								ngProgress.complete();
 							 }) 
 						 .error(function(data) {
@@ -2587,7 +2604,9 @@ landlordtmngt.factory('tenant', function($http) {
 		return $http.post(url + '/GeneralSearch', search);
     };
 
-	
+	tenant.statement = function (search) {
+		return $http.post(url + '/statement', search);
+    };
 	return tenant;
 });
 
@@ -2740,12 +2759,15 @@ landlordtmngt.factory('notificationFactory', function () {
 			toastr.options.hideDuration=1000;
 			toastr.options.showDuration=300;
             toastr.warning(text, "Progress");
-        }
+        },
+         clear: function () {
+		   toastr.clear();
+        },
     };
 });
 
 
-landlordtmngt.factory('LandlordFactory', ['$http','$rootScope', function($http,$rootScope) {
+landlordtmngt.factory('LandlordFactory', ['$http','$rootScope','notificationFactory', function($http,$rootScope,notificationFactory) {
 	var url='/web/Landlord';
 	var data = {
 		getLordDetails: function() {
@@ -2773,7 +2795,28 @@ landlordtmngt.factory('LandlordFactory', ['$http','$rootScope', function($http,$
 				return data;
 			});
 			return promise;
-		}   
+		}  ,
+			
+
+		getMessages:function(){
+               notificationFactory.inprogress("Loading Data Please Wait ..");
+           var promise = $http.get('/web/Sms/getMsg').success(function(data, status, headers, config) {
+			   notificationFactory.clear(); 
+				return data;
+			});
+			return promise;
+		},
+
+       getUsage:function(){
+               notificationFactory.inprogress("Loading Data Please Wait ..");
+                    var promise = $http.get('/web/Sms/getUsage').success(function(data, status, headers, config) {
+			   notificationFactory.clear(); 
+				return data;
+			});
+			return promise;
+		}
+        
+
 
 	}
 	return data;
@@ -2978,8 +3021,14 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
         })
    .when('/messages', {
      templateUrl: 'views/Landlord/LandlordMessages.html',   
-     controller: 'Messagesctrl'	 
-       })
+     controller: 'Messagesctrl',
+	  resolve: {		
+            smsmessages: function(LandlordFactory) {
+				return LandlordFactory.getMessages();
+	                    }
+	            }
+        })	
+     
     .when('/TenantTrxn', {
      templateUrl: 'views/Landlord/LandlordTenantTrxn.html',   
      controller: 'TenantTrxnctrl'	 

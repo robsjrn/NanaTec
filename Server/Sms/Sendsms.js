@@ -32,6 +32,8 @@ exports.sendPassword=function(phoneNumber,msg,fn){
 
 
 
+
+
 exports.LandlordWelcomeSMS=function(landlord,fn){
   var message ="Hi "+landlord.names +" Welcome to Nana You Have Registered as Landlord .Hope to Serve You Better. "
   var msg={};

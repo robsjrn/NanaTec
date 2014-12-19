@@ -5,6 +5,7 @@ var jwt = require('jwt-simple'),
  tokenSecret='1234567890QWERTY';
 var Monthlyposting = require('../../Jobs/producer');
 
+
         function ensureAuthenticated(req, res, next) {
 				  try
 					  {
@@ -66,6 +67,8 @@ router.post('/updateHsedetails',ensureAuthenticated,DatabaseConn.updateHsedetail
 
             router.post('/SearchReceipt',ensureAuthenticated,DatabaseConn.SearchReceipt);
 			router.post('/GeneralSearch',ensureAuthenticated,DatabaseConn.GeneralSearch);
+			router.post('/statement',ensureAuthenticated,DatabaseConn.statement);
+			
             router.get('/TotalUnpaid',ensureAuthenticated,DatabaseConn.TotalUnpaid);
             router.get('/PaymentDateAggregation',ensureAuthenticated,DatabaseConn.PaymentDateAggregation);
             router.post('/DeleteReceipt',ensureAuthenticated,DatabaseConn.DeleteReceipt);
