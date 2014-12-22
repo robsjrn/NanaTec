@@ -131,7 +131,7 @@
 <div  class="container">
 
     <ul class="nav nav-tabs tab-bar">
-		 <li><a href="#!/plotmngt">Plots</a></li>
+		<li><a href="#!/plotmngt">Plots</a></li>
 		<li><a href="#!/housemngt">House</a></li>
 		<li><a href="#!/tenantsmngt">Tenants</a></li>														
 		<li><a href="#!/rent">Check-in</a></li>
@@ -139,15 +139,23 @@
         <li><a href="#!/trxnmngt">Transactions</a></li>
 		<li><a href="#!/expensemngt">Charges</a></li>
 		<li><a href="#!/RentPosting">Post Rent</a></li>
-		<!--	<li><a href="#!/ReportsPortal">Transaction Reports</a></li>-->	
-		<!--		<li><a href="#!/summarymngt">Chart Summary</a></li>-->	
 		<li><a href="#!/documentmngt">Documents</a></li>
-		 <li ><a href="#!/Notice">Notice</a></li>
-		  <li ><a href="#!/VacateNotice">Vacate Notice</a></li>
-		<li><a href="#!/inbox">Inbox</a></li>
+		<li ><a href="#!/Notice">Notice</a></li>
+		<li ><a href="#!/VacateNotice">Vacate Notice</a></li>
 		<li><a href="#!/TenantTrxn">Tenant Stmts</a></li>	
-		<li><a href="#!/messages">Communication</a></li>	
-		
+		<li class="btn-group" role="group">
+			<a  class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			  Messages
+			  <span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+			  <li role="presentation" class="dropdown-header">Sms</li>
+			    <li><a href="#!/ComposeSms">Compose</a></li>
+				<li><a href="#!/messages">View</a></li>
+              <li role="presentation" class="dropdown-header">Mail</li>
+			    <li><a href="#!/inbox">View/Compose</a></li>
+			</ul>
+		  </li>		
    </ul>
 
 
@@ -185,7 +193,7 @@
 				    <div class="col-xs-12">
 					       <div class="panel panel-default">
 									   <div class="panel-heading">
-									  Landlord Summary
+									      Landlord Summary
 									   </div>
 										<div class="panel-body">
 

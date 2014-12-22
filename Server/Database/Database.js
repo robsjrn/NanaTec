@@ -305,11 +305,26 @@ var postCharges=function(data,callback){
 }
 
 exports.BatchRentalPayment=function(req, res) {
-async.each(req.body, TransactionPosting, function (err) {
+sendSMS(req.body, TransactionPosting, function (err) {
     res.status(200).json({Status: "Ok"});
 });
 
 };
+
+exports.LandlordSendSms=function(req, res) {
+  sms.sendSMS(req.body.phonenumber,req.body.message,function(message){
+	 SaveMessage(message);   
+     });
+  res.status(200).json({Status: "Ok"});
+
+};
+
+var sendSMS =function(phoneNumber,msg,fn){
+  sms.sendSMS(phoneNumber,msg,function(message){
+	  if (message) {fn("ok",null);  }
+	  else { SaveMessage(message); fn(null,null);}
+  });
+}
 
 exports.postTransaction = function(req, res) {
    TransactionPosting(req.body,function(status,err){
@@ -334,8 +349,8 @@ exports.postTransaction = function(req, res) {
 								   message.Landlordid=req.Landlordid;
 								   SaveMessage(message);
 								});  
-							
-							Success(res);}
+							fn(ok,null)
+							}
 						else{fn(null,null) ;}
 					});   
 		      }
@@ -738,7 +753,7 @@ exports.Viewmail=function(req, res) {
 
 exports.LandlordTenants=function(req, res) {
  db.collection('user', function(err, collection) {
- collection.find({"Landlordid":req.user._id},{names:1}).toArray( function(err, item){
+ collection.find({"Landlordid":req.user._id},{names:1,contact:1}).toArray( function(err, item){
   if(item){res.send(item);}
   if (err) {DbError(res);}
 

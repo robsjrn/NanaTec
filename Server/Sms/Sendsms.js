@@ -30,7 +30,25 @@ exports.sendPassword=function(phoneNumber,msg,fn){
 }); 
 };
 
-
+exports.sendSMS=function(phoneNumber,msg,fn){
+  var msgs={};
+  client.sms.messages.create({
+    to:phoneNumber,
+    from:'+17746332190',
+    body:msg
+}, function(error, message) {
+   
+    if (!error) {
+		 msgs.Details=message;
+		 msgs.Status=1;
+		fn(msgs);//correct this late
+    } else {
+         msgs.Error=error;
+	     msgs.Status=0;
+        fn(msgs);
+    }
+}); 
+};
 
 
 

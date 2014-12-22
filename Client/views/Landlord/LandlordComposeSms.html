@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+	 <div class="panel-body">
+	    <button type="button" class="btn btn-warning" ng-click="add()">Add</button>
+				 <hr>
+		 <div class="col-xs-12" >
+		   
+				   To.
+					  <select class="form-control"  ng-model="sms.to"  ng-options="c.names for c in MailTo"	ng-disabled="btnmsg"> 
+					</select>		 
+					 <br/>
+                   Message.
+					 <textarea  class="form-control" ng-model="sms.msg" rows="10" ng-disabled="btnmsg"></textarea>
+
+					  <hr>
+					<button type="button" class="btn btn-primary" ng-click="SendSms(sms)" ng-disabled="btnmsg">Send</button>
+					
+			
+			</div>
+	   </div>
+  </div>
+   <br>
+		<div ng-show="SuccessStatus" class="alert alert-success"><strong>SMS Sent </strong> </div>
+		<div ng-show="ErrorStatus" class="alert alert-warning"><strong>Database Error </strong> </div>

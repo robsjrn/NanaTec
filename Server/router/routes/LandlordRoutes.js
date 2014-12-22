@@ -72,8 +72,9 @@ router.post('/updateHsedetails',ensureAuthenticated,DatabaseConn.updateHsedetail
             router.get('/TotalUnpaid',ensureAuthenticated,DatabaseConn.TotalUnpaid);
             router.get('/PaymentDateAggregation',ensureAuthenticated,DatabaseConn.PaymentDateAggregation);
             router.post('/DeleteReceipt',ensureAuthenticated,DatabaseConn.DeleteReceipt);
-			 
+			router.post('/LandlordSendSms',ensureAuthenticated,DatabaseConn.LandlordSendSms); 
 
     router.get('/ViewMessages',ensureAuthenticated,DatabaseConn.ViewMessages);
+	
 			
 module.exports = router;

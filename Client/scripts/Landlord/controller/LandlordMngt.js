@@ -183,6 +183,51 @@ landlordtmngt.controller('mapViewctrl', function($scope,$http,$window) {
  
 });
 
+landlordtmngt.controller('ComposeSmsctrl', function($scope,$http,$window,tenant,notificationFactory,ngProgress) {
+	 $scope.sms={}; 
+	  $scope.SuccessStatus=false;
+	   $scope.ErrorStatus=false;
+	     $scope.btnmsg=true;
+
+   tenant.list()
+	.success(function (data)
+	{ 
+    
+	$scope.MailTo=data
+		//add "all" to the Array
+	$scope.MailTo.splice(0, 0, {"_id":0,"names":"All","contact":0});	
+    $scope.sms.to=$scope.MailTo[0];
+	}
+	);
+$scope.add=function(){
+  $scope.btnmsg=false;
+};
+
+
+	$scope.SendSms=function(sms){
+		ngProgress.start();
+		notificationFactory.inprogress("Sending Sms..");
+      var det={"phonenumber":sms.to.contact,"message":sms.msg};
+          tenant.SendSms(det)
+             .success(function (data){
+			   $scope.SuccessStatus=true;
+			   $scope.btnmsg=true
+				   notificationFactory.success("Sms Sent");
+			   ngProgress.complete();
+			   })
+		   .error(function(data) {
+               $scope.ErrorStatus=true;
+			   $scope.btnmsg=false;
+			   ngProgress.complete();
+			    notificationFactory.error("Error Sending Sms");
+		   });
+
+      
+	};
+
+ 
+});
+
 
 
 landlordtmngt.controller('PaymentSummaryDatectrl', function($scope,$http,$window,ngProgress,TrxnService) {
@@ -1754,11 +1799,11 @@ ngProgress.start();
 });
 
 
-landlordtmngt.controller('inboxctrl', function($scope,$http,$rootScope,ngProgress) {
+landlordtmngt.controller('inboxctrl', function($scope,$http,$rootScope,ngProgress,tenant) {
 $scope.SuccessStatus=false;
  $scope.ErrorStatus=false;
 $scope.Sentemails=[];
-$http.get('/web/Landlord/LandlordTenants',{ cache: true })
+ tenant.list()
 	.success(function (data)
 	{ 
 	$scope.MailTo=data
@@ -2607,6 +2652,14 @@ landlordtmngt.factory('tenant', function($http) {
 	tenant.statement = function (search) {
 		return $http.post(url + '/statement', search);
     };
+    tenant.list = function () {
+		return $http.get(url + '/LandlordTenants',{ cache: true });
+    }; 
+   tenant.SendSms = function (data) {
+		return $http.post(url + '/LandlordSendSms',data);
+    };
+	 
+
 	return tenant;
 });
 
@@ -3033,6 +3086,14 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
      templateUrl: 'views/Landlord/LandlordTenantTrxn.html',   
      controller: 'TenantTrxnctrl'	 
        })
+    .when('/ComposeSms', {
+     templateUrl: 'views/Landlord/LandlordComposeSms.html',   
+     controller: 'ComposeSmsctrl'	 
+       })
+
+   
+
+
 	.otherwise({
          redirectTo: '/LandlordHome'
       });
