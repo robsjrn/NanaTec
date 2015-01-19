@@ -25,6 +25,7 @@ var tokenSecret='1234567890QWERTY';
    
  router.post('/TenantList',reports.ViewReport);
  router.post('/TenantUnpaid',reports.TenantUnpaidReport);
+  router.post('/TenantOverpaid',reports.TenantOverPaidReport);
  router.post('/Tenantpaid',reports.TenantpaidReport);
   router.post('/OccupiedHouses',reports.OccupiedHouses);
   router.post('/VacantHouses',reports.VacantHouses);

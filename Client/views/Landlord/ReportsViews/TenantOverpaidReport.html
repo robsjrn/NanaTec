@@ -1,0 +1,49 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+      
+   <div class="btn-group panel-title">
+  
+   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+   Select Plot .. <span class="caret"></span>
+   
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li ng-repeat="plot in landlordplots">
+	   <a ng-click="selectReport(plot.Plotname)">{{plot.Plotname}}</a>
+	</li>
+    
+  </ul>
+ 
+
+</div>
+   
+       <input type="text" ng-model="pname" ng-disabled="true"/>
+        <button type="button" class="btn btn-primary" ng-click="ShowReport()" ng-disabled="disablebtn">
+	     View Report
+	   </button>
+       <button type="button" class="btn btn-warning pull-right" ng-click="DownloadReport()" ng-disabled="disablebtn">
+	     Download Pdf
+	   </button>
+
+  </div>
+  <div class="panel-body">
+               <div ng-show="showError">
+			       <div class="alert alert-warning"><strong>No Availbale Data for ..{{Plotname}}</strong> </div>
+			    </div>
+                   <div ng-show="ViewReport">
+                      <p ng-bind-html="content"></p>	
+                    </div>
+                    <div ng-show="ViewDownloadReport">
+
+					  Click to Download..
+
+					        <a href="/web/Download/pdf/{{file.filename}}" download="Report.pdf">File Ready Click Here to Download </a>
+			       </div>
+            </div>
+
+
+
+</div>
+</div>
+</div>

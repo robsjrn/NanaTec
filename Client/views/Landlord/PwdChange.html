@@ -1,0 +1,54 @@
+   <form role="form" name="userForm"  novalidate>  
+	 <div class="panel panel-default">
+					 <div class="panel-heading">
+                       <h5>Change Password <span class="extra-title muted"></span></h5>
+                    </div>
+
+    <div class="panel-body">
+	
+	  <div class="row">
+	    <div class="form-group col-xs-6 ">
+		 <label for="current_password" class="control-label">Current Password</label>
+         <div class="input-group" > 
+			<div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+             <input type="password" class="form-control" placeholder="Current Password" ng-model="pwd.currentpassword" ng-blur="CheckPwd()" ng-disabled=!disableComponents required />  
+			 
+         </div>
+		 <span ng-show="busy" class="help-block alert alert-warning"><i class="fa fa-refresh fa-spin"></i>  Checking password</span>
+		 <span ng-show="invalidcredential" class="help-block alert alert-danger">Invalid Credential</span>
+		 
+       </div>
+      </div>
+	  <div class="row">
+       <div class="form-group col-xs-6 ">
+		 <label for="current_password" class="control-label">New Password</label>
+         <div class="input-group" > 
+			<div class="input-group-addon"><span class="glyphicon glyphicon-log-in"></span></div>
+             <input type="password" class="form-control" placeholder="New Password" id="pwd" name="pwd" ng-model="newpassword" ng-minlength="5" ng-disabled=disableComponents required/>			 		
+       </div>
+	          <div >
+					  <p ng-show="userForm.pwd.$error.minlength" class="help-block alert alert-danger">Password too Short</p></div>
+                   </div>
+       </div>
+      <div class="row">
+        <div class="form-group col-xs-6 ">
+		 <label for="current_password" class="control-label">Confirm Password</label>
+         <div class="input-group" > 
+			<div class="input-group-addon"><span class="glyphicon glyphicon-log-in"></span></div>
+             <input type="password" class="form-control" id="Confirmpwd" name="Confirmpwd" placeholder="Confirm Password" ng-model="confirmpassword" pw-check="pwd" ng-disabled=disableComponents required/>    
+          </div>
+				<p ng-show="userForm.Confirmpwd.$error.pwcheck" class="help-block alert alert-danger">Passwords do not match </p></div>
+       </div>
+                
+
+       </div>
+	   
+    </div>
+		   <div class="panel-footer">
+				<button  class="btn btn-warning" ><span class="glyphicon glyphicon-floppy-remove"></span> Close</button>
+				<button  class="btn btn-primary" ng-disabled="userForm.$invalid" ng-click="SubmitPwd()" ><span class="glyphicon glyphicon-floppy-disk"></span> Save changes</button>
+				 <span ng-show="pwdchanged" class="help-block alert alert-success"> Password Successfully Changed</span>
+			</div>
+  </div>
+
+</form>

@@ -2165,18 +2165,19 @@ landlordtmngt.factory('tenantlist', function($resource) {
 
 
 
-landlordtmngt.controller('pwdchangectrl', function($scope,$http) {
+landlordtmngt.controller('pwdchangectrl', function($scope,$http,ngProgress) {
 
-$scope.btnStatus=true;
+$scope.busy=false;
 $scope.pwdchanged=false;
-$scope.pwderror=false;
+$scope.disableComponents=true;
 $scope.SubmitPwd=function(){
 	ngProgress.start();
-    $http.post('/web/ChangePwd',$scope.pwd )
+	var dat={"newPwd":$scope.newpwd};
+    $http.post('/web/ChangePwd',dat )
 		   .success(function(data) {
-		   // console.log(data.success)
-		   ngProgress.complete();
+		    ngProgress.complete();
 		    $scope.pwdchanged=true;
+			$scope.disableComponents=true;
 		     }) 
 			.error(function(data) {
 				 ngProgress.complete();
@@ -2189,14 +2190,15 @@ $scope.CheckPwd=function(){
 	$scope.busy=true;
      $http.post('/web/CheckPwd',$scope.pwd )
 		   .success(function(data) {
-		     if (data.success)
+		     if (data.status)
 		     {
 				 $scope.busy=false; 
 				 $scope.btnStatus=false;
 				 $scope.invalidcredential=false;
+				 $scope.disableComponents=false;
 				 
 		     }
-			 else{$scope.invalidcredential=true;}
+			 else{$scope.invalidcredential=true;$scope.busy=false;$scope.disableComponents=true}
 				
 							 }) 
 			.error(function(data) {
@@ -2206,6 +2208,21 @@ $scope.CheckPwd=function(){
 }
      
 });
+landlordtmngt.directive('pwCheck', function() {
+        return {
+            require: 'ngModel',
+            link: function (scope, elem, attrs, ctrl) {
+                var firstPassword = '#' + attrs.pwCheck;
+                $(elem).add(firstPassword).on('keyup', function () {
+                    scope.$apply(function () {
+                        var v = elem.val()===$(firstPassword).val();
+                        ctrl.$setValidity('pwcheck', v);
+                    });
+                });
+            }
+        }
+    });
+
 
 landlordtmngt.controller('TenantPaidReportctrl', function($scope,$http,$rootScope,$window,ngProgress) {
   
@@ -2417,6 +2434,78 @@ ngProgress.start();
 
 });
 
+
+landlordtmngt.controller('OverpaidHousectrl', function($scope,$http,$rootScope,$window,ngProgress) {
+
+
+   $scope.landlordplots=$rootScope.plot;
+   $scope.PaidTenant=[];
+  $scope.showData=false;
+  $scope.showError=false;
+  $scope.ViewReport=false;
+  $scope.ViewDownloadReport=false;
+$scope.disablebtn=true;
+
+  $scope.selectReport=function(name){
+	  $scope.pname=name;
+	  $scope.disablebtn=false;
+  };
+
+   $scope.ShowReport=function(){
+	    ngProgress.start();
+	    $scope.reportData={
+	                   "plot":$scope.pname,
+                       "option":"view"
+                    };
+	  
+               $http.post('/web/Reports/TenantOverpaid', $scope.reportData)
+						 .success(function(data) {
+				    ngProgress.complete();
+                       $scope.ViewReport=true;
+					   $scope.ViewDownloadReport=false;
+                       $scope.content=data.result;
+
+								
+							 }) 
+						 .error(function(data) {
+
+							$scope.ViewReport=false;
+							$scope.ViewDownloadReport=false;
+							 ngProgress.complete();
+								  $scope.showData=false;
+							 });
+							   
+	
+   }
+
+
+    $scope.DownloadReport=function(){
+            
+ngProgress.start();
+			$scope.reportData={
+	                   "plot":$scope.pname,
+                       "option":"download"
+                      };
+               $http.post('/web/Reports/TenantOverpaid', $scope.reportData)
+						 .success(function(data) {
+				    ngProgress.complete();
+                      $scope.ViewReport=false;
+		         	$scope.ViewDownloadReport=true;
+					    $scope.file=data;
+								
+							 }) 
+						 .error(function(data) {
+							$scope.ViewReport=false;
+							$scope.ViewDownloadReport=false;
+							 ngProgress.complete();
+								  $scope.showData=false;
+							 });
+        
+
+	};
+
+
+});
 
 landlordtmngt.controller('OccupiedHousectrl', function($scope,$http,$rootScope,$window,ngProgress) {
 	 
@@ -3044,10 +3133,14 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
      templateUrl: 'views/Landlord/ReportsViews/TenantListReport.html',   
      controller: 'TenantListReportctrl'
         })
-.when('/OccupiedHouseReport', {
+    .when('/OccupiedHouseReport', {
      templateUrl: 'views/Landlord/ReportsViews/OccupiedHouseReport.html',   
      controller: 'OccupiedHousectrl'
         })	
+    .when('/OverpaidHouseReport', {
+     templateUrl: 'views/Landlord/ReportsViews/TenantOverpaidReport.html',   
+     controller: 'OverpaidHousectrl'
+        })
   .when('/VacantHouseReport', {
      templateUrl: 'views/Landlord/ReportsViews/VacantHouseReport.html',   
      controller: 'VacantHousectrl'
@@ -3056,11 +3149,11 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
      templateUrl: 'views/Landlord/ReportsViews/AllHouseReport.html',   
      controller: 'AllHousectrl'
         })
-.when('/Notice', {
+   .when('/Notice', {
      templateUrl: 'views/Landlord/LandlordNotice.html',   
      controller: 'Noticectrl'
         })
- .when('/VacateNotice', {
+    .when('/VacateNotice', {
      templateUrl: 'views/Landlord/LandlordVacateNotice.html',   
      controller: 'VacateNoticectrl'
         })			

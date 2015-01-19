@@ -78,6 +78,8 @@ var express = require('express')
           router.post('/CheckPhonenumberExists',DatabaseConn.phonenumber);
           router.get('/Viewmail',ensureAuthenticated,DatabaseConn.Viewmail);
           router.post('/Mail',ensureAuthenticated,DatabaseConn.CreateMail);
+		  router.post('/CheckPwd',ensureAuthenticated,DatabaseConn.CheckPwd);
+		  router.post('/ChangePwd',ensureAuthenticated,DatabaseConn.ChangePwd);
 
 
 module.exports = router

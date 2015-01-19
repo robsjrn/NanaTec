@@ -20,13 +20,34 @@
 		    <div ng-include="'Banner-Header.html'"></div>
          <!-- Content -->
 		   
-		      <div class="cont" data-ng-controller="MainCtrl">
-			     
-				  <div class="col-xs-12" style="height: 100%;">
-				  <input id="pac-input" class="controls" ng-model="addr" ng-blur="codeAddress()" type="text" placeholder="Where do you want to Search ?">
-					  <div style="height: 100%;"  my-map="" lat="{{lat}}" lng="{{lng}}" locname="{{loc}}" plotname="{{plotname}}" mymarkers="{{markers}}">
-                     </div>
-                </div>
+		      <div class="container" data-ng-controller="MainCtrl">
+			  
+					
+						 <div class="col-md-4">
+						 one 
+						 </div>
+						<div class="col-md-4" >
+							<div class="row">
+							<input  class="controls" ng-model="addr"  type="text" placeholder="Where do you want to Search ?"/>
+                             <button class="controls btn btn-primary" ng-click="codeAddress()" >Search</button>
+							</div>
+						</div>
+
+							<div class="col-md-4">
+							<br>
+							 <div class="row">
+							  <div class="panel panel-default">
+								  <div class="panel-heading">
+									<h3 class="panel-title">Latest Listing</h3>
+								  </div>
+								  <div class="panel-body">
+									Panel content
+								  </div>
+								</div>
+                             </div>
+						   </div>
+					
+				 
              </div>
 	
           <!-- Content End -->

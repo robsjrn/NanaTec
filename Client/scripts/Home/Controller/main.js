@@ -3,13 +3,14 @@
 var Rentmngt= angular.module('RentmngtApp', [] ); 
 
 
- Rentmngt.controller('MainCtrl', function ($scope,$http,$window) {
+ Rentmngt.controller('MainCtrl', function ($scope,$http,$window,GoogleMapApi) {
 
 	           if (navigator.geolocation) {
 						navigator.geolocation.getCurrentPosition(function(position){		 
 						  $scope.$apply(function(){
 							 $scope.lat=position.coords.latitude;
 							 $scope.lng=position.coords.longitude;
+							 toastr['error']('Your location is ' +$scope.lat + $scope.lng);
                                $scope.loc="Your Location";
 							   $scope.plotname ="Your Location";
 						  });
@@ -17,6 +18,7 @@ var Rentmngt= angular.module('RentmngtApp', [] );
 				  }
 				  else {
 					  toastr['error']('Sorry We Could not get Your Location..');
+					  //default location
 					   $scope.lat="-1.2920658999999999";
 	                   $scope.lng="36.8219462";
                       }
@@ -31,6 +33,8 @@ var Rentmngt= angular.module('RentmngtApp', [] );
 		   $scope.$apply(function(){
 		     $scope.lng=results[0].geometry.location.lng();
              $scope.lat=results[0].geometry.location.lat();
+             console.log($scope.lng);
+
 			 $scope.loc=$scope.addr;
 			 $scope.plotname =$scope.addr;
 			 $scope.mymarkers=[{"test":"test"},{"test":"test"}];

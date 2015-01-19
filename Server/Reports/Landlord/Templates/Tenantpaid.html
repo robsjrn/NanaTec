@@ -5,6 +5,7 @@
             <caption> <h5>Tenant paid List </h5></caption>
             <thead>
                 <tr>
+				    <th>No.</th>   
                     <th>Names</th>
                     <th>Contact</th>
                     <th>House Number</th>
@@ -13,15 +14,25 @@
             </thead>
 			
             <tbody>
-			 <tr></tr>
+			 <tr></tr>	?
                 {{#data1}}
                 <tr>
+				    <td>{{@index}}</td>
                     <td>{{names}}</td>
                     <td>{{contact}}</td>
                     <td>{{housename}}</td>
-					 <td>{{balance}}</td>
+					<td>{{balance}}</td>
                 </tr>
                 {{/data1}}
+               <tr>
+                 <td></td>
+				 <td></td>
+			   <td>Total Balance (OverPaid) </td>
+			   <td> 
+			   {{#totalBalance this}}
+			   {{/totalBalance}}
+			  </td>
+			  </tr>
             </tbody>
 			
   </table>

@@ -709,6 +709,8 @@ exports.CreateMail=function(req, res) {
 };
 
 
+
+
 var UpdateReceiverInbox=function (id,ReceiverDet ,callback){
     db.collection('Inbox', function(err, collection) {
      collection.update({"_id" : id},{$addToSet: {"Received":ReceiverDet}}, { upsert: true }, function(err, item) {
@@ -768,15 +770,10 @@ exports.CheckPwd= function(req, res) {
     db.collection('user', function(err, collection) {
      collection.findOne({"_id":req.user._id},function(err, item) {
 	   if(item){
-		     
-			 if (item.password==req.body.oldpwd)
-			 {
-              res.json(200,{success: true});
-			 }
-			 else{
-				 res.json(200,{success: false});
-				 }
-
+		        bcrypt.compare(req.body.currentpassword, item.password, function(err, result) {
+                       if (result){ res.status(200).json({status: true}) ;}
+					   else { res.status(200).json({status: false}) ;}
+                    });
 		   
 	   }else{DbError(res);}
 });
@@ -786,17 +783,20 @@ exports.CheckPwd= function(req, res) {
 
 
 exports.ChangePwd=function(req, res) {
-    db.collection('user', function(err, collection) {
-   collection.update({"_id":req.user._id},{$set:{"password" : req.body.password}},{safe:true}, function(err, item) {
-   if (err) {
-	   console.log(err);DbError(res);
-	   }
-   else{
-	   res.json(200,{success: true});
-	   }
-});
-});
+    
+   bcrypt.hash(req.body.newpwd, 10, function(err, hash) {
 
+		db.collection('user', function(err, collection) {
+		collection.update({"_id":req.user._id},{$set:{"password" : hash}},{safe:true}, function(err, item) {
+		   if (err) {
+			   DbError(res);
+			   }
+		   else{
+			   res.status(200).json({status: true}) ;
+			   }
+		   });
+	   });
+   });
      
 
 };
@@ -955,7 +955,16 @@ db.collection('user', function(err, collection) {
 });
 };
 
+exports.TenantOverPaidReport= function(plot,fn) {
+db.collection('user', function(err, collection) {
+ collection.find({$and: [{"plot.Plotname": plot},{"balance":{$lt: 0}}]},{ sort:{ "housename" :1}}).toArray( function(err, item){
+  if(item){
+	 fn(null,item);}
+  if (err) {fn(err,null);}
 
+});
+});
+};
 
 
 exports.TenantUnpaidReport= function(plot,fn) {
@@ -1218,12 +1227,9 @@ exports.PropertyPhotoUpload=function(req, res) {
 exports.VacantRentalListing=function(req, res) {
 var min=parseInt(req.body.Amount.Min);
 var max=parseInt(req.body.Amount.Max);
-
-  console.log("Min Amount" + min);
  db.collection('House', function(err, collection) {
  collection.find({$and:[{"status":"vacant"},req.body.querry,{"amount":{$gte:min,$lte:max}}]}).toArray( function(err, item){
-   
-    console.log("Checking rental listing ....");
+  
   if(item){res.send(item);}
   if (err) {DbError(res);}
     });

@@ -5,6 +5,7 @@
             <caption> <h5>Transaction List </h5></caption>
             <thead>
                 <tr>
+				  <th>No.</th>
                     <th>Receipt Number</th>
                     <th>House Number</th>
                     <th>Amount</th>
@@ -17,6 +18,7 @@
 			 <tr></tr>
                 {{#data1}}
                 <tr>
+				  <td>{{@index}}</td>
                     <td>{{receiptno}}</td>
 					 <td>{{housenumber}}</td>
 					  <td>{{tranAmount}}</td>

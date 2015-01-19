@@ -5,6 +5,7 @@
             <caption> <h5>Occupied House List </h5></caption>
             <thead>
                 <tr>
+				   <td>No.</td>
                     <th>House Name</th>
                     <th>Amount</th>
                     <th>Type</th>
@@ -15,6 +16,7 @@
 			 <tr></tr>
                 {{#data1}}
                 <tr>
+				     <td>{{@index}}</td>
                     <td>{{number}}</td>
                     <td>{{amount}}</td>
                     <td>{{type.name}}</td>
