@@ -441,50 +441,64 @@ ngProgress.start();
 
 
 });
+Tenantmngt.directive('pwCheck', function() {
+        return {
+            require: 'ngModel',
+            link: function (scope, elem, attrs, ctrl) {
+                var firstPassword = '#' + attrs.pwCheck;
+                $(elem).add(firstPassword).on('keyup', function () {
+                    scope.$apply(function () {
+                        var v = elem.val()===$(firstPassword).val();
+                        ctrl.$setValidity('pwcheck', v);
+                    });
+                });
+            }
+        }
+    });
+
 
 Tenantmngt.controller('pwdchangectrl', function($scope,$http,ngProgress) {
   $scope.pageClass = 'page-nyumbakumi';
-$scope.btnStatus=true;
+  $scope.busy=false;
 $scope.pwdchanged=false;
-$scope.pwderror=false;
+$scope.disableComponents=true;
 $scope.SubmitPwd=function(){
-ngProgress.start();
-    $http.post('/web/ChangePwd',$scope.pwd )
+	ngProgress.start();
+	var dat={"newPwd":$scope.newpassword};
+    $http.post('/web/ChangePwd',dat )
 		   .success(function(data) {
-		  //  console.log(data.success)
+		    ngProgress.complete();
 		    $scope.pwdchanged=true;
-			ngProgress.complete();
+			$scope.disableComponents=true;
 		     }) 
 			.error(function(data) {
-				 $scope.pwderror=true;
 				 ngProgress.complete();
+				 $scope.pwderror=true;	 
 				});	
 }
 
 
 $scope.CheckPwd=function(){
-	ngProgress.start();
 	$scope.busy=true;
      $http.post('/web/CheckPwd',$scope.pwd )
 		   .success(function(data) {
-		 ngProgress.complete();
-		     if (data.success)
+		     if (data.status)
 		     {
 				 $scope.busy=false; 
 				 $scope.btnStatus=false;
 				 $scope.invalidcredential=false;
+				 $scope.disableComponents=false;
 				 
 		     }
-			 else{$scope.invalidcredential=true;}
+			 else{$scope.invalidcredential=true;$scope.busy=false;$scope.disableComponents=true}
 				
 							 }) 
 			.error(function(data) {
 					  $scope.invalidcredential=true;
 					  $scope.msg=data.error
-						  ngProgress.complete();
 				});	
 }
-     
+
 });
 
 

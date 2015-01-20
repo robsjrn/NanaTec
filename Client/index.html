@@ -15,46 +15,49 @@
     <script src="lib/angular/angular.js"></script>  
 
   </head>
-  <body>
-              <!-- Header -->
-		    <div ng-include="'Banner-Header.html'"></div>
-         <!-- Content -->
+         <body id="page-top">
 		   
-		      <div class="container" data-ng-controller="MainCtrl">
-			  
+					  <!-- Header -->
+				
+						<div ng-include="'Banner-Header.html'"></div>
 					
-						 <div class="col-md-4">
-						 one 
-						 </div>
-						<div class="col-md-4" >
-							<div class="row">
-							<input  class="controls" ng-model="addr"  type="text" placeholder="Where do you want to Search ?"/>
-                             <button class="controls btn btn-primary" ng-click="codeAddress()" >Search</button>
-							</div>
-						</div>
+		               <!--End of Header -->
+                            <!-- Content -->
+								<div id="content">
+								  <div class="container" data-ng-controller="MainCtrl">
+								        <div class="search-box-wrapper" >
+                                           <ul class="nav nav-pills">
+											  <li ><a href="#buy" data-toggle="tab">Buy</a></li>
+											  <li ><a href="#rent" data-toggle="tab">Rent</a></li>
+											  <li ><a href="#projects" data-toggle="tab">Projects</a></li>
+											  <li ><a href="#services-forms" data-toggle="tab">Services</a></li>
+											</ul>
+										</div>
+										
+										<div class="tab-content">
+                                              <div class="tab-pane" id="buy" >
+											     <a class="advanced-search-toggle" data-toggle="collapse" data-parent="#accordion" href="#advanced-search-sale">Advanced  Search <i class="fa fa-plus"></i></a>
+											       <div id="advanced-search-sale" class="panel-collapse collapse">
+                                                           <header><h3>Property Features</h3></header>
+												   </div>
+											  </div>
 
-							<div class="col-md-4">
-							<br>
-							 <div class="row">
-							  <div class="panel panel-default">
-								  <div class="panel-heading">
-									<h3 class="panel-title">Latest Listing</h3>
-								  </div>
-								  <div class="panel-body">
-									Panel content
-								  </div>
-								</div>
-                             </div>
-						   </div>
+											  <div class="tab-pane" id="rent" >rent</div>
+											  <div class="tab-pane" id="projects" >projects</div>
+											  <div class="tab-pane" id="services-forms" >services-forms</div>
+										</div>
+									
+										
+									 
+								 </div>
+							  </div>
+					      <!-- Content End -->
+						<!-- Footer -->
 					
-				 
-             </div>
-	
-          <!-- Content End -->
-	  		    <!-- Footer -->
-		    <div ng-include="'footer.html'"></div>
-		   
-   
+							<div ng-include="'footer.html'"></div>
+						
+                       <!-- Footer -->
+                
         <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
         <script src="scripts/Home/Controller/main.js"></script>
  

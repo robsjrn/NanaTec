@@ -2172,7 +2172,7 @@ $scope.pwdchanged=false;
 $scope.disableComponents=true;
 $scope.SubmitPwd=function(){
 	ngProgress.start();
-	var dat={"newPwd":$scope.newpwd};
+	var dat={"newPwd":$scope.newpassword};
     $http.post('/web/ChangePwd',dat )
 		   .success(function(data) {
 		    ngProgress.complete();

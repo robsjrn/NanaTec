@@ -1,4 +1,14 @@
 
+#footer {
+	width:100%;
+	height:80px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	background:#ee5;
+}
+
+
 .NanaNav {
 box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
 background-color: #fff;
@@ -749,5 +759,60 @@ button.toast-close-button {
 }
 
 /* Toast End */
+
+
+
+/*  Footer */
+
+#page-footer .inner {
+    display: table;
+    width: 100%;
+}
+#page-footer .inner h3 {
+    color: #2a2a2a;
+    font-weight: normal;
+    margin-bottom: 30px;
+    margin-top: 0;
+}
+#page-footer .inner #footer-main {
+    background-color: #f3f3f3;
+    padding: 40px 0;
+}
+#page-footer .inner #footer-copyright {
+    background-color: #073855;
+    color: #fff;
+    display: table;
+    padding: 20px 0;
+    width: 100%;
+}
+#page-footer .inner #footer-copyright a {
+    color: #fff;
+}
+#page-footer .inner #footer-copyright a:hover {
+    color: #1396e2;
+}
+#page-footer .inner .property:last-child {
+    margin-bottom: 0 !important;
+}
+#page-footer .inner .property-thumbnail {
+    background-color: #1396e2;
+    float: left;
+    height: 60px;
+    overflow: hidden;
+}
+#page-footer .inner .property-thumbnail:hover img {
+    filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+    opacity: 1;
+}
+#page-footer .inner .property-thumbnail img {
+    -moz-backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-transition: 0.4s;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
+    opacity: 0.2;
+    width: 100%;
+}
 
 
