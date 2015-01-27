@@ -37,7 +37,7 @@ width: 100%;
   margin-left: 10px;
 }
 .navigation .TopNav a:hover {
-  color: #073855;
+  color: #e06f13 ;  /*#073855*/
 }
 
 .container {
@@ -370,7 +370,7 @@ background-color: #fff;
 .NanaNav .TopNav {
   filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
   opacity: 1;
-  background-color: #073855;
+  background-color:  #e06f13; /*#073855*/
  }
   .BottomNav {
   filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false); 
@@ -779,7 +779,7 @@ button.toast-close-button {
     padding: 40px 0;
 }
 #page-footer .inner #footer-copyright {
-    background-color: #073855;
+    background-color: #e06f13;  /*  Footer */
     color: #fff;
     display: table;
     padding: 20px 0;
