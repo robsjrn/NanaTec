@@ -10,7 +10,13 @@ body {
     body {
         padding-top: 50px;
     }
+   .hideMobile {
+    display: none;
+   }
 }
+
+
+
 
 /* remove col spacing */
 

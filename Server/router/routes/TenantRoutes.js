@@ -44,5 +44,7 @@ var tokenSecret='1234567890QWERTY';
 
  router.post('/photoupload',ensureAuthenticated,DatabaseConn.photoupload);
 
+ router.post('/addPost',ensureAuthenticated,DatabaseConn.addPost);
+ router.get('/getPost',ensureAuthenticated,DatabaseConn.getPost);
 
 module.exports = router;

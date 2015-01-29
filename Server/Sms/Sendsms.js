@@ -75,8 +75,8 @@ exports.LandlordWelcomeSMS=function(landlord,fn){
 };
 
 
-exports.TenantWelcomeSMS=function(Tenant,token,fn){
-  var message ="Hi "+Tenant.names +" You Have Been Registered as a Tenant in One of Our Property for More Information Visit Us at http://104.131.30.17:4000/Welcome/"+token;
+exports.TenantWelcomeSMS=function(Tenant,tm,fn){
+  var message ="Hi "+Tenant.names + " "+tm ;
  
   console.log(message);
   var msg={};

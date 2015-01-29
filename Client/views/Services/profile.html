@@ -1,0 +1,65 @@
+ <br>
+ <div class="row">
+   <div class="col-md-4 col-md-offset-2">
+    <button type="button" class="btn btn-warning" ng-disabled="!userForm.$invalid" ng-click="addData()">Add</button>
+   </div>
+  </div>
+  <br>
+<div class="row">
+
+  <div class="col-md-4 col-md-offset-2">
+  
+          <form name="userForm"  novalidate>
+             
+			  <div class="form-group">
+				  <label for="Names">Company/Organisation Names</label>
+				  <input type="text" class="form-control" placeholder="Company/Organisation" id="Names" ng-model="property.Owner.company" ng-disabled=disableComponents required/>
+			  </div>
+              
+			   <div class="form-group">
+                   <label for="cont">Identification</label>
+					  <input type="text" class="form-control" placeholder="Identification" id="Names" ng-model="property.Owner.identification" ng-disabled=disableComponents required/>
+			   </div>
+
+               <div class="form-group">
+                        <label for="Email">Email</label>
+						<input type="email" name="email" class="form-control" ng-model="property.Owner.email" placeholder="Email" ng-disabled=disableComponents required/>
+						<p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block alert alert-danger">Enter a valid email.</p>
+			   </div>
+             
+
+
+          
+  </div>
+
+  <div class="col-md-4" >
+
+       <div class="form-group">
+              <label for="loc">Location</label>
+				  <input type="text" class="form-control" placeholder="Office Location" id="loc" ng-model="property.Owner.location" ng-disabled=disableComponents required/>
+          </div>
+         <div class="form-group">
+              <label for="fax">Fax</label>
+				  <input type="text" class="form-control" placeholder="Fax" id="fax" ng-model="property.Owner.fax" ng-disabled=disableComponents required/>
+          </div>
+
+		   <div class="form-group">
+              <label for="url">Website Url</label>
+				  <input type="text" class="form-control" placeholder="e.g www.websitename.com" id="url" ng-model="property.Owner.url" ng-disabled=disableComponents required/>
+          </div>
+  </div>
+
+  </form>
+</div>
+
+ <hr>
+ <div class="row">
+   <div class="col-md-4 col-md-offset-2">
+			    <button type="button" class="btn btn-success" ng-disabled="userForm.$invalid" ng-click="SaveProfile()" >Save</button>
+   </div>
+</div>
+<br>
+
+
+	 <div ng-show="ProfilePosted" class="alert alert-warning"><strong>Profile Successfully Saved</strong> </div>
+	 <div ng-show="ProfileError" class="alert alert-warning"><strong>Error Occurred</strong> {{msg}} </div>

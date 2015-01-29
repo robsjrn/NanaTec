@@ -135,6 +135,35 @@ Tenantmngt.controller('statementsctrl', function($scope,$http,$window,ngProgress
 
 });
 
+Tenantmngt.controller('postctrl', function($scope,$http,$window,$rootScope,postMessages) {
+     $scope.posts=postMessages.data;
+  	              $scope.postederror=false;
+				  $scope.posted=false;
+  $scope.addPost=function(){
+     
+	 var post={"topic":$scope.post.topic,
+		        "description":$scope.post.description,
+                "postedby":$rootScope.Tenant.names,
+                "plotid":$rootScope.Tenant.housename,
+                "hsenumber":$rootScope.Tenant.plot.Plotname,
+		        "date":new Date().toISOString() 
+	          };
+		$http.post('/web/Tenant/addPost',post )
+		   .success(function(data) {
+                $scope.posted=true;
+				$scope.postederror=false;
+				$scope.posts.push(post);
+		     }) 
+			.error(function(data) {
+	              $scope.postederror=true;
+				  $scope.posted=false;
+				});
+          
+	  }
+
+});
+
+
 Tenantmngt.controller('evictionNoticectrl', function($scope,$http,$window,ngProgress) {
            $http.get('/web/Tenant/EvictionNotice')
 			.success(function (data){
@@ -529,6 +558,21 @@ Tenantmngt.directive('tnPrivacyCheck', function() {
   };
 });
 
+Tenantmngt.factory('tenantFactory', ['$http','$rootScope', function($http,$rootScope) {
+	var url='/web/Tenant';
+	var data = {
+		getPosts: function() {
+			var promise = $http.get(url+ '/getPost',{ cache: true }).success(function(data, status, headers, config) {
+				return data;
+			});
+			return promise;
+		}
+	}
+	return data;
+		
+	
+}]);
+
 
 
 Tenantmngt.config(function($routeProvider,$locationProvider)	{
@@ -584,15 +628,23 @@ $locationProvider.hashPrefix("!");
      templateUrl: 'views/Tenant/vacateNotice.html',   
      controller: 'vacateNoticectrl'
         }) 
- .when('/evictionNotice', {
-     templateUrl: 'views/Tenant/evictionNotice.html',   
-     controller: 'evictionNoticectrl'
-        }) 
-			
-
-		.otherwise({
+  .when('/evictionNotice', {
+     templateUrl: 'views/Tenant/vacateNotice.html',   
+     controller: 'vacateNoticectrl'
+        }) 	
+  .when('/post', {
+     templateUrl: 'views/Tenant/post.html',   
+     controller: 'postctrl',
+	  resolve: {		
+            postMessages: function(tenantFactory) {
+				return tenantFactory.getPosts();
+	                    }
+	            }
+        })
+    .otherwise({
          redirectTo: '/statements'
       });
 
 
 });
+

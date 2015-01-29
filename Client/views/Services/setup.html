@@ -1,0 +1,67 @@
+ <br>
+ <div class="row">
+   <div class="col-md-4 col-md-offset-2">
+    <button type="button" class="btn btn-warning" ng-disabled="!userForm.$invalid" ng-click="addData()">Add</button>
+   </div>
+  </div>
+  <br>
+<div class="row">
+
+  <div class="col-md-4 col-md-offset-2">
+  
+          <form name="userForm"  novalidate>
+             
+			  <div class="form-group">
+				  <label for="Names">Service Names</label>
+				  <input type="text" class="form-control" placeholder="service names" id="Names" ng-model="service.name" ng-disabled=disableComponents required/>
+			  </div>
+
+             <div class="form-group">
+                   <label >Category</label>
+					<select class="form-control"  ng-model="service.category" ng-options="servicetype.name for servicetype in type" ng-disabled=disableComponents>
+					</select>
+			   </div>
+              
+			   <div class="form-group">
+                   <label for="cont">contact</label>
+					  <input type="text" class="form-control" placeholder="contact" id="Names" ng-model="service.contact" ng-disabled=disableComponents required/>
+			   </div>
+
+               <div class="form-group">
+                        <label for="Email">location</label>
+						<input type="text" name="loc" class="form-control" ng-model="service.location" placeholder="location" ng-disabled=disableComponents required/>
+					
+			   </div>
+             
+
+
+          
+  </div>
+
+  <div class="col-md-4" >
+
+       <div class="form-group">
+              <label for="loc">Location</label>
+				  <textarea class="form-control" rows="2" id="desc" placeholder="Locality" ng-model="service.locality"></textarea>
+          </div>
+         <div class="form-group">
+                  <textarea class="form-control" rows="3" id="desc" placeholder="Description" ng-model="service.description"></textarea>
+          </div>
+
+		   
+  </div>
+
+  </form>
+</div>
+
+ <hr>
+ <div class="row">
+   <div class="col-md-4 col-md-offset-2">
+			    <button type="button" class="btn btn-success" ng-disabled="userForm.$invalid" ng-click="SaveProfile()" >Save</button>
+   </div>
+</div>
+<br>
+
+
+	 <div ng-show="ProfilePosted" class="alert alert-warning"><strong>Profile Successfully Saved</strong> </div>
+	 <div ng-show="ProfileError" class="alert alert-warning"><strong>Error Occurred</strong> {{msg}} </div>

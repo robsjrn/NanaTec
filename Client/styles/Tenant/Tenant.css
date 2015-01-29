@@ -233,3 +233,10 @@ left: 500px;
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
 }
+
+@media (max-width: 767px) {
+  .hideMobile {
+    display: none;
+   }
+
+}

@@ -1,0 +1,67 @@
+		<div class="panel panel-default">
+			 <div class="panel-body">
+           <h5><em>This section is  for people to consciously lift each other up. If you'd like to belong to a community which supports you in leading a happier, more positive life, then this is the place for you And Also get to Know what is happening around you.......happy posting</em></h5>
+             </div>
+         </div>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="!#view" data-toggle="tab">View Posts</a></li>
+  <li><a href="!#addpost" data-toggle="tab">Add a Post</a></li>
+</ul>
+
+
+<div class="tab-content">
+   <div class="tab-pane active" id="view">
+   
+        <div ng-repeat="posting in posts">
+		  
+				<div class="panel panel-default">
+				<div class="panel-heading">
+				  <h3 class="panel-title">{{posting.topic}}</h3>
+				</div>
+				 <div class="panel-body">
+					 {{posting.description}}
+				 </div> 
+					<div class="panel-footer">
+						 <div>
+							<strong>{{posting.postedby}}</strong>
+							
+								<span class="pull-right text-muted">
+								<a><em>{{posting.date}}</em></a>
+									  <a><em>Reply</em></a>
+								</span>
+						   </div>
+				</div>	
+			  </div>
+
+		</div>
+
+
+   </div>  
+
+                            
+
+
+  <div class="tab-pane" id="addpost">
+	 <div class="tab-pane" id="received">
+		 <div class="panel panel-default">	
+		
+			 <div class="panel-body">
+             
+			   
+                   <input type="text" class="form-control input-lg" placeholder="Topic" ng-model="post.topic">
+				   <br>
+               	   <textarea class="form-control" rows="4" id="desc" placeholder="Description" ng-model="post.description"></textarea>
+            
+
+			 </div>
+             <div class="panel-footer">
+			 <button class="btn btn-primary" ng-click="addPost()">Post</button>
+			 </div>
+		   </div> 
+	 </div>
+  </div>
+
+</div>
+
+            <div ng-show="posted" class="alert alert-success"><strong> Posted Succesfully</strong></div>
+			 <div ng-show="postederror" class="alert alert-success"><strong> Error in Saving </strong></div>

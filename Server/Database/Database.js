@@ -7,12 +7,12 @@ var config=require('../Config/Config.js')
 , async =require('async')
 , bcrypt = require('bcrypt')
 , jwt = require('jwt-simple')
-, tokenSecret='1234567890QWERTY'
+, tokenSecret=config.tokenSecret
 , MongoClient = require('mongodb').MongoClient;
 var db;
 var S = require('string');
 
-MongoClient.connect("mongodb://localhost:27017/RentalDB", function(err, database) {
+MongoClient.connect(config.DatabaseUrl, function(err, database) {
   if(err) throw err;
   
   db=database;
@@ -85,7 +85,6 @@ req.body.contact="+254"+req.body.contact;
 
 
 exports.CreateHouse = function(req, res) {
-// console.log("The Hse Amount is .."+req.body.amount);
 db.collection('House', function(err, collection) {
 collection.insert(req.body, function(err, item) {
    if (err) {DbError(res) ;}
@@ -494,7 +493,7 @@ exports.GrantAccess = function(req, res) {
 
       if (ok){
                var token = jwt.encode({username: req.body._id}, tokenSecret);
-               sms.TenantWelcomeSMS(req.body,token,function(message){
+               sms.TenantWelcomeSMS(req.body,config.TenantWelcomeMsg,function(message){
 			       SaveMessage(message);
 		        });     
 		   Success(res);  
@@ -783,9 +782,7 @@ exports.CheckPwd= function(req, res) {
 
 
 exports.ChangePwd=function(req, res) {
-    
-   bcrypt.hash(req.body.newpwd, 10, function(err, hash) {
-
+   bcrypt.hash(req.body.newPwd, 10, function(err, hash) {
 		db.collection('user', function(err, collection) {
 		collection.update({"_id":req.user._id},{$set:{"password" : hash}},{safe:true}, function(err, item) {
 		   if (err) {
@@ -1111,6 +1108,24 @@ db.collection('Schedules', function(err, collection) {
 collection.insert(req.body, function(err, item) {
      if(err){DbError(res);}
 	  else{ Success(res)}
+      });
+   }); 
+};
+
+exports.addPost=function(req, res) {
+db.collection('tenantPosts', function(err, collection) {
+collection.insert(req.body, function(err, item) {
+     if(err){DbError(res);}
+	  else{ Success(res)}
+      });
+   }); 
+};
+
+exports.getPost=function(req, res) {
+db.collection('tenantPosts', function(err, collection) {
+collection.find().toArray( function(err, item){
+     if(err){DbError(res);}
+	  else{  res.status(200).json(item);}
       });
    }); 
 };
@@ -1700,10 +1715,10 @@ function configureDB(){
 var det={
 	     "_id" : "roba",
 	     "name" : "roba",
-        "AccessStatus" : 1,
-        "email" : "nanatec@gmail.com",
-        "password": "$2a$10$IaQpkGxJpWxjyoi7wgp5ku.0.xlG8Gw.EmSjDhEA1O83Dxtkjogqa",
-        "role" : "admin"
+         "AccessStatus" : 1,
+         "email" : "nanatec@gmail.com",
+         "password": "$2a$10$IaQpkGxJpWxjyoi7wgp5ku.0.xlG8Gw.EmSjDhEA1O83Dxtkjogqa",
+          "role" : "admin"
 }
     db.collection('user', function(err, collection) {
  collection.insert(det, function(err, item) {
