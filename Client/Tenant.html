@@ -71,6 +71,16 @@
 
 <div class="container">
 
+  <nav >
+  <ul>
+    <span ng-repeat="action in actions" ng-switch on="isRendered">
+      <li ng-switch-when="true"><a href="{{action.href}}">{{action.name}}
+      </a></li>
+    </span>
+  </ul>
+</nav>
+
+
     <ul class="nav nav-tabs tab-bar">
       <li><a href="#!/statements">Statement </a></li>
       <li><a href="#!/inbox">Notifications </a></li>

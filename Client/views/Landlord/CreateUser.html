@@ -1,0 +1,69 @@
+<div class="col-md-12">
+    <div class="panel panel-default">
+	 <div class="panel-heading">
+			<button type="button" class="btn btn-primary" ng-click="Add()" ng-disabled=!disableComponents>Add</button>
+         
+		</div>
+          <div class="panel-body">
+		    <form name="userForm"  novalidate>
+				 <div class="row" >
+					  <div class="col-md-6" >
+						  <label for="uid">Identification</label>
+						  <input type="text" class="form-control" placeholder="Identification" id="uid" ng-model="Newuser.id" ng-disabled=disableComponents required>
+						  <label for="tname">User Names</label>
+						  <input type="text" class="form-control" placeholder="Names" id="tname" ng-model="Newuser.names" ng-disabled=disableComponents required>
+						  <label for="ucontact">Contact</label>
+						  <input type="text" class="form-control" placeholder="Contact" id="ucontact" ng-model="Newuser.contact" ng-disabled=disableComponents required>
+                          <label for="plot">Plot</label>
+					      
+						       <select class="form-control"  ng-model="Newuser.plot"  ng-options="c.Plotname for c in landlordplots"	ng-disabled=disableComponents>  
+			                   </select>
+                          <label for="urole">User Role</label>
+					      
+						       <select class="form-control"  ng-model="Newuser.userRole"  ng-options="r.role for r in roles"	ng-disabled=disableComponents>  
+			                   </select>
+
+                        
+	                     <div class="form-group">
+					          <label for="Password">Password</label>
+								<input type="password"  class="form-control" id="pwd" name="pwd" ng-model="Newuser.password" ng-minlength="5" ng-disabled=disableComponents placeholder="New Password" tabindex="5" required/>
+								<div ng-show="userForm.cont.$dirty">
+								<p ng-show="userForm.pwd.$error.required" class="help-block alert alert-danger">Password Required</p>
+								<p ng-show="userForm.pwd.$error.minlength" class="help-block alert alert-danger">Password too Short</p></div>
+					    </div>
+
+						<div class="form-group">
+					              <label for="ConfirmPassword">Confirm Password</label>
+								<input type="password"  class="form-control" id="Confirmpwd" name="Confirmpwd" ng-model="confirmpwd" tabindex="6" placeholder="Confirm Password" ng-disabled=disableComponents required pw-check="pwd"/>
+								<div ng-show="userForm.Confirmpwd.$dirty">
+								<p ng-show="userForm.Confirmpwd.$error.required" class="help-block alert alert-danger">Please Confirm your password</p>
+								<p ng-show="userForm.Confirmpwd.$error.pwcheck" class="help-block alert alert-danger">Passwords do not match </p></div>
+					</div>
+
+
+
+					 </div>
+				<div class="col-md-6" >
+				    <label >Access</label><br/>
+                     
+                        <div class="checkbox"  ng-repeat="path in paths">
+                            <label><input type="checkbox" value={{path.value}}  ng-click="updateSelection($event,path.value)" >{{path.text}}</label>
+                        </div>
+
+
+                       </label>
+
+						
+					  </div>
+                  </div>
+             </form>
+
+	       </div>
+		         <div class="panel-footer">
+					<button type="button" class="btn btn-success" ng-click="createuser()" >Save</button>
+				<div ng-show="userCreated" class="alert alert-success"><strong> User Successfully Created </strong> </div>
+			    <div ng-show="userCreatederror" class="alert alert-danger"><strong>Error Occurred </strong></div>
+				  </div>
+
+    </div>
+</div>

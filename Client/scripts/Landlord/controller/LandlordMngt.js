@@ -22,17 +22,25 @@ var landlordtmngt= angular.module('LandlordmngtApp', ['ngResource','ngRoute','ui
 				// handle the case where the user is not authenticated
 				$window.location.href = "Error.html";
 			  }
+			  
 			  return response || $q.when(response);
 			}
 		  };
 		});
 
+
+landlordtmngt.run(['$rootScope', '$location','authService',
+    function ($rootScope, $location,authService) {    
+        $rootScope.$on('$routeChangeStart', function (event, next, current) {
+              if(!authService.isUrlAccessibleForUser(next.originalPath))
+                 $location.path('/authError');     
+        });
+
+}]);
+
 landlordtmngt.config(function ($httpProvider) {
   $httpProvider.interceptors.push('authInterceptor');
     });
-
-
-
 
 var ModalInstanceCtrl = function ($scope, $modalInstance, lat, lng,$timeout) {
    $scope.render=true;
@@ -56,13 +64,21 @@ $scope.plotnames="plot kasarani";
 };
 
 landlordtmngt.controller('MainLandlordctrl', function($scope,$http,$window,LandlordFactory,$rootScope,notificationFactory) {
- 
-       LandlordFactory.getLordDetails()
+      
+   
+	   
+	   
+	   LandlordFactory.getLordDetails()
 		 .success(function (data){
 			  $rootScope.landlordDetails=data
+				$scope.menu=$rootScope.landlordDetails.allowedPath;
+			 // MasterDetails.save($rootScope.landlordDetails);
 			if (typeof data.plots!="undefined")
-			   {$rootScope.plot=data.plots;	
-		  	   } else{$rootScope.plot=[];}	
+			   {
+				$rootScope.plot=data.plots;	
+		  	   } else{
+				   $rootScope.plot=[];
+				   }	
 			   })
 		   .error(function(data) {
 			  notificationFactory.error("Error Configuring Your Details Refresh");
@@ -183,6 +199,76 @@ landlordtmngt.controller('mapViewctrl', function($scope,$http,$window) {
  
 });
 
+landlordtmngt.controller('CreateUserctrl', function($scope,$rootScope,LandlordFactory) {
+	 $scope.Newuser={};
+     $scope.allowedPath=[];
+     $scope.landlordplots=$rootScope.plot;
+	 	   $scope.userCreated=false;
+		   $scope.userCreatederror=false;
+$scope.roles=[
+	 {"id": 1, "role":"maker"},
+     {"id": 2,"role":"admin"},
+  ];
+$scope.Newuser.userRole=$scope.roles[0];
+ $scope.paths = [
+    {"id": 1, "value":{"name":"plotmngt","path":"/plotmngt"},"text":"Add Plot"},
+    {"id": 2, "value":{"name":"housemngt","path":"/housemngt"},"text":"Add House"},
+	{"id": 3, "value":{"name":"housemngt","path":"/vacate"},"text":"Do Check-Out"},
+	{"id": 4, "value":{"name":"housemngt","path":"/trxnmngt"},"text":"Add Transactions"},
+	{"id": 5, "value":{"name":"housemngt","path":"/housemngt"},"text":"Post Rent"},
+	{"id": 6, "value":{"name":"housemngt","path":"/housemngt"},"text":"Add Documents"},
+	{"id": 7, "value":{"name":"housemngt","path":"/housemngt"},"text":"Add Notice"},
+	{"id": 8, "value":{"name":"housemngt","path":"/housemngt"},"text":"Add Charges"},
+	{"id": 9, "value":{"name":"housemngt","path":"/housemngt"},"text":"View Tenant Stmts"},
+    {"id": 10,"value":{ "name":"housemngt","path":"/rent"},"text":"Check-in"},
+	{"id": 11, "value":{"name":"housemngt","path":"/housemngt"},"text":"Compose Message"},
+	{"id": 12, "value":{"name":"housemngt","path":"/housemngt"},"text":"View Message"},
+	{"id": 13, "value":{"name":"housemngt","path":"/tenantsmngt"},"text":"Add Tenants"},
+  
+  ];
+
+  $scope.updateSelection=function($event,value){
+	var checkbox = $event.target;
+    var action = (checkbox.checked ? 'add' : 'remove');
+
+   if (action === 'add') {
+    $scope.allowedPath.push(value);
+  }
+  if (action === 'remove' ) {
+    $scope.allowedPath.splice(value, 1);
+  }
+
+  };
+
+            $scope.createuser=function(){
+                  if ($scope.allowedPath.length==0)
+                  {
+                    alert("You have to select atleast one Access"); 
+                  }else{
+					  
+                    $scope.Newuser.Landlordid=$rootScope.landlordDetails.id;
+                    $scope.Newuser.id=$scope.Newuser.id;
+					$scope.Newuser._id=$scope.Newuser.id;
+                    $scope.Newuser.parentLandlordid= $rootScope.landlordDetails.id;  
+					$scope.Newuser.role=$rootScope.landlordDetails.role;
+                     $scope.Newuser.allowedPath= $scope.allowedPath;
+					 $scope.Newuser.AccessStatus =1;
+                           LandlordFactory.createUser($scope.Newuser)
+					         .success(function(data) {
+					      		   $scope.userCreated=true;
+								   $scope.userCreatederror=false;
+							     }) 
+						   .error(function(data) {
+							     $scope.userCreated=false;
+								 $scope.userCreatederror=true;
+							 });
+				  }
+               };
+
+ 
+});
+
+
 landlordtmngt.controller('ComposeSmsctrl', function($scope,$http,$window,tenant,notificationFactory,ngProgress) {
 	 $scope.sms={}; 
 	  $scope.SuccessStatus=false;
@@ -277,19 +363,29 @@ landlordtmngt.controller('HomeLandlordctrl', function($scope,$http,$rootScope,$w
 });
 
 
-landlordtmngt.controller('Noticectrl', function($scope,$rootScope,$http,ngProgress) {
+
+landlordtmngt.controller('transactionVerificationctrl', function($scope,$http,$rootScope,unverifiedTransactions) {
+  console.log(unverifiedTransactions.data);
+  $scope.data=unverifiedTransactions.data;
+
+
+
+});
+
+landlordtmngt.controller('Noticectrl', function($scope,$rootScope,$http,ngProgress,LandlordFactory) {
        $scope.noticeSent=false;
 		$scope.noticeSentError=false;
 		$scope.btndisable=false;
 $scope.noticelist=[];
 ngProgress.start();
-		$http.get('/web/Landlord/GetLandlordNotice')
+        LandlordFactory.GetLandlordNotice()	
 			.success(function (data){
 					$scope.noticelist=data;
 				   //  $scope.notice=$scope.noticelist[0];
 				ngProgress.complete();
 			   })
-		   .error(function(data) {
+		   .error(function(data,status) {
+				  console.log("the Status is "+status);
 			   ngProgress.complete();
 		   });
 
@@ -890,7 +986,8 @@ landlordtmngt.controller('Edittransactiontctrl', function($scope,TrxnService, ng
 
 
 landlordtmngt.controller('trxnmngtctrl', function($scope,$http,$rootScope,ngProgress, $window,$filter,tenant,BatchTrxnService,TrxnService,notificationFactory) {
-//first clear everything in the Batch Trxn Table 
+//first clear everything in the Batch Trxn Table
+
 BatchTrxnService.Drop();
 
 $scope.Transaction={};
@@ -1120,7 +1217,7 @@ else {
 			      "ApplyCharge":true,
                   "body":{
                   "receiptno":$scope.Transaction.receiptno,
-				  "Landlordid":$rootScope.landlordDetails._id,
+				  "Landlordid":$rootScope.landlordDetails.Landlordid,
 	              "tenantid":$scope.Tenant._id,
 	              "housenumber":$scope.Tenant.housename,
 	              "plotnumber":$scope.Tenant.plot.Plotname,
@@ -1146,7 +1243,7 @@ else {
 
        $scope.Payment={	             
 	              "receiptno":$scope.Transaction.receiptno,
-                  "Landlordid":$rootScope.landlordDetails._id,
+                  "Landlordid":$rootScope.landlordDetails.Landlordid,
 	              "tenantid":$scope.Tenant._id,
 	              "housenumber":$scope.Tenant.housename,
 	              "plotnumber":$scope.Tenant.plot.Plotname,
@@ -1210,11 +1307,15 @@ else {
 
 
 $scope.postBatchPayment=function(){
+  
+     if ($rootScope.landlordDetails.userRole.role==="maker")
+   {$scope.path="/web/Landlord/makerBatchRentalPayment"}
+   else {$scope.path="/web/Landlord/BatchRentalPayment"};
 	 $scope.disablePosting=true;
 	 $scope.BatchPayment=BatchTrxnService.list();
      ngProgress.start();
 	 notificationFactory.inprogress("Posting Data..");
-                  $http.post('/web/Landlord/BatchRentalPayment', $scope.BatchPayment)
+                  $http.post($scope.path, $scope.BatchPayment)
 						 .success(function(data) {
 							    $scope.paymentposted=true;
 								$scope.msg=data.success;
@@ -1246,7 +1347,7 @@ notificationFactory.inprogress("Posting Data..");
 			      "ApplyCharge":true,
                   "body":{
                   "receiptno":$scope.Transaction.receiptno,
-				  "Landlordid":$rootScope.landlordDetails._id,
+				  "Landlordid":$rootScope.landlordDetails.Landlordid,
 	              "tenantid":$scope.Tenant._id,
 	              "housenumber":$scope.Tenant.housename,
 	              "plotnumber":$scope.Tenant.plot.Plotname,
@@ -1271,7 +1372,7 @@ notificationFactory.inprogress("Posting Data..");
 
   $scope.Payment={
 	              "receiptno":$scope.Transaction.receiptno,
-				  "Landlordid":$rootScope.landlordDetails._id,
+				  "Landlordid":$rootScope.landlordDetails.Landlordid,
 	              "tenantid":$scope.Tenant._id,
 	              "housenumber":$scope.Tenant.housename,
 	              "plotnumber":$scope.Tenant.plot.Plotname,
@@ -1288,9 +1389,11 @@ notificationFactory.inprogress("Posting Data..");
                   "Month":Month
 	 
  };
+        if ($rootScope.landlordDetails.userRole.role==="maker")
+   {$scope.path="/web/Landlord/makerRentalPayment"}
+   else {$scope.path="/web/Landlord/RentalPayment"};
 
-
-                  $http.post('/web/Landlord/RentalPayment', $scope.Payment)
+                  $http.post($scope.path, $scope.Payment)
 						 .success(function(data) {
 							    $scope.paymentposted=true;
 								$scope.msg=data.success;
@@ -1421,7 +1524,7 @@ $scope.AddExpense=function(){
   $scope.expense={
 	              "receiptno":null,
 	              "tenantid":$scope.Tenant._id,
-                  "Landlordid":$rootScope.landlordDetails._id,
+                  "Landlordid":$rootScope.landlordDetails.Landlordid,
                   "names":$scope.crit.names,
                   "contact":$scope.Tenant.contact,
 	              "housenumber":$scope.Tenant.housename,
@@ -1438,9 +1541,11 @@ $scope.AddExpense=function(){
 	 
  };
 
-         
+     if ($rootScope.landlordDetails.userRole.role==="maker")
+   {$scope.path="/web/Landlord/makerRentalPayment"}
+   else {$scope.path="/web/Landlord/RentalPayment"};       
 
-  $http.post('/web/Landlord/RentalPayment', $scope.expense)
+  $http.post($scope.path, $scope.expense)
 						 .success(function(data) {
 							    $scope.paymentposted=true;
 								$scope.msg=data.success;
@@ -2764,10 +2869,7 @@ landlordtmngt.service('TrxnService', function ($http) {
 		return $http.get(url + '/PaymentDateAggregation');
     };
       this.DeleteReceipt = function (details) {
-		return $http.post(url + '/DeleteReceipt',details);
-
-      
-
+		return $http.post(url + '/DeleteReceipt',details);   
     };
 
 });
@@ -2908,53 +3010,89 @@ landlordtmngt.factory('notificationFactory', function () {
     };
 });
 
+landlordtmngt.factory('authService',[ '$http','LandlordFactory',function ($http,LandlordFactory) {
 
-landlordtmngt.factory('LandlordFactory', ['$http','$rootScope','notificationFactory', function($http,$rootScope,notificationFactory) {
+
+
+   
+
+   var userRoleRouteMap=[];
+	LandlordFactory.getLordDetails()
+		.success(function(data) { 
+		       userRoleRouteMap=data.allowedPath; 	      
+			  })
+		.error(function(data) {});
+
+		
+    return {
+
+        userHasRole: function (role) {
+            for (var j = 0; j < userRole.length; j++) {
+                if (role == userRole[j]) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
+           isUrlAccessibleForUser: function (route) {
+                var validUrlsForRole = userRoleRouteMap;
+                if (validUrlsForRole) {
+                    for (var j = 0; j < validUrlsForRole.length; j++) {
+                        if (validUrlsForRole[j].path == route)
+                            return true;
+                    }
+                }
+            return false;
+        }
+    };
+}]);
+
+
+landlordtmngt.factory('LandlordFactory', ['$http','$rootScope','notificationFactory', function($http,notificationFactory) {
 	var url='/web/Landlord';
 	var data = {
+
+       GetLandlordNotice: function() {
+			var promise = $http.get(url+ '/GetLandlordNotice',{ cache: true })
+			return promise;
+		},
+       GetUnverifiedTransactions: function() {
+			var promise = $http.get(url+ '/UnverifiedTransactions',{ cache: true })
+			return promise;
+		},
 		getLordDetails: function() {
-			var promise = $http.get(url+ '/LandLordDetails',{ cache: true }).success(function(data, status, headers, config) {
-				return data;
-			});
+			var promise = $http.get(url+ '/LandLordDetails',{ cache: true })
 			return promise;
 		},
 		getLandLordConfiguration: function() {
-			var promise = $http.get(url+'/LandLordConfiguration',{ cache: true }).success(function(data, status, headers, config) {
-				  	
-				return data;
-			});
+			var promise = $http.get(url+'/LandLordConfiguration',{ cache: true })
 			return promise;
 		},
 
         getEmail: function() {
-			var promise = $http.get('/web/Viewmail',{ cache: true }).success(function(data, status, headers, config) {
-				return data;
-			});
+			var promise = $http.get('/web/Viewmail',{ cache: true })
 			return promise;
 		} ,
         getTotals: function() {
-			var promise = $http.get(url+'/TotalUnpaid').success(function(data, status, headers, config) {
-				return data;
-			});
+			var promise = $http.get(url+'/TotalUnpaid');
 			return promise;
 		}  ,
-			
+        createUser: function(details) {
+			var promise =  $http.post(url + '/LandlordCreateUser',details); 
+			return promise;
+		}  ,	
 
+    
 		getMessages:function(){
                notificationFactory.inprogress("Loading Data Please Wait ..");
-           var promise = $http.get('/web/Sms/getMsg').success(function(data, status, headers, config) {
-			   notificationFactory.clear(); 
-				return data;
-			});
+           var promise = $http.get('/web/Sms/getMsg')
 			return promise;
 		},
 
        getUsage:function(){
                notificationFactory.inprogress("Loading Data Please Wait ..");
-                    var promise = $http.get('/web/Sms/getUsage').success(function(data, status, headers, config) {
-			   notificationFactory.clear(); 
-				return data;
-			});
+                    var promise = $http.get('/web/Sms/getUsage')
 			return promise;
 		}
         
@@ -2964,8 +3102,18 @@ landlordtmngt.factory('LandlordFactory', ['$http','$rootScope','notificationFact
 	return data;
 }]);
 
+ landlordtmngt.service('MasterDetails', function ($rootscope) {
+	
+     this.save = function (landlord) {
+		 $rootscope.iza=landlord;
+	      
+         }
+	this.get = function () {
+        return $rootscope;
+        }
+ });
 
-landlordtmngt.service('BatchTrxnService', function () {
+  landlordtmngt.service('BatchTrxnService', function () {
 
     var data = [];
        var uid = 0;
@@ -3004,8 +3152,6 @@ landlordtmngt.service('BatchTrxnService', function () {
         return data;
     }
 });
-
-
 
 
 
@@ -3183,9 +3329,23 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
      templateUrl: 'views/Landlord/LandlordComposeSms.html',   
      controller: 'ComposeSmsctrl'	 
        })
-
-   
-
+    .when('/CreateUser', {
+     templateUrl: 'views/Landlord/CreateUser.html',   
+     controller: 'CreateUserctrl'	 
+       })
+     .when('/authError', {
+     templateUrl: 'views/Landlord/authError.html'   
+  	 
+       })
+        .when('/transactionVerification', {
+         templateUrl: 'views/Landlord/transactionVerification.html',   
+  	     controller: 'transactionVerificationctrl',
+          resolve: {		
+            unverifiedTransactions: function(LandlordFactory) {
+				return LandlordFactory.GetUnverifiedTransactions();
+	                    }
+	            }
+        })	   
 
 	.otherwise({
          redirectTo: '/LandlordHome'

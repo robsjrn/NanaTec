@@ -15,3 +15,263 @@ var k =[
  ]
 
 db.Schedules.insert(k);
+
+
+
+
+// To Impliment Later
+/*
+landlordtmngt.directive('myAccess', ['authService', 'removeElement', function (authService, removeElement) {
+    return{
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+
+            var hasAccess = false;
+            var allowedAccess = attributes.myAccess.split(" ");
+            for (var i = 0; i < allowedAccess.length; i++) {
+                if (authService.userHasRole(allowedAccess[i])) {
+                    hasAccess = true;
+                    break;
+                }
+            }
+
+            if (!hasAccess) {
+                angular.forEach(element.children(), function (child) {
+                    removeElement(child);
+                });
+                removeElement(element);
+            }
+
+        }
+    }
+}]).constant('removeElement', function(element){
+    element && element.remove && element.remove();
+});
+*/
+
+db.user.update({"id":"3622036"},{$set:{"Landlordid":"3622036"}})
+
+db.user.update({"id":"3622036"},{$set:{"userRole" : {"id" : 1, "role" : "admin"}}})
+ 
+
+
+db.user.update({  
+   "id":"3622036"
+},
+{  
+   $set:{  
+      "allowedPath":[  
+         {  
+            "name":"Home",
+            "path":"/LandlordHome",
+            "mainmenu":false
+         },
+         {  
+            "name":"plots",
+            "path":"/plotmngt",
+            "mainmenu":true
+         },
+         {  
+            "name":"Select House",
+            "path":"/housemngt",
+            "mainmenu":false
+         },
+         {  
+            "name":"house",
+            "path":"/landlordHousemngt",
+            "mainmenu":true
+         },
+         {  
+            "name":"Edit house",
+            "path":"/landlordEditHousemngt",
+            "mainmenu":false
+         },
+         {  
+            "name":"Tenant",
+            "path":"/tenantsmngt",
+            "mainmenu":true
+         },
+         {  
+            "name":"Check-in",
+            "path":"/rent",
+            "mainmenu":true
+         },
+         {  
+            "name":"Check-0ut",
+            "path":"/vacate",
+            "mainmenu":true
+         },
+         {  
+            "name":"Transaction",
+            "path":"/trxnmngt",
+            "mainmenu":true
+         },
+         {  
+            "name":"Single Transaction",
+            "path":"/Singletransaction",
+            "mainmenu":false
+         },
+         {  
+            "name":"Edit Transaction",
+            "path":"/Edittransaction",
+            "mainmenu":false
+         },
+         {  
+            "name":"Batch Transaction",
+            "path":"/Batchtransaction",
+            "mainmenu":false
+         },
+         {  
+            "name":"Expense",
+            "path":"/expensemngt",
+            "mainmenu":true
+         },
+         {  
+            "name":"Summary",
+            "path":"/summarymngt",
+            "mainmenu":false
+         },
+         {  
+            "name":"Document",
+            "path":"/documentmngt",
+            "mainmenu":true
+         },
+         {  
+            "name":"Inbox",
+            "path":"/inbox",
+            "mainmenu":false
+         },
+         {  
+            "name":"Change Password",
+            "path":"/pwdchange",
+            "mainmenu":false
+         },
+         {  
+            "name":"Profile",
+            "path":"/profile",
+            "mainmenu":false
+         },
+         {  
+            "name":"Reports Portal",
+            "path":"/ReportsPortal",
+            "mainmenu":false
+         },
+         {  
+            "name":"Settings",
+            "path":"/Settings",
+            "mainmenu":false
+         },
+         {  
+            "name":"Post Rent",
+            "path":"/RentPosting",
+            "mainmenu":true
+         },
+         {  
+            "name":"Tenant Paid Report",
+            "path":"/TenantPaidReport",
+            "mainmenu":false
+         },
+         {  
+            "name":"Tenant Un-Paid Report",
+            "path":"/TenantUnPaidReport",
+            "mainmenu":false
+         },
+         {  
+            "name":"Tenant List",
+            "path":"/TenantListReport",
+            "mainmenu":false
+         },
+         {  
+            "name":"Occupied House",
+            "path":"/OccupiedHouseReport",
+            "mainmenu":false
+         },
+         {  
+            "name":"Over paid Report",
+            "path":"/OverpaidHouseReport",
+            "mainmenu":false
+         },
+         {  
+            "name":"Vacant Report",
+            "path":"VacantHouseReport",
+            "mainmenu":false
+         },
+         {  
+            "name":"All House Report",
+            "path":"/AllHouseReport",
+            "mainmenu":false
+         },
+         {  
+            "name":"Notice",
+            "path":"/Notice",
+            "mainmenu":true
+         },
+         {  
+            "name":"Vacate",
+            "path":"/VacateNotice",
+            "mainmenu":true
+         },
+         {  
+            "name":"Payment Summary",
+            "path":"/PaymentSummaryDate",
+            "mainmenu":false
+         },
+         {  
+            "name":"Map",
+            "path":"/map",
+            "mainmenu":false
+         },
+         {  
+            "name":"Messages",
+            "path":"/messages",
+            "mainmenu":true
+         },
+         {  
+            "name":"Tenant Transaction",
+            "path":"/TenantTrxn",
+            "mainmenu":true
+         },
+         {  
+            "name":"Compose Sms",
+            "path":"/ComposeSms",
+            "mainmenu":true
+         },
+         {  
+            "name":"Create User",
+            "path":"/CreateUser",
+            "mainmenu":true
+         },
+         {  
+            "name":"Trxn Verification",
+            "path":"/transactionVerification",
+            "mainmenu":true
+         },
+         {  
+            "name":"AuthError",
+            "path":"/authError",
+            "mainmenu":false
+         }
+      ]
+   }
+})
+
+
+
+        [
+          
+	  {
+                 "name" : "Home",
+                 "path" : "/LandlordHome",
+		 "menu":"yes"
+         },
+	 
+	 {
+                 "name" : "plotmngt",
+                 "path" : "/plotmngt",
+		 "menu":"yes"
+         },
+         {
+                 "name" : "Select House",
+                 "path" : "/housemngt",
+		 "menu":"no"
+         }]

@@ -2,8 +2,8 @@ var express = require('express')
 , router = express.Router()
 , jwt = require('jwt-simple')
 , DatabaseConn = require('../../Database/Database')
+,userRoles = require('../../Config/routingConfig.js').userRoles
 , tokenSecret='1234567890QWERTY';
-
 
 
 
@@ -40,14 +40,7 @@ var express = require('express')
     
 		   });
          })
-             router.get('/about', function (req, res) {
-				  res.render('about',
-				 { title : 'Abouuuuuut',names : 'beste',id:'10020' }
-			
-			       )
-              })
 
-         // router.get('/', function(req, res){res.redirect('/index.html');});
   
            router.post('/Login',   function(req, res) {
 				DatabaseConn.getCredentials(req.body.username,req.body.password, function(err, user) {
@@ -55,8 +48,12 @@ var express = require('express')
 				 if (!user) {res.send(401); } 
 				 if (user !==null)
 				 {
-				   var token = jwt.encode({username: user._id}, tokenSecret);
-					  res.json({token : token,role:user.role});	
+                     
+				   var token = jwt.encode({username: user, accessrole:user.userRole.role}, tokenSecret);
+				   var accessrole;
+					       res.json({token : token,
+						             role:user.role					       
+						       });	
 						 }
 				});
 				   

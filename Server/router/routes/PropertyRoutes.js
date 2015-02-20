@@ -10,7 +10,7 @@ var express = require('express'),
 					  {
 						var decoded = jwt.decode(req.headers.token, tokenSecret);
 						  req.user={};
-						  req.user.username=decoded.username;
+						  req.user.username=decoded.username._id;
 						  return next();
 					  }
 					  catch (e)

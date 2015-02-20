@@ -8,7 +8,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Nana|Landlord</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -132,31 +132,10 @@
 <div  class="container">
 
     <ul class="nav nav-tabs tab-bar">
-		<li><a href="#!/plotmngt">Plots</a></li>
-		<li><a href="#!/housemngt">House</a></li>
-		<li><a href="#!/tenantsmngt">Tenants</a></li>														
-		<li><a href="#!/rent">Check-in</a></li>
-		<li><a href="#!/vacate">Check-out</a></li>						
-        <li><a href="#!/trxnmngt">Transactions</a></li>
-		<li><a href="#!/expensemngt">Charges</a></li>
-		<li><a href="#!/RentPosting">Post Rent</a></li>
-		<li><a href="#!/documentmngt">Documents</a></li>
-		<li ><a href="#!/Notice">Notice</a></li>
-		<li ><a href="#!/VacateNotice">Vacate Notice</a></li>
-		<li><a href="#!/TenantTrxn">Tenant Stmts</a></li>	
-		<li class="btn-group" role="group">
-			<a  class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-			  Messages
-			  <span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu" role="menu">
-			  <li role="presentation" class="dropdown-header">Sms</li>
-			    <li><a href="#!/ComposeSms">Compose</a></li>
-				<li><a href="#!/messages">View</a></li>
-              <li role="presentation" class="dropdown-header">Mail</li>
-			    <li><a href="#!/inbox">View/Compose</a></li>
-			</ul>
-		  </li>		
+		<li ng-repeat="x in menu" >
+		    <a ng-if="x.mainmenu" ng-href="#!{{x.path}}">{{x.name}}</a>
+		</li>
+		 
    </ul>
 
 

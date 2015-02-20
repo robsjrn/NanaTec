@@ -1,17 +1,42 @@
-var express = require('express');
-var router = express.Router();
-var DatabaseConn = require('../../Database/Database');
-var jwt = require('jwt-simple'),
- tokenSecret='1234567890QWERTY';
-var Monthlyposting = require('../../Jobs/producer');
+var express = require('express'),
+         _ =  require('underscore'),
+    router = express.Router(),
+    DatabaseConn = require('../../Database/Database'),
+    jwt = require('jwt-simple'),
+    Monthlyposting = require('../../Jobs/producer'),
+	config=require('../../Config/Config.js'),
+     userRoles = require('../../Config/routingConfig.js').userRoles,
+     accessLevels = require('../../Config/routingConfig.js').accessLevels;
 
+
+	tokenSecret='1234567890QWERTY';  //move this to  config
+ var routesConfig = [
+           {
+			path: '/GetLandlordNotice',
+			httpMethod: 'POST',
+			accessLevel: accessLevels.admin
+            },
+             {
+			path: '/GetLandlordNotice',
+			httpMethod: 'GET',
+			accessLevel: accessLevels.admin
+            },
+
+             {
+			path: '/GetLandlordme',
+			httpMethod: 'GET',
+			accessLevel: accessLevels.public
+            }
+		 ];
 
         function ensureAuthenticated(req, res, next) {
 				  try
 					  {
 						var decoded = jwt.decode(req.headers.token, tokenSecret);
-						  req.user={};
-						  req.user._id=decoded.username;
+						   req.user={};
+						   req.user._id=decoded.username._id;
+                           req.user.Landlordid=decoded.username.Landlordid;
+                           req.user.accessrole=decoded.accessrole;
 						  return next();
 					  }
 					  catch (e)
@@ -20,7 +45,22 @@ var Monthlyposting = require('../../Jobs/producer');
 						   res.json(401,{error: "Server Error"});
 					 }
 					  
-			}
+			};
+
+
+		function ensureAuthorized(req, res, next) {
+					
+					/*if(!req.user.accessrole) role = userRoles.public;
+					else          role = req.user.accessrole;
+              */
+			var role = req.user.accessrole             
+            var accessLevel = _.findWhere(routesConfig, { path: req.route.path, httpMethod: req.route.stack[0].method.toUpperCase() }).accessLevel;
+            if(!(accessLevel.bitMask & role.bitMask)) return res.json(403,{error: "unauthorised"});				
+					return next();
+           };
+
+
+
 router.post('/CreateLandlord',DatabaseConn.CreateLandlord);
 router.get('/LandLordDetails',ensureAuthenticated,DatabaseConn.LandLordDetails); 
 router.get('/LandLordConfiguration',DatabaseConn.LandLordConfiguration);
@@ -36,14 +76,21 @@ router.post('/updateHsedetails',ensureAuthenticated,DatabaseConn.updateHsedetail
 	router.post('/LandlordAddPlots',ensureAuthenticated,DatabaseConn.LandlordAddPlots);
 	router.post('/Landlordphotoupload',ensureAuthenticated,DatabaseConn.Landlordphotoupload);
 	router.post('/MonthlyRentPosting',ensureAuthenticated,Monthlyposting.processJob);
-	router.get('/GetLandlordNotice',ensureAuthenticated,DatabaseConn.GetLandlordNotice);
+	/*  notice have to be authorised */
+	router.get('/GetLandlordNotice',ensureAuthenticated,ensureAuthorized,DatabaseConn.GetLandlordNotice);
 	router.post('/LandlordNoticeUpdate',ensureAuthenticated,DatabaseConn.LandlordNoticeUpdate);
 
 		  router.get('/tenantList/:plot',ensureAuthenticated,DatabaseConn.listoftenant);
 		  router.get('/houseList/:plot',ensureAuthenticated,DatabaseConn.listofHouse);
-
-		 router.post('/RentalPayment',ensureAuthenticated,DatabaseConn.postTransaction);
+//admin Transactions
+		   router.post('/RentalPayment',ensureAuthenticated,DatabaseConn.postTransaction);
            router.post('/BatchRentalPayment',ensureAuthenticated,DatabaseConn.BatchRentalPayment);
+  
+  
+  // maker Transactons
+  		   router.post('/makerRentalPayment',ensureAuthenticated,DatabaseConn.makerpostTransaction);
+           router.post('/makerBatchRentalPayment',ensureAuthenticated,DatabaseConn.makerBatchRentalPayment);
+
 
 		 router.get('/bookedtenantList/:plot',ensureAuthenticated,DatabaseConn.listofbookedtenant);
 		 
@@ -70,11 +117,16 @@ router.post('/updateHsedetails',ensureAuthenticated,DatabaseConn.updateHsedetail
 			router.post('/statement',ensureAuthenticated,DatabaseConn.statement);
 			
             router.get('/TotalUnpaid',ensureAuthenticated,DatabaseConn.TotalUnpaid);
+
+             router.get('/UnverifiedTransactions',ensureAuthenticated,DatabaseConn.UnverifiedTransactions);
+			
             router.get('/PaymentDateAggregation',ensureAuthenticated,DatabaseConn.PaymentDateAggregation);
             router.post('/DeleteReceipt',ensureAuthenticated,DatabaseConn.DeleteReceipt);
 			router.post('/LandlordSendSms',ensureAuthenticated,DatabaseConn.LandlordSendSms); 
 
     router.get('/ViewMessages',ensureAuthenticated,DatabaseConn.ViewMessages);
 	
+
+	router.post('/LandlordCreateUser',ensureAuthenticated,DatabaseConn.LandlordCreateUser); 
 			
 module.exports = router;

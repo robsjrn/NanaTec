@@ -1,0 +1,38 @@
+<div class="col-md-12">
+    <div class="panel panel-default">
+	   <div class="panel-heading">
+			Transactions To be Verified
+        </div>
+
+		<div class="panel-body">
+           <table class="table table-responsive table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+									    <th>Receipt No.</th>
+										<th>Tenant</th>
+										<th>House Number</th>
+										<th>Transaction Amount</th>
+										<th>Transaction Type</th>
+										<th>Payment Method</th>
+										<th>Decision</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								
+								<tbody>
+									<tr ng-repeat="dataRec in data">
+									   <td>{{  dataRec.receiptno }}</td>
+										<td>{{ dataRec.names }}</td>
+										<td>{{ dataRec.housenumber }}</td>
+										<td>{{ dataRec.tranAmount }}</td>
+										<td>{{ dataRec.transactiontype }}</td>
+										<td>{{ dataRec.paymentmethod }}</td>
+										<td><button type="button" class="btn btn-success" ng-click="postPayment(dataRec.$index)">Post</button> </td>
+										<td> <a href="javascript:void(0)" ng-click="edit(dataRec.$index )">edit</a> | <a href="javascript:void(0)" ng-click="delete($index)">delete</a>
+
+										</td>
+									</tr>
+								</tbody>
+							</table>
+		</div>
+    </div>

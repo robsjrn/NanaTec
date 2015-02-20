@@ -10,14 +10,14 @@ var Rentmngt= angular.module('RentmngtApp', [] );
 						  $scope.$apply(function(){
 							 $scope.lat=position.coords.latitude;
 							 $scope.lng=position.coords.longitude;
-							 toastr['error']('Your location is ' +$scope.lat + $scope.lng);
-                               $scope.loc="Your Location";
+							// toastr['error']('Your location is ' +$scope.lat + $scope.lng);
+                               $scope.loc=position.coords;
 							   $scope.plotname ="Your Location";
 						  });
 						});
 				  }
 				  else {
-					  toastr['error']('Sorry We Could not get Your Location..');
+					//  toastr['error']('Sorry We Could not get Your Location..');
 					  //default location
 					   $scope.lat="-1.2920658999999999";
 	                   $scope.lng="36.8219462";

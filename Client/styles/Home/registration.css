@@ -1,0 +1,20 @@
+#reg_modal_header{ background:green;border-top-left-radius:6px;border-top-right-radius:6px;border-radius:0px;}
+#reg_close{ opacity:0.5;}
+#reg_close:hover{opacity:1;}
+
+.rw{height: 32px;line-height: 32px;margin: 10px 0;text-align: left;}
+.size1of4 {width: 25%;float: left;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;}
+.rt{overflow: hidden;}
+.rw .rt input {font-size: 13px;padding: 0 0;valign:text-top; height:90%;width:90%;}
+
+.lbl{border: 0;font-size: 100%;font: inherit;vertical-align: bottom;padding-top:3px;margin-top:2px;}
+#login_email_id,#login_password,#reg_mob_no{border: 1px solid #ccc;resize: none;font-family: inherit;text-align:center;background:white;}
+.fk-input{border: 1px solid #ccc;resize: none;font-family: inherit;text-align:center;background:white;font-size: 13px;}
+
+
+div #OR{ height: 50px; width: 50px; border: 1px solid #ddd; border-radius: 50%; font-weight: bold; line-height: 50px; /* Equals elements height */
+ text-align: center;font-size:20px;float:right;position: absolute;right: -25px;top:75px;z-index:1;background:white;
+}
+.reg_modal{border-radius:0px;border-bottom:4px solid green;}
+.modal-body{border-bottom:4px solid green}
+#reg_name{width:150px;margin-left:-50px;height:30px;}

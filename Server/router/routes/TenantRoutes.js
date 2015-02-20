@@ -11,7 +11,7 @@ var tokenSecret='1234567890QWERTY';
 					  {
 						var decoded = jwt.decode(req.headers.token, tokenSecret);
 						  req.user={};
-						  req.user._id=decoded.username;
+						  req.user._id=decoded.username._id;
 						  return next();
 					  }
 					  catch (e)

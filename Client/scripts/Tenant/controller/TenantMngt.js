@@ -49,6 +49,40 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, doc) {
 
 Tenantmngt.controller('MainTenantsctrl', function($scope,$http,$rootScope,$window,$modal,ngProgress) {
     		
+  
+  $scope.isRendered = true;
+  
+  $scope.actions = [ {
+    name : "menu.login",
+    href : "#/login",
+    roles : []
+  }, {
+    name : "menu.nyumbakumi",
+    href : "#!/nyumbakumi",
+    roles : [ 'READ_ONLY', 'ADMIN' ]
+  }, {
+    name : "menu.foo",
+    href : "#/foo",
+    roles : [ 'READ_ONLY', 'ADMIN' ]
+  }, {
+    name : "menu.adminArea",
+    href : "#/adminArea",
+    roles : [ 'ADMIN' ]
+  } ];
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   $scope.pageClass = 'page-nyumbakumi';
   ngProgress.start();
   $http.get('/web/Tenant/tenantDetails').success(function (data){

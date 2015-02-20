@@ -47,7 +47,7 @@ function Success(res){
 
 exports.getCredentials=function(userid,pwd,fn){	
  db.collection('user', function(err, collection) { 
-     collection.findOne({$and: [ {"_id":userid},{"AccessStatus" : 1}]},function(err, item) {
+     collection.findOne({$and: [ {"_id":userid},{"AccessStatus" : 1}]},{_id:1,password:1,Landlordid:1,role:1,userRole:1},function(err, item) {
 	   if(item){
 		 bcrypt.compare(pwd, item.password, function(err, res) {
               if (res) { return fn(null,item); }
@@ -138,7 +138,7 @@ exports.GeneralSearch = function(req, res) {
 	if (req.body.id==4)	{ querry={"email":req.body.detail};}
 
  db.collection('user', function(err, collection) {
-     collection.findOne({$and:[querry,{"hsestatus" : 1},{"Landlordid":req.user._id}]},{names:1,_id:1,housename:1,plot:1,balance:1,contact:1},function(err, item) {
+     collection.findOne({$and:[querry,{"hsestatus" : 1},{"Landlordid":req.user.Landlordid}]},{names:1,_id:1,housename:1,plot:1,balance:1,contact:1},function(err, item) {
 	   if(item){res.send(item);
 	   }else{
 		   DbError(res) ;
@@ -331,6 +331,27 @@ exports.postTransaction = function(req, res) {
 	   else {DbError(res) };
    });
 
+
+};
+
+
+exports.makerpostTransaction = function(req, res) {
+db.collection('TransactionStaging', function(err, collection) {
+collection.insert(req.body, function(err, item) {
+     if(err){DbError(res);}
+	  else{ res.status(200).json({Status: "Ok"});}
+      });
+   }); 
+
+};
+
+exports.makerBatchRentalPayment = function(req, res) {
+db.collection('TransactionStaging', function(err, collection) {
+collection.insert(req.body, function(err, item) {
+     if(err){DbError(res);}
+	  else{ res.status(200).json({Status: "Ok"});}
+      });
+   }); 
 
 };
 
@@ -903,12 +924,22 @@ exports.Landlordphotoupload = function(req, res) {
 
 exports.TotalUnpaid= function(req, res) {
   db.collection('user', function(err, collection) {
-    collection.aggregate([ { $match: { "Landlordid" : req.user._id ,"balance":{$gte: 0},"hsestatus" : 1 }},{ $group: {_id: "$Landlordid" , total: { $sum: "$balance" } } } ] , function(err, result) {
+    collection.aggregate([ { $match: { "Landlordid" : req.user.Landlordid ,"balance":{$gte: 0},"hsestatus" : 1 }},{ $group: {_id: "$Landlordid" , total: { $sum: "$balance" } } } ] , function(err, result) {
          if (result){  res.status(200).json({total: result}); }
 		 else{ DbError(res);}
 	});
 });
 
+};
+
+exports.UnverifiedTransactions= function(req, res) {
+  db.collection('TransactionStaging', function(err, collection) {
+    collection.find({"Landlordid":req.user.Landlordid}).toArray( function(err, item){
+  if(item){res.send(item);}
+  if (err) {DbError(res);}
+
+});
+});
 };
 
 exports.PaymentDateAggregation= function(req, res) {
@@ -1111,6 +1142,21 @@ collection.insert(req.body, function(err, item) {
       });
    }); 
 };
+
+
+exports.LandlordCreateUser=function(req, res) {
+  bcrypt.hash(req.body.password, 10, function(err, hash) {
+	req.body.password=hash;
+	  db.collection('user', function(err, collection) {
+	   collection.insert(req.body, function(err, item) {
+		 if(err){console .log(err);DbError(res);}
+		  else{ Success(res)}
+		  });
+	   }); 
+  });
+};
+
+
 
 exports.addPost=function(req, res) {
 db.collection('tenantPosts', function(err, collection) {
