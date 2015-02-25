@@ -1,12 +1,14 @@
-
-<div class="panel panel-default">
+<md-tabs>
+  <md-tab label="Create">
+				<div class="panel panel-default">
 					<div class="panel-heading">
-					   <button type="button" class="btn btn-info" ng-click="Addplot()" ng-disabled=!disableComponents>Add</button>
+					     <button type="button" class="btn btn-info" ng-click="Addplot()" ng-disabled=!disableComponents>Add</button>
 							<button type="button" class="btn btn-warning" ng-disabled=disableComponents>Clear</button>
+							<div ng-if="showloading" class="pull-right"><md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"></md-progress-circular></div>
 				     </div>
 					   <div class="panel-body">
 				 	            <form name="userForm"  novalidate>
-                                 <div class="col-md-4">
+                                 <div class="col-sm-4 col-md-4">
                            
                                    <label for="plotname">Plot Name</label>
 								   <span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>
@@ -15,76 +17,243 @@
 								   <input type="text" class="form-control" placeholder="Contact Name" id="contact" ng-model="LandlordPlot.contact.name" ng-disabled=disableComponents required>
 								   <label for="contactphone">Contact Phone</label>
 								   <input type="text" class="form-control" placeholder="Contact Phone" id="contactphone" ng-model="LandlordPlot.contact.phone" ng-disabled=disableComponents required>
-								 
-								
-							 </div>
 
-
-							  <div class="col-md-4">
-				
 								   <label >Property Type</label>
-									<select class="form-control"  ng-model="LandlordPlot.PropertyType" ng-options="servicetype.name for servicetype in type" ng-disabled=disableComponents>
+									<select class="form-control"  ng-model="LandlordPlot.PropertyType" ng-options="servicetype.name for servicetype in type" ng-disabled=disableComponents required>
 									</select>
-			 
-                             
-							         <label for="location">Location Name</label>
-									 <select class="form-control" placeholder="Location Name"  ng-model="LandlordPlot.location" ng-options="loca.name for loca in loc" ng-disabled=disableComponents >
-									 </select>
-									  
-									  <label class="control-label">Location</label>
-									  <input type="text" ng-blur="codeAddress()" class="form-control" ng-model="LandlordPlot.address" ng-disabled=disableComponents >
-									 
 
-									
-									  <button class="btn btn-default" ng-click="showmap()" ng-disabled=enablemap>Show Location on map!</button>
-                                    
+
+							       <label >Status</label>
+									<select class="form-control"  ng-model="LandlordPlot.status" ng-options="status.name for status in Rstatus" ng-disabled=disableComponents required>
+									</select>
+
+									<label for="plotdesc">Description</label>
+									  <textarea class="form-control" rows="2" id="plotdesc" ng-model="LandlordPlot.description" ng-disabled=disableComponents title="Brief Plot Description" required></textarea>								 
 							 </div>
-                                <div class="col-md-4">
-                                       <label for="plotdesc">Description</label>
-									  <textarea class="form-control" rows="3" id="plotdesc" ng-model="LandlordPlot.description" ng-disabled=disableComponents title="Brief Plot Description"></textarea>
 
-                                           <label >Location Latitude</label>
-											<input type="number" class="form-control" placeholder="Location Latitude" id="location" ng-model="LandlordPlot.location.latitude" ng-disabled=true title="To Enable Map View">
-											<label >Location Longitude</label>
-											<input type="number" class="form-control" placeholder="Location Longitude" id="location" ng-model="LandlordPlot.location.longitude" ng-disabled=true title="To Enable Map View">
+
+							         <div class="col-md-4 col-sm-4">
+                                                <section >
+                                                    <header class="section-title">
+                                                 
+                                                        <span ng-click="getAddress()" class="link-arrow geo-location pull-right">Get My Position</span>
+                                                    </header>
+                                                    <div class="form-group">
+                                                        <label for="address-map">Address</label>
+                                                        <input type="text" id="autocomplete" class="form-control" ng-model="LandlordPlot.address" ng-disabled=disableComponents placeholder="type Address" >
+                                                    </div><!-- /.form-group -->
+                                                    <label for="address-map">Or drag the marker to property position</label>
+                                                     <div style="width:330px;height:220px;" my-map="" lat="-1.2815735" lng="36.82233580000002"  locname="Nairobi" plotname="LandlordPlot.Plotname"></div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label >Location Latitude</label>
+											<input type="number" class="form-control" placeholder="Location Latitude" id="location" ng-model="LandlordPlot.location.latitude" readonly title="To Enable Map View">
+											
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label >Location Longitude</label>
+											<input type="number" class="form-control" placeholder="Location Longitude" id="location" ng-model="LandlordPlot.location.longitude" readonly title="To Enable Map View">
+                                                        </div>
+                                                    </div>
+                                                </section><!-- /#place-on-map -->
+                                            </div><!-- /.col-md-4 -->
+
+                                         
+
+                                        <div class="col-md-4 col-sm-4">
+										<h3>Property Features</h3>
+                                                  <div class="col-md-3">
+											             <md-checkbox ng-model="LandlordPlot.features.smoking" aria-label="Smoking" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Smoking
+														  </md-checkbox>
+
+														    <md-checkbox ng-model="LandlordPlot.features.parking" aria-label="parking" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Parking
+														  </md-checkbox>
+
+														   <md-checkbox ng-model="LandlordPlot.features.cable" aria-label="Cable" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															CableTv
+														  </md-checkbox>
+
+														   <md-checkbox ng-model="LandlordPlot.features.garage" aria-label="Garage" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Garage
+														  </md-checkbox>
+											           </div>
+													   <div class="col-md-3">
+															<md-checkbox ng-model="LandlordPlot.features.park" aria-label="Park" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															 Park
+														  </md-checkbox>
+
+														    <md-checkbox ng-model="LandlordPlot.features.watchmen" aria-label="Watchmen" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Watchmen
+														  </md-checkbox>
+
+														   <md-checkbox ng-model="LandlordPlot.features.internet" aria-label="Internet" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Internet
+														  </md-checkbox>
+
+														   <md-checkbox ng-model="LandlordPlot.features.pool" aria-label="Pool" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Pool
+														  </md-checkbox>
+											</div>
+											<div class="col-md-3">
+												          <md-checkbox ng-model="LandlordPlot.features.bathtub" aria-label="Bathtub" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+														       Bathtub
+														  </md-checkbox>
+
+														    <md-checkbox ng-model="LandlordPlot.features.Bathroom" aria-label="Bathroom" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Bathroom
+														  </md-checkbox>
+
+														   <md-checkbox ng-model="LandlordPlot.features.Balcony" aria-label="Balcony" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Balcony
+														  </md-checkbox>
+
+														    <md-checkbox ng-model="LandlordPlot.features.wifi" aria-label="WiFi" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															WiFi
+														  </md-checkbox>
+											   </div>
 										 </div>
-                          
-									</div>
 					   </form>
+					   </div>
 					   <div class="panel-footer">
-					<button type="button" class="btn btn-success" ng-disabled="userForm.$invalid" ng-click="Saveplot()" >Save</button>
+					<button click-once="Saving..." type="button" class="btn btn-success" ng-disabled="userForm.$invalid" ng-click="Saveplot()" >Save</button>
 						 </div>
                      
                   </div>
-				   
+			 
            
 </div>
-               
-<div ng-show="plotSuccess" class="alert alert-success"><strong>{{msg}} !!!</strong> Plot Added Successfully </div>
-<div ng-show="ploterror" class="alert alert-warning"><strong>Error Occurred !!!</strong> {{msg}}</div>
- 
-   <div ng-show=false>
-	<div my-map="" lat="{{lat}}" lng="{{lng}}"></div>
-   </div>     
-		
+  </md-tab>
+  <md-tab label="Edit">
+     <div class="row">
+     <div class="col-sm-3 col-md-4">
+				<div class="panel panel-default">
+			   <div class="panel-heading">
+                    Select Property
+			   </div>
+				   <div class="panel-body">
 
- <script type="text/ng-template" id="map.html">
-       <div class="modal-header">
-            <h3 class="modal-title">Your Location in a Map</h3>
-			<p><small>Click to Add you Location on Map</small></p>
-			<p><small>Double Click to Remove Location on Map</small></p>
-      </div>
-        <div class="modal-body">
-		
-          <div ng-if="render">	   
-            	 <div  my-map="" lat="{{lat}}" lng="{{lng}}"  locname="{{locationname}}" plotname="{{plotnames}}"></div>
-           </div>
-		 
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>
+				    <label for="plot">Property Name</label>
+				  <select class="form-control"  ng-model="prop" id="plot" ng-options="c.Plotname for c in plot" > 
+				  </select>
+				  <br>
+				  <button type="button" class="btn btn-warning btn-lg" ng-click="GetplotDetails(prop)" >Get Data</button>
+
+				   </div>
+				</div>
+	 </div>
+
+	 <div class="col-sm-9 col-md-8">
+            <div class="panel panel-default">
+			   <div class="panel-heading">
+                          Edit
+							<div ng-if="showloading" class="pull-right"><md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"></md-progress-circular></div>
+			   </div>
+				   <div class="panel-body">
+
+
+                             <div class="col-sm-4 col-md-4">
+                           
+								   <label for="contact">Contact Name</label>
+								   <input type="text" class="form-control" placeholder="Contact Name" id="contact" ng-model="property.contact.name"  required>
+								   <label for="contactphone">Contact Phone</label>
+								   <input type="text" class="form-control" placeholder="Contact Phone" id="contactphone" ng-model="property.contact.phone"  required>
+
+								   <label >Property Type</label>
+									<select class="form-control"  ng-model="propt.PropertyType" ng-options="servicetype.name for servicetype in type"  required>
+									</select>
+
+
+							       <label >Status</label>
+									<select class="form-control"  ng-model="propt.status" ng-options="status.name for status in Rstatus"  required>
+									</select>
+
+									<label for="plotdesc">Description</label>
+									  <textarea class="form-control" rows="2" id="plotdesc" ng-model="property.description"  title="Brief Plot Description" required></textarea>								 
+							  </div>
+
+							      <div class="col-md-4 col-sm-4">
+                                                
+                                                   
+                                                    <div class="form-group">
+                                                        <label for="address-map">Address</label>
+                                                        <input type="text" id="autocomplete" class="form-control" ng-model="property.address"  >
+                                                    </div><!-- /.form-group -->
+                                                
+                                                  <label >Location Latitude</label>
+											<input type="number" class="form-control" id="location" ng-model="property.location.latitude" >
+											
+                          
+                                                            <label >Location Longitude</label>
+											<input type="number" class="form-control"  id="location" ng-model="property.location.longitude" >
+                                                     
+                                                   
+
+                                                         <md-checkbox ng-model="property.features.smoking" aria-label="Smoking"  ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Smoking
+														  </md-checkbox>
+
+														    <md-checkbox ng-model="property.features.parking" aria-label="parking"  ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Parking
+														  </md-checkbox>
+
+														   <md-checkbox ng-model="property.features.cable" aria-label="Cable"  ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															CableTv
+														  </md-checkbox>
+                                               
+                                            </div><!-- /.col-md-4 -->
+
+											<div class="col-md-4 col-sm-4">
+											               <md-checkbox ng-model="LandlordPlot.features.park" aria-label="Park" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															 Park
+														  </md-checkbox>
+
+														    <md-checkbox ng-model="property.features.watchmen" aria-label="Watchmen" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Watchmen
+														  </md-checkbox>
+
+														   <md-checkbox ng-model="property.features.internet" aria-label="Internet" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Internet
+														  </md-checkbox>
+
+														   <md-checkbox ng-model="property.features.pool" aria-label="Pool" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Pool
+														  </md-checkbox>
+														   <md-checkbox ng-model="property.features.bathtub" aria-label="Bathtub" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+														       Bathtub
+														  </md-checkbox>
+
+														    <md-checkbox ng-model="property.features.Bathroom" aria-label="Bathroom" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Bathroom
+														  </md-checkbox>
+
+														   <md-checkbox ng-model="property.features.Balcony" aria-label="Balcony" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Balcony
+														  </md-checkbox>
+
+														    <md-checkbox ng-model="property.features.wifi" aria-label="WiFi" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															WiFi
+														  </md-checkbox>
+
+														  <md-checkbox ng-model="property.features.garage" aria-label="Garage" ng-true-value="'true'" ng-false-value="'false'" class="md-warn">
+															Garage
+														  </md-checkbox>
+
+
+											</div>
+                                  
+
+                    </div>
+				   <div class="panel-footer">
+
+				   </div>
+				</div>
+	 </div>
+  </div>
+  
+  </md-tab>
+  <md-tab label="Delete"></md-tab>
+</md-tabs>
 
 

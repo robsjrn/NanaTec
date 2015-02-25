@@ -1,0 +1,1 @@
+var PropertyListing= angular.module('PropertyListingApp', [] ); 

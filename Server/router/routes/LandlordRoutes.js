@@ -60,6 +60,15 @@ var express = require('express'),
            };
 
 
+  /* New Api design */
+
+   router.post('/plot',ensureAuthenticated,DatabaseConn.AddProperty); //create property
+   router.get('/plot/check/:plotname',DatabaseConn.Getplot);  // Check  plot Exist
+   router.get('/plot/:plotname',DatabaseConn.GetplotDetails);  // Get plot details
+   router.put('/plot/:plotname',DatabaseConn.Updateproperty);  // update plot
+   router.delete('/plot/:plotname',DatabaseConn.Deleteplot);  // delete plot
+
+
 
 router.post('/CreateLandlord',DatabaseConn.CreateLandlord);
 router.get('/LandLordDetails',ensureAuthenticated,DatabaseConn.LandLordDetails); 
@@ -67,7 +76,8 @@ router.get('/LandLordConfiguration',DatabaseConn.LandLordConfiguration);
 router.get('/LandlordTenants',ensureAuthenticated,DatabaseConn.LandlordTenants);
 router.post('/createTenant',ensureAuthenticated,DatabaseConn.CreateTenant);
 router.post('/createHouse',ensureAuthenticated,DatabaseConn.CreateHouse);
-router.post('/CheckPlotExist',DatabaseConn.CheckPlotExist);
+
+
 router.post('/CheckHseNoExists',ensureAuthenticated,DatabaseConn.CheckHseNoExists);
 router.post('/hseLookup',ensureAuthenticated,DatabaseConn.hseLookup);
 router.post('/updateHsedetails',ensureAuthenticated,DatabaseConn.updateHsedetails);

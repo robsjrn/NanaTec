@@ -1,0 +1,194 @@
+<!doctype html>
+
+<html  ng-app="PropertyListingApp" > 
+  <head>
+		<meta charset="utf-8">
+		<title>Property Listing</title>
+		<meta name="description" content="">
+		 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+		<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+		 <link rel="stylesheet" href="styles/Home/propertListing.css">
+		<link rel="stylesheet" href="styles/Home/banner.css">
+		 <link rel="stylesheet" href="styles/Home/footer.css">
+        
+  </head>
+    <body   class="page-sub-page page-listing page-grid page-search-results" id="page-top">                 
+					  
+		      <!-- Wrapper -->
+                <div class="wrapper">			  
+					  <!-- Header -->
+						<div ng-include="'Banner-Header.html'"></div>
+					
+		               <!--End of Header -->
+
+								 <!-- Content -->
+							   <div class="content">
+
+							  <div id="page-content">
+								<!-- Breadcrumb -->
+								<div class="container">
+									<ol class="breadcrumb">
+										<li><a href="#">Home</a></li>
+										<li class="active">Property Listing</li>
+									</ol>
+								</div>
+								<!-- end Breadcrumb -->
+                                
+								        <div class="container">
+										<div class="row">
+											<!-- Results -->
+											<div class="col-md-9 col-sm-9">
+												<section id="results">
+													<header><h1>Properties Listing</h1></header>
+													<section id="search-filter">
+														<figure><h3><i class="fa fa-search"></i>Search Results:</h3>
+															<span class="search-count">{{NoProperties}}</span>
+															<div class="sorting">
+																<div class="form-group">
+																	<select name="sorting">
+																		<option value="">Sort By</option>
+																		<option value="1">Lowest price first</option>
+																		<option value="2">Highest price first</option>
+																		<option value="3">Date added</option>
+																	</select>
+																</div><!-- /.form-group -->
+															</div>
+														</figure>
+													</section>
+                                                <section id="properties">
+                                                   
+                                                </section>  <!-- Propeties-->
+                                                 </section>  <!-- /#results -->
+
+
+												  <h1>Under Construction</h1>
+                                      </div><!-- /.col-md-9 -->
+                                     <!-- end Results -->
+                                           <!-- sidebar -->
+                <div class="col-md-3 col-sm-3">
+                    <section id="sidebar">
+                        <aside id="edit-search">
+                            <header><h3>Search Properties</h3></header>
+                            <form role="form" id="form-sidebar" class="form-search" action="properties-listing.html">
+                                <div class="form-group">
+                                    <select name="type">
+                                        <option value="">Status</option>
+                                        <option value="1">Rent</option>
+                                        <option value="2">Sale</option>
+                                    </select>
+                                </div><!-- /.form-group -->
+                                <div class="form-group">
+                                    <select name="country">
+                                        <option value="">Location</option>
+                                        <option value="1">Nairobi</option>
+                                        <option value="2">Mombasa</option>
+                                        <option value="3">Kisumu </option>
+                                       
+                                    </select>
+                                </div><!-- /.form-group -->
+                                
+                                <div class="form-group">
+                                    <select name="property-type">
+                                        <option value="">Property Type</option>
+                                        <option value="1">Apartment</option>
+                                        <option value="2">Condominium</option>
+                                        <option value="3">Cottage</option>
+                                        <option value="4">Flat</option>
+                                        <option value="5">House</option>
+                                    </select>
+                                </div><!-- /.form-group -->
+                                <div class="form-group">
+                                    <select name="property-type">
+                                        <option value="">Price Range</option>
+                                        <option value="1">< 5000 </option>
+                                        <option value="2"> > 5,000  < 10,000 </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-default">Search Now</button>
+                                </div><!-- /.form-group -->
+                            </form><!-- /#form-map -->
+                        </aside><!-- /#edit-search -->
+                        <aside id="featured-properties">
+                            <header><h3>Featured Properties</h3></header>
+                            <div class="property small">
+                                <a href="property-detail.html">
+                                    <div class="property-image">
+                                        <img alt="" src="/images/properties/prop2.jpg">
+                                    </div>
+                                </a>
+                                <div class="info">
+                                    <a href="property-detail.html"><h4>Upper hill Road</h4></a>
+                                    <figure>Upperhill </figure>
+                                    <div class="tag price">Ksh 72,000</div>
+                                </div>
+                            </div><!-- /.property -->
+                            <div class="property small">
+                                <a href="property-detail.html">
+                                    <div class="property-image">
+                                        <img alt="" src="/images/properties/prop2.jpg">
+                                    </div>
+                                </a>
+                                <div class="info">
+                                    <a href="property-detail.html"><h4>Kaagwa Rd</h4></a>
+                                    <figure>Kahawa</figure>
+                                    <div class="tag price">Ksh 36,000</div>
+                                </div>
+                            </div><!-- /.property -->
+                            <div class="property small">
+                                <a href="property-detail.html">
+                                    <div class="property-image">
+                                        <img alt="" src="/images/properties/prop2.jpg">
+                                    </div>
+                                </a>
+                                <div class="info">
+                                    <a href="property-detail.html"><h4>Kiambu</h4></a>
+                                    <figure>Kimabu</figure>
+                                    <div class="tag price">Ksh 128,600</div>
+                                </div>
+                            </div><!-- /.property -->
+                        </aside><!-- /#featured-properties -->
+                        <aside id="our-guides">
+                            <header><h3>Our Guides</h3></header>
+                            <a href="#" class="universal-button">
+                                <figure class="fa fa-home"></figure>
+                                <span>Buying Guide</span>
+                                <span class="arrow fa fa-angle-right"></span>
+                            </a><!-- /.universal-button -->
+                            <a href="#" class="universal-button">
+                                <figure class="fa fa-umbrella"></figure>
+                                <span>Right Insurance for You</span>
+                                <span class="arrow fa fa-angle-right"></span>
+                            </a><!-- /.universal-button -->
+                        </aside><!-- /#our-guide -->
+                    </section><!-- /#sidebar -->
+                </div><!-- /.col-md-3 -->
+                <!-- end Sidebar -->
+									    
+                                     </div>   <!-- end row -->
+                                   </div>   <!-- end container -->
+
+
+
+		                      </div>    <!-- End page-Content -->
+
+
+							   </div>
+								 <!-- End Content -->
+                </div>   <!-- End Wrapper -->
+                     
+					  
+					  <!-- Footer -->
+						<div ng-include="'footer.html'"></div>					
+		               <!--Footer -->
+             
+          
+         <script src="lib/jquery/dist/jquery.min.js"></script>
+        <script src="lib/angular/angular.js"></script>         
+        <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
+		<script src="scripts/Home/Controller/propertiesListing.js"></script>
+  
+
+</body>
+</html>

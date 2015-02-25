@@ -42,8 +42,10 @@ function DbError(res){
 }
 
 function Success(res){
-    res.status(200).json({success: "Succesfull"})
+    res.status(200).json({success: "Succesfull"});
 }
+
+
 
 exports.getCredentials=function(userid,pwd,fn){	
  db.collection('user', function(err, collection) { 
@@ -61,6 +63,78 @@ exports.getCredentials=function(userid,pwd,fn){
 };
 
 
+
+/* plot stuff */
+
+ var updateLandlordPlots=function (uid,plotname ,callback){
+	var propertydet={"Plotname":plotname};
+    db.collection('user', function(err, collection) {
+     collection.update({"_id":uid},{$addToSet:{plots : propertydet},  $inc:{noplots:1}},{safe:true}, function(err, item) {
+        if (item) {
+			InsertMonthlyPosting(plotname);
+			callback(null,true); 
+			}
+		else{callback(err,null)}
+		 
+      }); 
+    });
+  }
+
+
+exports.AddProperty = function(req, res) {
+  db.collection('property', function(err, collection) {
+  collection.insert(req.body, function(err, item) {
+      if (err) {DbError(res) ;}
+     else{  updateLandlordPlots(req.user._id,req.body.Plotname,function(err,success){
+		         if (success){Success(res);}
+		         else{DbError(res) ;}      	
+                });
+	       }
+        });
+      });
+};
+
+
+
+
+exports.Getplot = function(req, res) {
+   db.collection('property', function(err, collection) {
+    collection.findOne({"Plotname":req.params.plotname},function(err, item){
+  if(item){ res.status(200).json({exist: true});}
+  else { res.status(200).json({exist: false}) };
+  if (err) {DbError(res);}
+    });
+   });
+};
+
+exports.Updateproperty = function(req, res) {
+   console.log("Updating plot name");
+   console.log(req.body.plotname);
+ res.status(200).json({success: "Succesfull"})
+
+};
+
+
+exports.Deleteplot = function(req, res) {
+   console.log("Deleting plot name");
+   console.log(req.params.plotname);
+   res.status(200).json({success: "Succesfull"})
+};
+
+
+
+exports.GetplotDetails = function(req, res) {
+   db.collection('property', function(err, collection) {
+    collection.findOne({"Plotname":req.params.plotname},function(err, item){
+  if(item){ res.status(200).json(item);}
+  else { res.status(404).json({exist: false}) };
+  if (err) {DbError(res);}
+    });
+   });
+};
+
+
+/*End of  plot stuff */
 
 exports.CreateTenant = function(req, res) {
 req.body.contact="+254"+req.body.contact;
@@ -576,7 +650,7 @@ exports.ExpenseTypeConfiguration = function(req, res) {
 exports.LandlordAddPlots = function(req, res) {
  db.collection('user', function(err, collection) {
  collection.update({"_id":req.user._id},{$addToSet:{plots : req.body},  $inc:{noplots:1}},{safe:true}, function(err, item) {
-   if (err) {console.log(err);DbError(res);}
+   if (err) {DbError(res);}
    else{
 	   InsertMonthlyPosting(req.body.Plotname);
 	   Success(res);}
@@ -1352,16 +1426,16 @@ exports.updateHsedetails=function(req, res) {
 	});
 };
 
+/// delete this now we have check plot name
 
 exports.CheckPlotExist=function(req, res) {
-	//console.log("Cheking plotname .."+req.body.plotname)
- db.collection('user', function(err, collection) {
-  collection.findOne({"plots.Plotname":req.body.plotname},function(err, item){
+   db.collection('user', function(err, collection) {
+    collection.findOne({"plots.Plotname":req.body.plotname},function(err, item){
   if(item){ res.json(200,{exist: true}); }
    else { res.json(200,{exist: false}); };
   if (err) {DbError(res);}
-});
-});
+    });
+   });
 };
 
 exports.CheckHseNoExists=function(req, res) {

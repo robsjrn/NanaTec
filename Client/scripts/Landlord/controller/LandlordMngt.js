@@ -1,7 +1,7 @@
-
+ 
 'use strict';
 
-var landlordtmngt= angular.module('LandlordmngtApp', ['ngResource','ngRoute','ui.bootstrap','angularFileUpload','ngProgress','textAngular'] ); 
+var landlordtmngt= angular.module('LandlordmngtApp', ['ngResource','ngRoute','angularFileUpload','ngProgress','textAngular','ngMaterial'] ); 
 
 	landlordtmngt.factory('authInterceptor', function ($rootScope, $q, $window) {
 		  return {
@@ -533,7 +533,7 @@ $scope.SearchHouseid=function(){
 
 
 
-landlordtmngt.controller('tenantctrl', function($scope,$modal,$rootScope,$http,tenantlist,ngProgress,notificationFactory) {
+landlordtmngt.controller('tenantctrl', function($scope,$rootScope,$http,tenantlist,ngProgress,notificationFactory) {
  $scope.tenantcreated=false;
  $scope.tenanterror=false;
  $scope.plots=$rootScope.plot;
@@ -795,7 +795,15 @@ $scope.CheckHseNoExists=function(){
 
   
 });
-landlordtmngt.controller('plotmngtctrl', function($scope,$http,$rootScope,ngProgress,$modal) {
+landlordtmngt.controller('plotmngtctrl', function($scope,$rootScope,ngProgress,$mdDialog,LandlordFactory,$mdToast) {
+	 $scope.LandlordPlot={};
+	 $scope.LandlordPlot.location={};
+	 $scope.saving=false;
+     $scope.loc;
+	 
+	$scope.disableComponents=true;
+    $scope.showSpinner=false;
+
 
  	 $scope.type = [
       {name:'Rentals'},
@@ -805,128 +813,191 @@ landlordtmngt.controller('plotmngtctrl', function($scope,$http,$rootScope,ngProg
       {name:'Loft'},
       {name:'Duplexes'}
     ];
+
+   $scope.Rstatus = [
+      {name:'Rent'},
+      {name:'Sale'}
+    ];
+
+	 $scope.loc = [
+									  {name:'Nairobi'},
+									  {name:'Kahawa'},
+									  {name:'Buru Buru'},
+									  {name:'Kiambu'},
+									  {name:'Kasarani'}
+									];
+								  $scope.LandlordPlot.location=$scope.loc[0];
+
+   $scope.$on('locationChange', function(evt, position) {
+     $scope.LandlordPlot.location.latitude=position.lat();
+     $scope.LandlordPlot.location.longitude=position.lng(); 
+    });
      
-	$scope.LandlordPlot={};
-	 $scope.LandlordPlot.location={};
-     $scope.loc;
-   $scope.enablemap=false;
+
+					
+
+
+           
+           $scope.getAddress = function () {
+			   $scope.showloading=true;
+  	           if (navigator.geolocation) {
+						navigator.geolocation.getCurrentPosition(function(position){
+					            var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+								 var geocoder = new google.maps.Geocoder();
+									geocoder.geocode({'latLng': latlng}, function(results, status)
+											{ if (status == google.maps.GeocoderStatus.OK)
+												 {if (results[1])
+													 {      $scope.LandlordPlot.address=results[1].formatted_address;
+														    $scope.LandlordPlot.location.latitude=position.coords.latitude;
+											                $scope.LandlordPlot.location.longitude=position.coords.longitude;
+															 $scope.showloading=false;
+														}
+														else {	$scope.showloading=false;	}
+											  } else
+												   {
+													  $scope.showloading=false;;
+													}
+										     });					            
+				                       });
+			            }
+				  else {
+
+					   $scope.lat="-1.2920658999999999";
+	                   $scope.lng="36.8219462";
+
+								$mdDialog.show(
+								  $mdDialog.alert()
+									.title('Position')
+									.content('Sorry We could not Get Your Position !!')
+									.ariaLabel('Position')
+									.ok('Ok Got it!')
+								
+								);
+							 
+
+                      }
+		        };
 
 
 
  
- $scope.codeAddress = function () {
-   var geocoder = new google.maps.Geocoder();
-    geocoder.geocode( { 'address': $scope.LandlordPlot.address}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-		$scope.LandlordPlot.location.longitude=results[0].geometry.location.lng();
-        $scope.LandlordPlot.location.latitude=results[0].geometry.location.lat();
-		 $scope.loc=results[0].geometry.location;
-		$scope.enablemap=false;
-      } else {
-		  $scope.enablemap=true;
-           console.log("geo code not Successfull..")
+							 $scope.codeAddress = function () {
+							   var geocoder = new google.maps.Geocoder();
+								geocoder.geocode( { 'address': $scope.LandlordPlot.address}, function(results, status) {
+								  if (status == google.maps.GeocoderStatus.OK) {
+									$scope.LandlordPlot.location.longitude=results[0].geometry.location.lng();
+									$scope.LandlordPlot.location.latitude=results[0].geometry.location.lat();
+									 $scope.loc=results[0].geometry.location;
+									
+								  } else {
+														 $mdDialog.show(
+															  $mdDialog.alert()
+																.title('Geo Position')
+																.content('Sorry We could not Get Your Position !!')
+																.ariaLabel('Position')
+																.ok('Ok Got it!')
+															
+															);
 
-      }
-    });
-    return;
-  };
+								  }
+								});
+								return;
+							  };
 
 	
 
-	$scope.disableComponents=true;
-  
-  $scope.showSpinner=false;
-   $scope.showmap=function(){
-	  var modalInstance = $modal.open({
-      templateUrl: 'map.html',
-      controller: ModalInstanceCtrl,
-      resolve: {
-        lat: function () {
-          return $scope.LandlordPlot.location.latitude;
-        },
-        lng: function () {
-          return $scope.LandlordPlot.location.longitude;
-        }
-      }
 
 
-    });
-
-    modalInstance.result.then(function (selectedItem) {
-    }, function () {
-     // $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
+				
 
 
+							function DialogController($scope, $mdDialog) {
+							  $scope.hide = function() {
+								$mdDialog.hide();
+							  };
+							  $scope.cancel = function() {
+								$mdDialog.cancel();
+							  };
+							  $scope.answer = function(answer) {
+								$mdDialog.hide(answer);
+							  };
+							}
 
 
-$scope.CheckplotExists=function(){ 
-  
-   $scope.showSpinner=true;
-          var dt={"plotname":$scope.LandlordPlot.Plotname};
-          $http.post('/web/Landlord/CheckPlotExist',dt)
-				 		 .success(function(data) {
-			                  if (data.exist)
-			                     { $scope.plotExist=true;
-							        $scope.disableComponents=true;
+							$scope.CheckplotExists=function(){ 		  
+									  LandlordFactory.plotExist($scope.LandlordPlot.Plotname)
+													 .success(function(data) {
+														  if (data.exist)
+															 { $scope.plotExist=true;
+																$scope.disableComponents=true;
+																$scope.LandlordPlot.Plotname="";
+															  }
+														   else{ $scope.plotExist=false; 
+																  $scope.disableComponents=false;
+														   }
+														   $scope.showSpinner=false;
+														 }) 
+													 .error(function(data) {
+														   $scope.ploterror=true;
+															$scope.showSpinner=false;
+										});
+
+							            }
+
+							
+								   $scope.Addplot=function(){ 
+									$scope.disableComponents=false;
 									$scope.LandlordPlot.Plotname="";
-							      }
-							   else{ $scope.plotExist=false; 
-								      $scope.disableComponents=false;
-							   }
-							   $scope.showSpinner=false;
-							 }) 
-						 .error(function(data) {
-							   $scope.ploterror=true;
-							    $scope.showSpinner=false;
-			});
+									$scope.plotExist=false;
+								   }
+							   $scope.Saveplot=function(){ 
+								   $scope.saving=true;
+										     LandlordFactory.addPlot($scope.LandlordPlot)
+													 .success(function(data) {
+                                                          $scope.saving=false;
+														   $scope.plotSuccess=true; 
+														   if (typeof $rootScope.landlordDetails.noplots=="undefined")
+														   {$rootScope.landlordDetails.noplots=1; }
+														   else{$rootScope.landlordDetails.noplots =$rootScope.landlordDetails.noplots+ 1;}
+															$rootScope.plot.push($scope.LandlordPlot);
+															 $scope.disableComponents=true;
+                                                             
+                                                         
 
-}
+														 }) 
+													 .error(function(data) {
+                                                          $scope.saving=false;
+														  $scope.ploterror=true;
+														  ngProgress.complete();
+														 });
+							}
 
- $scope.loc = [
-		  {name:'Nairobi'},
-		  {name:'Kahawa'},
-		  {name:'Buru Buru'},
-		  {name:'Kiambu'},
-		  {name:'Kasarani'}
-        ];
-	  $scope.LandlordPlot.location=$scope.loc[0];
-	   $scope.Addplot=function(){ 
-        $scope.disableComponents=false;
-		$scope.LandlordPlot.Plotname="";
-		$scope.plotExist=false;
-	   }
-   $scope.Saveplot=function(){  
-      $scope.userForm.plotname.$setValidity("size", false);
 
-		  $http.post('/web/Landlord/LandlordAddPlots', $scope.LandlordPlot)
-			  
-						 .success(function(data) {
-							  ngProgress.start();
-							   $scope.plotSuccess=true; 
-							   if (typeof $rootScope.landlordDetails.noplots=="undefined")
-							   {$rootScope.landlordDetails.noplots=1; }
-							   else{$rootScope.landlordDetails.noplots =$rootScope.landlordDetails.noplots+ 1;}
-                                $rootScope.plot.push($scope.LandlordPlot);
-								ngProgress.complete();
-								 $scope.disableComponents=true;
-							 }) 
-						 .error(function(data) {
+                    $scope.GetplotDetails=function(prop){ 
+						   if (typeof prop =="undefined") {
+	                            alert("Kindly Choose a Property Name");
 
-							  $scope.ploterror=true;
-							  ngProgress.complete();
-							 });
-}
-  
+	                            }
+                           else {
+                                LandlordFactory.getPlotDetails(prop.Plotname)
+                                .success(function(data) {
+                                         $scope.property=data;              
+										}) 
+								.error(function(data) {
+                                         $scope.property=[];                
+									});
+						   }
+
+					}
+
+							  
 });
 
-landlordtmngt.controller('trxntypectrl', function($scope) {
+landlordtmngt.controller('trxntypectrl', function($scope,TrxnService,ngProgress, notificationFactory) {
 	    $scope.url='Singletransaction';
-			
-});
-landlordtmngt.controller('Edittransactiontctrl', function($scope,TrxnService, ngProgress, notificationFactory) {
-	$scope.disableComponents=true;
+		$scope.Receipt={};
+
+		$scope.disableComponents=true;
 	$scope.RcptNotFound=false;
 	$scope.RcptDeleted=false;
 	$scope.disableEdit=true;
@@ -980,7 +1051,7 @@ landlordtmngt.controller('Edittransactiontctrl', function($scope,TrxnService, ng
 								   $scope.RcptDeleted=false;
 							 });
     }
-	
+			
 });
 
 
@@ -2882,8 +2953,8 @@ landlordtmngt.service('TrxnService', function ($http) {
         var deferred = $q.defer();
         function loadScript() {  
 		
-            var script = document.createElement('script');
-            script.src = '//maps.googleapis.com/maps/api/js?v=3.6&sensor=false&key=AIzaSyBEZrkDl1LuGxjnnI4WXC7U5nx41NOmxy8&callback=initMap';
+          var script = document.createElement('script');
+            script.src = '//maps.googleapis.com/maps/api/js?v=3.6&libraries=places&sensor=false&key=AIzaSyBEZrkDl1LuGxjnnI4WXC7U5nx41NOmxy8&callback=initMap';
             document.body.appendChild(script);
         }
 
@@ -2897,16 +2968,28 @@ landlordtmngt.service('TrxnService', function ($http) {
     }]);
 
 
-landlordtmngt.directive('myMap', function(GoogleMapApi ) {
+landlordtmngt.directive('myMap', function(GoogleMapApi,$rootScope ) {
     // directive link function
     var link = function($scope, element, attrs) {
-        var map, infoWindow,marker;
+        var map, infoWindow,marker,autocomplete;
         var markers = [];
 		       
 	          //initialise map	
                 function initMap() {
                     if (map === void 0) {
-                      // map Options
+                        //Places Option
+                   autocomplete = new google.maps.places.Autocomplete(
+						  /** @type {HTMLInputElement} */(document.getElementById('autocomplete')),
+						  {
+							types: [],
+							componentRestrictions: {}
+						  });
+					 
+
+					  google.maps.event.addListener(autocomplete, 'place_changed', onPlaceChanged);
+
+					  
+					  // map Options
 		                var mapOptions = {
 							center: new google.maps.LatLng($scope.lat, $scope.lng),
 							zoom: 10,
@@ -2927,6 +3010,22 @@ landlordtmngt.directive('myMap', function(GoogleMapApi ) {
                     }, function () {
                         console.log("promise Rejected map not initialised");
                     });
+
+					function onPlaceChanged(){
+						 var place = autocomplete.getPlace();
+							  if (place.geometry) {
+								map.panTo(place.geometry.location);
+								map.setZoom(10);
+								//do something later 
+
+                                 $scope.$apply(function() {
+										$rootScope.$broadcast('locationChange', place.geometry.location);
+									});
+
+							  } else {
+								document.getElementById('autocomplete').placeholder = 'Enter a location';
+							  }
+					}
 
                   function setMarker(map, position, title, content) {
 					var marker;
@@ -2980,6 +3079,25 @@ landlordtmngt.directive('myMap', function(GoogleMapApi ) {
 				plotname:'@'
             },
         link: link
+    };
+});
+
+
+landlordtmngt.directive('clickOnce', function($timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var replacementText = attrs.clickOnce;
+
+            element.bind('click', function() {
+                $timeout(function() {
+                    if (replacementText) {
+                        element.html(replacementText);
+                    }
+                    element.attr('disabled', true);
+                }, 0);
+            });
+        }
     };
 });
 
@@ -3053,10 +3171,24 @@ landlordtmngt.factory('LandlordFactory', ['$http','$rootScope','notificationFact
 	var url='/web/Landlord';
 	var data = {
 
-       GetLandlordNotice: function() {
+        GetLandlordNotice: function() {
 			var promise = $http.get(url+ '/GetLandlordNotice',{ cache: true })
 			return promise;
 		},
+         plotExist: function(plotname) {
+			var promise = $http.get(url+ '/plot/check/'+plotname)
+			return promise;
+		 },
+
+         addPlot: function(details) {
+			var promise =  $http.post(url + '/plot',details); 
+			return promise;
+		 },
+        getPlotDetails: function(details) {
+			var promise =  $http.get(url + '/plot/'+details); 
+			return promise;
+		 },
+			
        GetUnverifiedTransactions: function() {
 			var promise = $http.get(url+ '/UnverifiedTransactions',{ cache: true })
 			return promise;
@@ -3348,7 +3480,7 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
         })	   
 
 	.otherwise({
-         redirectTo: '/LandlordHome'
+         redirectTo: '/plotmngt'
       });
 
 });

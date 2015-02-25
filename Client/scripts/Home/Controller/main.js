@@ -10,7 +10,6 @@ var Rentmngt= angular.module('RentmngtApp', [] );
 						  $scope.$apply(function(){
 							 $scope.lat=position.coords.latitude;
 							 $scope.lng=position.coords.longitude;
-							// toastr['error']('Your location is ' +$scope.lat + $scope.lng);
                                $scope.loc=position.coords;
 							   $scope.plotname ="Your Location";
 						  });

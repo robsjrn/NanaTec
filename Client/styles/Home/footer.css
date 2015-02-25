@@ -7,7 +7,12 @@
 	height: 150px;
 	clear:both;
 	}
-
+.property {
+  margin-bottom: 30px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
 
 #page-footer .inner {
   display: table;
@@ -59,10 +64,71 @@
   opacity: 0.2;
   width: 100%;
 }
+.property img {
+  -moz-transition: 0.4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  -moz-backface-visibility: hidden;
+  width: 100%;
+  position: relative;
+  top: 0;
+}
+.property.small {
+  margin-bottom: 30px !important;
+}
 
+.property.small .property-image {
+  float: left;
+  width: 100px;
+  height: 75px;
+}
+.property.small .info {
+  padding-left: 110px;
+}
+.property.small .info a {
+  color: #2a2a2a;
+}
+.property.small .info a:hover {
+  color: #E06F13;
+}
+.property.small .info a h4 {
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+.property.small .info figure {
+  margin-bottom: 10px;
+}
+.property.small .info .tag {
+  font-size: 12px;
+}
+.property.small:hover img {
+  top: inherit;
+}
 
-
-
+.property:hover img, .property:active img, .property:focus img {
+  -moz-backface-visibility: hidden;
+  top: -10px;
+}
+.property:hover.big .overlay, .property:active.big .overlay, .property:focus.big .overlay {
+  bottom: 0px;
+}
+.property:hover .overlay, .property:active .overlay, .property:focus .overlay {
+  bottom: 0px;
+}
+.property:hover .overlay .additional-info li, .property:active .overlay .additional-info li, .property:focus .overlay .additional-info li {
+  filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+  opacity: 1;
+}
+.property:hover .tag.status, .property:active .tag.status, .property:focus .tag.status {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.property:hover .type, .property:active .type, .property:focus .type {
+  filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+  opacity: 1;
+}
 #page-content {
   height: auto;
 }
