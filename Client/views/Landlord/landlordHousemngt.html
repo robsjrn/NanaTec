@@ -5,6 +5,7 @@
 					 <button type="button" class="btn btn-info" ng-click="addHouse()" ng-disabled=!disableComponents>Add</button>
 				
 					    <button type="button" class="btn btn-warning" ng-disabled=disableComponents>Clear</button>
+													<div ng-if="busy" class="pull-right"><md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"></md-progress-circular></div>
 				
 				   </div>
 					   <div class="panel-body">
@@ -16,7 +17,6 @@
 							       <select class="form-control"  ng-model="House.plot" id="plot" ng-options="c.Plotname for c in plot" ng-disabled=disableComponents required>    
 			                       </select>
 								   <label for="hsenum">House Number</label>
-								   <span ng-show="showSpinner"><i class="fa fa-refresh fa-spin"></i></span>
 								   <input type="text" class="form-control" placeholder="House Number" id="hsenum" name="hsenum" ng-model="House.number" ng-blur="CheckHseNoExists()"  ng-disabled=disableComponents required>
                                     <div ng-show="HsenoExist" class="alert alert-danger"><strong>House Number Already in Use</strong> </div>
 								   <label for="amt">Amount</label>
@@ -30,22 +30,126 @@
 								 <label for="desc">Description</label>
 								 <textarea class="form-control" rows="3" id="desc" ng-model="House.description" ng-disabled=disableComponents required></textarea>
 							   </div>
+
+							   
+							   
 							</form>
 						
                        </div>
             <div class="panel-footer">
-		<button type="button" class="btn btn-success" ng-disabled="userForm.$invalid" ng-click="saveHouse()" ng-disabled=disableComponents>Save</button>
+		<button type="button" class="btn btn-success" ng-disabled="userForm.$invalid" ng-click="saveHouse(c)" ng-disabled=disableComponents>Save</button>
 						 </div>
                    
 					      </div>
-            <div ng-show="housecreated" class="alert alert-success"><strong>{{msg}} !!!</strong> House Successfully Maintained</div>
-			<div ng-show="houseterror" class="alert alert-success"><strong>Error Occurred !!!</strong> {{msg}}</div>
 					  							 
 					</div>  
 
 
 </div>
   </md-tab>
-  <md-tab label="Edit"></md-tab>
-  <md-tab label="Delete"></md-tab>
+  <md-tab label="Edit">
+  
+    <div class="row">
+     <div class="col-sm-3 col-md-4">
+				<div class="panel panel-default">
+			   <div class="panel-heading">
+                    Select House
+			   </div>
+				   <div class="panel-body">
+
+				   <label for="plot">Plot Name</label>
+							       <select class="form-control"  ng-model="House.plot" id="plot" ng-options="c.Plotname for c in plot" >    
+			                       </select>
+								   <label for="hsenum">House Number</label>
+								   <input type="text" class="form-control" placeholder="House Number" id="hsenum" name="hsenum" ng-model="Hseno"   >
+								   <br>
+								   <hr>
+								    <button type="button" class="btn btn-warning btn-lg" ng-click="GethseDetails(Hseno)" >Get Data</button>
+
+				   </div>
+				</div>
+	 </div>
+	 <div class="col-sm-9 col-md-8">
+            <div class="panel panel-default">
+			   <div class="panel-heading">
+                          Edit
+							<div ng-if="loadingdata" class="pull-right"><md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"></md-progress-circular></div>
+			   </div>
+				   <div class="panel-body">
+
+
+								   <label for="hsenum">House Number</label>
+								   <input type="text" class="form-control" placeholder="House Number" id="hsenum" name="hsenum" ng-model="Hse.number"  readonly required>
+                                 
+								   <label for="amt">Amount</label>
+								   <input type="number" class="form-control" placeholder="Amount" id ="amt" ng-model="Hse.amount"  required>
+
+								    <label for="desc">Description</label>
+								 <textarea class="form-control" rows="3" id="desc" ng-model="Hse.description"  required></textarea>
+								
+
+								<label for="plot">Plot Name</label>
+							       <select class="form-control"  ng-model="Hse.plot" id="plot" ng-options="c.Plotname for c in plot"  required>    
+			                       </select>
+							
+							    <label for="hsetype">House Type</label>
+							    <select class="form-control"  ng-model="Hse.type" id="hsetype" ng-options="h.name for h in hsetype"  required>    
+			                       </select>
+
+
+								
+							   
+
+				    </div>
+				   <div class="panel-footer">
+                            <button type="button" click-once="Updating..." class="btn btn-success btn-lg" ng-click="Updatehse()" >Update</button>
+				   </div>
+				</div>
+	 </div>
+  </div>
+  
+  
+  </md-tab>
+  <md-tab label="Delete">
+          <div class="panel panel-default">
+			   <div class="panel-heading">
+                         <button type="button" click-once="Getting Data..." class="btn btn-danger btn-lg" ng-click="getData()" >Get Data</button>
+						     <input type="text" class="form-control" ng-model="search" placeholder="Filter | Search " name="srch-term" id="srch-term">
+							<div ng-if="process" class="pull-right"><md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"></md-progress-circular></div>
+			   </div>
+				   <div class="panel-body">
+				       
+						<div class="table-responsive">
+							<table class="table table-striped table-condensed" >
+							<thead>
+							<td><a># No.</a></td>
+							<td><a>House Name</a></td>
+							<td><a>Tenant Id</a></td>
+							<td><a>Amount</a></td>
+							<td><a>Plot</a></td>
+							<td><a>Status</a></td>
+							<td><a>Action</a></td>
+							</thead>
+								   <tr data-ng-repeat="data in hseData | filter:search" >
+									<td>{{$index + 1}}</td>
+									<td>{{data.number}}</td>
+                                    <td><a>{{data.tenantid}}</a></td>
+									<td>{{data.amount}}</td>
+									<td>{{data.plot.Plotname}}</td>
+									<td>{{data.status}}</td>
+									<td><button type="button " class="btn btn-danger" ng-click="removeData(data.number)">Remove</button></td>
+									</tr>
+							</table>
+	                 	</div>
+
+						
+
+
+				   </div>
+
+				   <div class="panel-footer">
+                           {{msg}}
+				   </div>
+  
+  </md-tab>
 </md-tabs>

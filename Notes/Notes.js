@@ -1,63 +1,310 @@
-have Git installed
-node version 10.33
-install python speciffically version 2.7
-
 Mongodb 
 Redis Server
+
 phantom js
 
 
-step 1..npm install
-step 2 ..bower install in client folder
 
-add nginx configuration here 
-*****************************
+bower install angular-ui-map --save
+
+
+
+update Angular to 1.3
+
+bower update angular
+
+
+
+bower install angular-messages
+
+
+*****************RESPONSE CODES ***************
+
+HTTP Status Codes
+This page is created from HTTP status code information found at ietf.org and Wikipedia. Click on the category heading or the status code link to read more.
+
+1xx Informational
+
+
+
+
+
+100 Continue
+
+
+101 Switching Protocols
+
+
+
+102 Processing (WebDAV)
+
+
+
+2xx Success
+
+
+ 200 OK
+
+
+
+ 201 Created
+
+
+
+
+202 Accepted
+
+
+
+203 Non-Authoritative Information
+
+
+
+ 204 No Content
+
+
+
+
+
+205 Reset Content
+
+
+206 Partial Content
+
+
+
+
+
+
+207 Multi-Status (WebDAV)
+
+
+208 Already Reported (WebDAV)
+
+
+226 IM Used
+
+
+
+
 
  
-worker_processes  1;  ## Default: 1
-error_log  D:/nginx-1.7.7/logs/error.log;
-pid        D:/nginx-1.7.7/logs/nginx.pid;
-worker_rlimit_nofile 8192;
+3xx Redirection
+
+
+
+300 Multiple Choices
+
+
+
+
+301 Moved Permanently
+
+
+
+
+302 Found
+
+
+
+
+303 See Other
+
+
+
+
+ 304 Not Modified
+
+
+
+
+
+
+
+
+305 Use Proxy
+
+
+306 (Unused)
+
+
+307 Temporary Redirect
+
+
+
+
+308 Permanent Redirect (experiemental)
+
+4xx Client Error
+
+
+
+ 400 Bad Request
+
+
+
+ 401 Unauthorized
+
+
+
+402 Payment Required
+
+
+ 403 Forbidden
+
+
+
+ 404 Not Found
+
+
+
+405 Method Not Allowed
+
+
+406 Not Acceptable
+
+
+
+
+407 Proxy Authentication Required
+
+
+408 Request Timeout
+
+
+ 409 Conflict
+
+
+
+
+410 Gone
+
+
+
+411 Length Required
+
+
+412 Precondition Failed
+
+
+413 Request Entity Too Large
+
+
+
+414 Request-URI Too Long
+
+
+415 Unsupported Media Type
+
+
+416 Requested Range Not Satisfiable
+
+
+
+417 Expectation Failed
+
+
+418 I'm a teapot (RFC 2324)
+
+420 Enhance Your Calm (Twitter)
+
+422 Unprocessable Entity (WebDAV)
+
+
+423 Locked (WebDAV)
+
+
+424 Failed Dependency (WebDAV)
+
+
+425 Reserved for WebDAV
+
+
+426 Upgrade Required
+
+
+428 Precondition Required
+
+
+
+
+
+429 Too Many Requests
+
+
+
+
+
+431 Request Header Fields Too Large
+
+
+
+
+444 No Response (Nginx)
+
+449 Retry With (Microsoft)
+
+450 Blocked by Windows Parental Controls (Microsoft)
+
+499 Client Closed Request (Nginx)
+
  
-events {
-  worker_connections  4096;  ## Default: 1024
-}
+5xx Server Error
+
+
+
+ 500 Internal Server Error
+
+
+
+501 Not Implemented
+
+
+502 Bad Gateway
+
+
+503 Service Unavailable
+
+
+504 Gateway Timeout
+
+
+505 HTTP Version Not Supported
+
+
+506 Variant Also Negotiates (Experimental)
+
+
+507 Insufficient Storage (WebDAV)
+
+
+508 Loop Detected (WebDAV)
+
+
+509 Bandwidth Limit Exceeded (Apache)
+
+510 Not Extended
+
+
+
+511 Network Authentication Required
+
+
+
+
+
+
+
+
+
+
+
+
+598 Network read timeout error
+
+599 Network connect timeout error
+
  
-http {
-     include       mime.types;
-    default_type  application/octet-stream;
-    sendfile        on;
-    keepalive_timeout  65;
-   # access_log   /var/log/logs/access.log ;
-    tcp_nopush   on;
-    server_names_hash_bucket_size 128; # this seems to be required for some vhosts
- 
-   server {
-        listen       80;
-        server_name  localhost;
-
-
-        location /web {
-		    proxy_pass http://127.0.0.1:4000;
-		    proxy_http_version 1.1;
-		    proxy_set_header Upgrade $http_upgrade;
-		    proxy_set_header Connection 'upgrade';
-		    proxy_set_header Host $host;
-		    proxy_cache_bypass $http_upgrade;
-            }
-		 
-            location / {
-		    root D:/production/Client;
-	     }
- 
-   }
-
-}
-
-
-*****************************
-
-
 
 
 

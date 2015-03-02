@@ -34,7 +34,29 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
+         <div class="nanaloading">
+                <div id="floatingBarsG">
+					<div class="blockG" id="rotateG_01">
+					</div>
+					<div class="blockG" id="rotateG_02">
+					</div>
+					<div class="blockG" id="rotateG_03">
+					</div>
+					<div class="blockG" id="rotateG_04">
+					</div>
+					<div class="blockG" id="rotateG_05">
+					</div>
+					<div class="blockG" id="rotateG_06">
+					</div>
+					<div class="blockG" id="rotateG_07">
+					</div>
+					<div class="blockG" id="rotateG_08">
+					</div>
+					</div> 
+					<h5>Loading Kindly Wait.....</h5>
+		 </div>
 
+<div class="content">
 
 <div id="nanawrapper" data-ng-controller="MainLandlordctrl">
       <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="margin-bottom: 0">
@@ -167,7 +189,7 @@
                </div>
 
 
-
+</div>
   <!--[if lt IE 9]>
     <script src="public/es5-shim/es5-shim.js"></script>
     <script src="public/json3/lib/json3.min.js"></script>
@@ -204,8 +226,12 @@
         <!-- endbuild -->
 
 
-<script>
-
+ <script>
+	$(function(){
+	$(".nanaloading").fadeOut(2000,function(){
+	   $(".content").fadeIn("slow");
+	     });
+	});
 </script>
            
 

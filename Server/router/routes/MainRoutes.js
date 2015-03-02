@@ -70,8 +70,8 @@ var express = require('express')
 		  router.post('/CreateLandlord',DatabaseConn.CreateLandlord);
           router.post('/Recoverpwd',DatabaseConn.Recoverpwd);
           router.post('/CheckidExists',DatabaseConn.idExists);
-          router.post('/CheckPlotExist',DatabaseConn.CheckPlotExist);
-		  router.post('/CheckHseNoExists',DatabaseConn.CheckHseNoExists);
+         // router.post('/CheckPlotExist',DatabaseConn.CheckPlotExist);      moved to landlord routes
+		 // router.post('/CheckHseNoExists',DatabaseConn.CheckHseNoExists);
           router.post('/CheckPhonenumberExists',DatabaseConn.phonenumber);
           router.get('/Viewmail',ensureAuthenticated,DatabaseConn.Viewmail);
           router.post('/Mail',ensureAuthenticated,DatabaseConn.CreateMail);

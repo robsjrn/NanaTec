@@ -24,6 +24,15 @@ MongoClient.connect(config.DatabaseUrl, function(err, database) {
 		   configureCounters();
 	   }
 	   });
+      
+
+          db.collection('property').ensureIndex({loc: "2d"}, { w:1}, function(err, result) {
+           if(err) { console.dir(err);}
+          });
+		  db.collection('House').ensureIndex({"plot.loc": "2d"}, { w:1}, function(err, result) {
+           if(err) { console.dir(err);}
+		  });
+        
 	   db.collection('Configuration',{strict:true}, function(err, collection) {
 	   if (err) { 
 		   console.error('Configuration Collection Does not Exists: %s', err);
@@ -66,12 +75,25 @@ exports.getCredentials=function(userid,pwd,fn){
 
 /* plot stuff */
 
- var updateLandlordPlots=function (uid,plotname ,callback){
-	var propertydet={"Plotname":plotname};
+ var addLandlordPlots=function (uid,plot ,callback){
+	var propertydet={"Plotname":plot.Plotname,"loc":plot.loc};
     db.collection('user', function(err, collection) {
      collection.update({"_id":uid},{$addToSet:{plots : propertydet},  $inc:{noplots:1}},{safe:true}, function(err, item) {
         if (item) {
-			InsertMonthlyPosting(plotname);
+			InsertMonthlyPosting(plot.Plotname);
+			callback(null,true); 
+			}
+		else{callback(err,null)}
+		 
+      }); 
+    });
+  }
+
+   var removeLandlordPlots=function (uid,plotname ,callback){
+	var propertydet={"Plotname":plotname};
+    db.collection('user', function(err, collection) {
+     collection.update({"_id":uid},{$pull:{plots : propertydet},  $inc:{noplots:-1}},{safe:true}, function(err, item) {
+        if (item) {
 			callback(null,true); 
 			}
 		else{callback(err,null)}
@@ -85,7 +107,7 @@ exports.AddProperty = function(req, res) {
   db.collection('property', function(err, collection) {
   collection.insert(req.body, function(err, item) {
       if (err) {DbError(res) ;}
-     else{  updateLandlordPlots(req.user._id,req.body.Plotname,function(err,success){
+     else{  addLandlordPlots(req.user._id,req.body,function(err,success){
 		         if (success){Success(res);}
 		         else{DbError(res) ;}      	
                 });
@@ -108,24 +130,44 @@ exports.Getplot = function(req, res) {
 };
 
 exports.Updateproperty = function(req, res) {
-   console.log("Updating plot name");
-   console.log(req.body.plotname);
- res.status(200).json({success: "Succesfull"})
+   db.collection('property', function(err, collection) {
+    collection.update({"Plotname" : req.body.Plotname},{$set:req.body},{safe:true}, function(err, item) {
+     if(err){
+		  res.status(501).json({error: "Database Error"})
+			  //impliment to delete landlord array
+		 }
+	  else{  res.status(200).json({success: "Succesfull"})}
+      });
+   });
+
 
 };
 
 
-exports.Deleteplot = function(req, res) {
-   console.log("Deleting plot name");
-   console.log(req.params.plotname);
-   res.status(200).json({success: "Succesfull"})
+exports.Deleteproperty = function(req, res) {
+  db.collection('property', function(err, collection) {
+    collection.remove({"Plotname" : req.params.plotname}, function(err, item) {
+     if(err){
+		  res.status(501).json({status: "Database Error"});
+		 }
+	  else{  
+		  removeLandlordPlots(req.user._id,req.params.plotname,function(err,success){
+		         if (success){res.status(200).json({status: "Record Deleted"});}
+		         else{res.status(501).json({status: "Database Error"}) ;}      	
+                });
+		  
+	     }
+      });
+   });
+
+
 };
 
-
+               
 
 exports.GetplotDetails = function(req, res) {
    db.collection('property', function(err, collection) {
-    collection.findOne({"Plotname":req.params.plotname},function(err, item){
+    collection.findOne({"Plotname":req.params.plotname},{_id:0},function(err, item){
   if(item){ res.status(200).json(item);}
   else { res.status(404).json({exist: false}) };
   if (err) {DbError(res);}
@@ -136,25 +178,27 @@ exports.GetplotDetails = function(req, res) {
 
 /*End of  plot stuff */
 
-exports.CreateTenant = function(req, res) {
-req.body.contact="+254"+req.body.contact;
- bcrypt.hash(req.body._id, 10, function(err, hash) {
-	req.body.password=hash;
-		db.collection('user', function(err, collection) {
-		collection.insert(req.body, function(err, item) {
-		   if (err) {
-			 
-			   DbError(res) ;
-			   }
-		   else{	   
-			   //res.json(200,{success: "Succesfull"});	
-			   Success(res) ;
-			   }
-			});
-			});
 
- });
 
+/* House Stuff Begin */
+
+
+var updatenohse=function (landlordid,no,Amount ,callback){
+   db.collection('user', function(err, collection) {
+    collection.update({"_id" : landlordid},{ $inc:{expcMonthlyIncome:Amount,nohse:no}},{safe:true}, function(err, item) {
+     if(err){console.log(err);return callback(false,err);}
+	  else{ return callback(true,null);}
+      });
+   });
+};
+
+exports.CheckHseExists = function(req, res) {
+   db.collection('House', function(err, collection) {
+  collection.findOne({$and: [ {"number":req.query.hsename},{"plot.Plotname" : req.query.plotname}]},{_id:0},function(err, item){
+  if(item){ res.status(200).json({exist: true,data:item});  }
+   else { res.status(200).json({exist: false}); };
+    });
+   });
 };
 
 
@@ -162,7 +206,24 @@ exports.CreateHouse = function(req, res) {
 db.collection('House', function(err, collection) {
 collection.insert(req.body, function(err, item) {
    if (err) {DbError(res) ;}
-   else{updatenohse(req.user._id,1,req.body.amount,function(ok,status) {if (ok){res.json(200,{success: "Succesfull"}); }	
+   else{updatenohse(req.user._id,1,req.body.amount,function(ok,status)
+	   {if (ok){
+	      res.status(200).json({success: "Succesfull"});
+       }	
+   });}
+
+});
+});
+};
+
+exports.Updatehse= function(req, res) {
+db.collection('House', function(err, collection) {
+collection.update({$and: [ {"number":req.body.number},{"plot.Plotname" : req.body.plot.Plotname}]},{$set:req.body}, function(err, item) {
+   if (err) {console.log(err);DbError(res) ;}
+   else{updatenohse(req.user._id,-1,-req.body.amount,function(ok,status)
+	   {if (ok){
+	      res.status(200).json({success: "Succesfull"});
+       }else{DbError(res) ;}	
    });}
 
 });
@@ -170,6 +231,145 @@ collection.insert(req.body, function(err, item) {
 };
 
 
+
+exports.GetLandlordHouse = function(req, res) {
+ db.collection('House', function(err, collection) {
+     collection.find({"landlordid":req.user._id},{_id:0}).toArray(function(err, item) {
+	   if(item){res.status(200).json(item);;
+	   }else{DbError(res) ;}
+});
+});
+};
+
+
+ exports.deleteHse = function(req, res) {
+  db.collection('House', function(err, collection) {
+   collection.remove({$and:[{"landlordid":req.user._id},{"number" : req.params.hsename}]}, function(err, item) {
+   if (err) {DbError(res) ;}
+   else{updatenohse(req.user._id,-1,-req.body.amount,function(ok,status)
+	   {if (ok){
+	      res.status(200).json({success: "Succesfull"});
+        }else{DbError(res) ;}	
+   });}
+
+});
+});
+};
+
+
+
+
+
+/* End of  House Stuff Begin */
+
+
+/* Tenant Stuff */
+
+		exports.CheckTenantid=function(req, res) {
+		 db.collection('user', function(err, collection) {
+		  collection.findOne({$and:[{"_id":req.params.idnumber},{"role" : "tenant"}]},{password:0},function(err, item){
+		  if(item){ res.json(200,{exist: true,data:item}); }
+		   else { res.json(200,{exist: false}); };
+		  if (err) {DbError(res);}
+		});
+		});
+		};
+
+
+		     exports.checkTenantContact=function(req, res) {
+				 db.collection('user', function(err, collection) {
+				  collection.findOne({$and:[{"contact":req.params.contactnumber},{"role" : "tenant"}]},{password:0},function(err, item){
+				  if(item){ res.json(200,{exist: true,data:item}); }
+				   else { res.json(200,{exist: false}); };
+				  if (err) {DbError(res);}
+				});
+				});
+				};
+
+
+ 
+
+
+				exports.CreateTenant = function(req, res) {
+				req.body.contact="+254"+req.body.contact;
+				 bcrypt.hash(req.body._id, 10, function(err, hash) {
+					req.body.password=hash;
+						db.collection('user', function(err, collection) {
+						collection.insert(req.body, function(err, item) {
+						   if (err) {		 
+							   DbError(res) ;
+							   }
+						   else{	   
+							   Success(res) ;
+							   }
+							});
+							});
+
+				 });
+
+				};
+
+               exports.Tenantlookup = function(req, res) {
+
+               var querry ;
+			       
+
+					if (req.query.searchid==1)	{ querry={"_id":req.query.lookup};}
+					if (req.query.searchid==2)	{ querry={"housename":req.query.lookup};}
+					if (req.query.searchid==3)	{ querry={"contact":"+254"+ S(req.query.lookup).right(9).s};}
+					if (req.query.searchid==4)	{ querry={"email":req.query.lookup};}
+						db.collection('user', function(err, collection) {
+						 collection.findOne({ $and:[querry,{"Landlordid":req.user._id},{"role" :"tenant"}]},{_id:0} , function(err, item){
+						  if(item){res.status(200).json({exist:true,data:item});}
+						  else(res.status(200).json({exist:false}))
+						  if (err) {DbError(res) ;}
+
+						});
+						});
+                  
+                 };
+
+    
+	exports.updateTenant= function(req, res) {
+		db.collection('user', function(err, collection) {
+		collection.update({$and: [ {"Landlordid":req.user._id},{"_id" : req.body.tid}]},{$set:req.body}, function(err, item) {
+		   if (err) {console.log(err);DbError(res) ;}
+			else{res.status(200).json({update:"success"});}	
+			});
+		});
+	};
+
+
+
+
+		exports.TenantList = function(req, res) {
+
+		 db.collection('user', function(err, collection) {
+		 collection.find({$and: [ {"Landlordid":req.user._id},{"role" : "tenant"}]}).toArray( function(err, item){
+		  if(item){res.send(item);}
+		  if (err) {DbError(res) ;}
+
+		});
+		});
+		};
+
+
+
+
+
+
+		exports.deleteTenant = function(req, res) {
+			console.log(req.params.tenantid);
+			console.log(req.user._id);
+		  db.collection('user', function(err, collection) {
+		   collection.remove({$and:[{"Landlordid":req.user._id},{"_id" : req.params.tenantid}]}, function(err, item) {
+		   if (err) {DbError(res) ;}
+		   else{ res.status(200).json({success: "Succesfull"}) ;}	
+		   });
+		});
+		};
+
+/* end of tenant */
 
 
 exports.listoftenant = function(req, res) {
@@ -739,14 +939,7 @@ var GrantLandlordAccess=function (CredentialDet ,callback){
 
 
 
-var updatenohse=function (landlordid,no,Amount ,callback){
-   db.collection('user', function(err, collection) {
-    collection.update({"_id" : landlordid},{ $inc:{expcMonthlyIncome:Amount,nohse:no}},{safe:true}, function(err, item) {
-     if(err){console.log(err);return callback(false,err);}
-	  else{ return callback(true,null);}
-      });
-   });
-};
+
 
 
 
@@ -1426,28 +1619,6 @@ exports.updateHsedetails=function(req, res) {
 	});
 };
 
-/// delete this now we have check plot name
-
-exports.CheckPlotExist=function(req, res) {
-   db.collection('user', function(err, collection) {
-    collection.findOne({"plots.Plotname":req.body.plotname},function(err, item){
-  if(item){ res.json(200,{exist: true}); }
-   else { res.json(200,{exist: false}); };
-  if (err) {DbError(res);}
-    });
-   });
-};
-
-exports.CheckHseNoExists=function(req, res) {
-//	console.log("Cheking Houseno.."+req.body.hseno)
- db.collection('House', function(err, collection) {
-  collection.findOne({$and: [ {"number":req.body.hseno},{"plot.Plotname" : req.body.plotname}]},function(err, item){
-  if(item){ res.json(200,{exist: true}); }
-   else { res.json(200,{exist: false}); };
-  if (err) {DbError(res);}
-});
-});
-};
 
 
 exports.idExists=function(req, res) {

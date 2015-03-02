@@ -61,12 +61,29 @@ var express = require('express'),
 
 
   /* New Api design */
-
+/* 1   Property */
    router.post('/plot',ensureAuthenticated,DatabaseConn.AddProperty); //create property
-   router.get('/plot/check/:plotname',DatabaseConn.Getplot);  // Check  plot Exist
-   router.get('/plot/:plotname',DatabaseConn.GetplotDetails);  // Get plot details
-   router.put('/plot/:plotname',DatabaseConn.Updateproperty);  // update plot
-   router.delete('/plot/:plotname',DatabaseConn.Deleteplot);  // delete plot
+   router.get('/plot/check/:plotname',ensureAuthenticated,DatabaseConn.Getplot);  // Check  plot Exist
+   router.get('/plot/:plotname',ensureAuthenticated,DatabaseConn.GetplotDetails);  // Get plot details
+   router.put('/plot',ensureAuthenticated,DatabaseConn.Updateproperty);  // update plot
+   router.delete('/plot/:plotname',ensureAuthenticated,DatabaseConn.Deleteproperty);  // delete plot
+
+/* 2   House Management */
+   router.get('/House/check/:data',DatabaseConn.CheckHseExists);  // Check  House no Exist
+   router.post('/House',ensureAuthenticated,DatabaseConn.CreateHouse);   // create a house
+   router.put('/House',ensureAuthenticated,DatabaseConn.Updatehse);  // update House
+   router.get('/House',ensureAuthenticated,DatabaseConn.GetLandlordHouse); 
+   router.delete('/House/:hsename',ensureAuthenticated,DatabaseConn.deleteHse);
+
+ /* 3   Tenant Management */
+
+   router.get('/Tenant/id/:idnumber',ensureAuthenticated,DatabaseConn.CheckTenantid);  //check tenant id
+   router.get('/Tenant/contact/:contactnumber',ensureAuthenticated,DatabaseConn.checkTenantContact);   //check tenant contact
+   router.post('/Tenant',ensureAuthenticated,DatabaseConn.CreateTenant);   // create a Tenant
+   router.get('/Tenant/lookup',ensureAuthenticated,DatabaseConn.Tenantlookup);  //check details
+   router.put('/Tenant',ensureAuthenticated,DatabaseConn.updateTenant);  //update
+   router.get('/Tenant',ensureAuthenticated,DatabaseConn.TenantList);  //List of All Tenants
+   router.delete('/Tenant/:tenantid',ensureAuthenticated,DatabaseConn.deleteTenant);
 
 
 
@@ -75,10 +92,10 @@ router.get('/LandLordDetails',ensureAuthenticated,DatabaseConn.LandLordDetails);
 router.get('/LandLordConfiguration',DatabaseConn.LandLordConfiguration);
 router.get('/LandlordTenants',ensureAuthenticated,DatabaseConn.LandlordTenants);
 router.post('/createTenant',ensureAuthenticated,DatabaseConn.CreateTenant);
-router.post('/createHouse',ensureAuthenticated,DatabaseConn.CreateHouse);
 
 
-router.post('/CheckHseNoExists',ensureAuthenticated,DatabaseConn.CheckHseNoExists);
+
+
 router.post('/hseLookup',ensureAuthenticated,DatabaseConn.hseLookup);
 router.post('/updateHsedetails',ensureAuthenticated,DatabaseConn.updateHsedetails);
 

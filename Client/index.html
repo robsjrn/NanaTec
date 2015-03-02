@@ -36,15 +36,21 @@
 											<div class="container">
 												<div class="search-box map show-search-box">
 													<ul class="nav nav-pills">
+													   
 														<li class="active"><a href="#search-form-sale" data-toggle="tab">Sale</a></li>
 														<li><a href="#search-form-rent" data-toggle="tab">Rent</a></li>
 														<li><a href="#search-form-rent" data-toggle="tab">Projects</a></li>
+														 <li><a href="#search-location" data-toggle="tab">Location Search</a></li>
+														
 													</ul>
 													<hr>
 													<div class="tab-content">
+
+                                         
+
 														<div class="tab-pane fade in active" id="search-form-sale">
 															<a class="advanced-search-toggle" data-toggle="collapse" data-parent="#accordion" href="#advanced-search-sale">Advanced Sale Search <i class="fa fa-plus"></i></a>
-															<form role="form" id="form-map-sale" class="form-map form-search clearfix has-dark-background">
+															<form role="form" id="form-map-sale" class="form-map form-search clearfix has-dark-background"  action="properties-listing.html">
 																<div id="advanced-search-sale" class="panel-collapse collapse">
 																	<div class="advanced-search">
 																		<header><h3>Property Features</h3></header>
@@ -122,69 +128,34 @@
 																	</div>
 																	<div class="col-md-2 col-sm-4">
 																		<div class="form-group">
-																			<button type="submit" class="btn btn-default">Search Sale</button>
+																	<button type="submit" formaction="properties-listing.html" class="btn btn-default">Search Sale</button>
 																		</div><!-- /.form-group -->
 																	</div>
 																</div>
 															</form><!-- /#form-map-sale -->
 														</div><!-- /#search-form-rent -->
-														<div class="tab-pane fade" id="search-form-rent">
-															<form role="form" id="form-map-rent" class="form-map form-search clearfix">
-																<div class="row">
-																	<div class="col-md-2 col-sm-4">
+                                                       
+
+													          <div class="tab-pane fade in" id="search-location"> <!-- /#search-location -->
+														    <form role="form" id="form-map-rent" class="form-map form-search clearfix">
+																	 <div class="row">
+																	      <div class="col-sm-8 col-md-8">
+																		   <span ng-click="getAddress()" class="link-arrow geo-location pull-right">Search houses in My Location</span>
+																		
 																		<div class="form-group">
-																			<select name="form-rent-city">
-																				<option value="">City</option>
-																				<option value="">County</option>
-																				<option value="1">Nairobi</option>
-																				<option value="2">Mombasa</option>
-																				<option value="3">Nyeri</option>
-																				<option value="4">Kisumu</option>
-																			</select>
+																			<label for="address-map">Type the Location </label>
+																			<input type="text" id="autocomplete" class="form-control" ng-model="address" googleautocomplete="" placeholder="Type  Location" >
 																		</div><!-- /.form-group -->
+																	   </div>
+																	   <div class="col-sm-4 col-md-4">
+																	      <br/>
+																	       <button type="submit" class="btn btn-danger">Search </button>
+                                                                        </div>
 																	</div>
-																	
-																	<div class="col-md-2 col-sm-4">
-																		<div class="form-group">
-																			<select name="form-rent-property-type">
-																				<option value="">Property Type</option>
-																				<option value="1">Apartment</option>
-																				<option value="2">Condominium</option>
-																				<option value="3">Cottage</option>
-																				<option value="4">Flat</option>
-																				<option value="5">House</option>
-																			</select>
-																		</div><!-- /.form-group -->
-																	</div>
-																	<div class="col-md-2 col-sm-4">
-																		<div class="form-group">
-																			<select name="form-rent-payment">
-																				<option value="">Payment</option>
-																				<option value="1">Monthly</option>
-																				<option value="2">Quarterly</option>
-																				<option value="3">Yearly</option>
-																			</select>
-																		</div><!-- /.form-group -->
-																	</div>
-																	<div class="col-md-2 col-sm-4">
-																		<div class="form-group">
-																			<select name="form-rent-price">
-																				<option value="">Price</option>
-																				<option value="1">< 5,000 Ksh </option>
-																				<option value="2">5001 - 10,000 Ksh</option>
-																				<option value="2">10,001 - 20,000 Ksh</option>
-																				<option value="2"> >20,000 Ksh</option>
-																			</select>
-																		</div>
-																	</div>
-																	<div class="col-md-2 col-sm-4">
-																		<div class="form-group">
-																			<button type="submit" class="btn btn-default">Search Rent</button>
-																		</div><!-- /.form-group -->
-																	</div>
-																</div>
-															</form><!-- /#form-map-rent -->
-														</div>
+															</form>
+														</div>   <!-- /#search-location -->
+												
+
 													</div><!-- /.tab-content -->
 												</div><!-- /.search-box -->
 											</div><!-- /.container -->
@@ -265,7 +236,7 @@
          <script src="lib/jquery/dist/jquery.min.js"></script>
         <script src="lib/angular/angular.js"></script>         
         <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
-        <script src="scripts/Home/Controller/main.js"></script>
+        <script src="scripts/Home/controller/main.js"></script>
  
 
 

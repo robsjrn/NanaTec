@@ -161,12 +161,12 @@
 								   <input type="text" class="form-control" placeholder="Contact Phone" id="contactphone" ng-model="property.contact.phone"  required>
 
 								   <label >Property Type</label>
-									<select class="form-control"  ng-model="propt.PropertyType" ng-options="servicetype.name for servicetype in type"  required>
+									<select class="form-control"  ng-model="property.PropertyType" ng-options="servicetype.name for servicetype in type"  required>
 									</select>
 
 
 							       <label >Status</label>
-									<select class="form-control"  ng-model="propt.status" ng-options="status.name for status in Rstatus"  required>
+									<select class="form-control"  ng-model="property.status" ng-options="status.name for status in Rstatus"  required>
 									</select>
 
 									<label for="plotdesc">Description</label>
@@ -246,14 +246,37 @@
 
                     </div>
 				   <div class="panel-footer">
-
+                            <button type="button" click-once="Updating..." class="btn btn-success btn-lg" ng-click="UpdateProperty()" >Update</button>
 				   </div>
 				</div>
 	 </div>
   </div>
   
   </md-tab>
-  <md-tab label="Delete"></md-tab>
+  <md-tab label="Delete">
+  
+                             <div class="panel panel-default">
+			   <div class="panel-heading">
+                          Edit
+							<div ng-if="showdeleting" class="pull-right"><md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"></md-progress-circular></div>
+			   </div>
+				   <div class="panel-body">
+                             <h3>By deleting this Property You loose all Data Associated with It..</h3>
+							 <br>
+							 <label for="plot">Property Name</label>
+				               <select class="form-control"  ng-model="delprop" id="plot" ng-options="c.Plotname for c in plot" > 
+				            </select>
+				             <br>
+							 <hr>
+				             <button type="button" click-once="Deleting Data..." class="btn btn-danger btn-lg" ng-click="Confirmdelete($event,delprop)" >Delete Data</button>
+
+				   </div>
+
+				   <div class="panel-footer">
+                           {{msg}}
+				   </div>
+  
+  </md-tab>
 </md-tabs>
 
 

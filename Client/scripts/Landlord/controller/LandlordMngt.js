@@ -32,8 +32,11 @@ var landlordtmngt= angular.module('LandlordmngtApp', ['ngResource','ngRoute','an
 landlordtmngt.run(['$rootScope', '$location','authService',
     function ($rootScope, $location,authService) {    
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
+           /*
               if(!authService.isUrlAccessibleForUser(next.originalPath))
-                 $location.path('/authError');     
+                 $location.path('/authError');   
+				 
+				 */
         });
 
 }]);
@@ -533,7 +536,7 @@ $scope.SearchHouseid=function(){
 
 
 
-landlordtmngt.controller('tenantctrl', function($scope,$rootScope,$http,tenantlist,ngProgress,notificationFactory) {
+landlordtmngt.controller('tenantctrl', function($scope,$rootScope,tenantlist,notificationService,LandlordFactory) {
  $scope.tenantcreated=false;
  $scope.tenanterror=false;
  $scope.plots=$rootScope.plot;
@@ -541,55 +544,138 @@ landlordtmngt.controller('tenantctrl', function($scope,$rootScope,$http,tenantli
  $scope.ContactSpinner=false;
  $scope.Tenant={};
   $scope.Tnt={};
+  $scope.search={};
  $scope.Tnt.plot=$scope.plots[0];
+
+
+
+ 	$scope.SearchType=[{id: 1, type: "tenantid", name: "Tenant Id"},
+	               {id: 2, type: "housenumber", name: "House Name"},
+	               {id: 3, type: "contact", name: "Tenant Telephone"}
+             
+];  
+
 
  $scope.disableComponents=true;
 
-$scope.CheckidExists=function(){
- $scope.showSpinner=true;
-          var dt={"idnumber":$scope.Tenant._id};
-          $http.post('/web/CheckidExists',dt)
+$scope.CheckidExists=function(id){
+ $scope.showloading=true;
+           LandlordFactory.checkTenant(id)
 				 		 .success(function(data) {
 			                  if (data.exist)
 			                     { $scope.userExist=true;
-							        notificationFactory.error("User Exists..");
-							        $scope.disableComponents=true;
-									$scope.Tenant._id="";
+							       $scope.showloading=false;
+                                      $scope.tdata=data.data;
+							          $scope.disableComponents=true;
 							      }
 							   else{ $scope.userExist=false; 
 								      $scope.disableComponents=false;
 							   }
-							   $scope.showSpinner=false;
+							  $scope.showloading=false;
 							 }) 
 						 .error(function(data) {
 							   $scope.ErrorStatus=true;
-							    $scope.showSpinner=false;
+							   $scope.showloading=false;
+								notificationService.showAlert('Error ','Ooops an error Occurred Retry Later');	
 			});
 };
 
 
 $scope.CheckPhonenumberExists=function(){
-$scope.ContactSpinner=true;
-var qerr={"phonenumber":"+254"+$scope.Tenant.contact};
-$http.post('/web/CheckPhonenumberExists',qerr)
+$scope.showloading=true;
+          LandlordFactory.checkTenantContact("+254"+$scope.Tenant.contact)
 				 		 .success(function(data) {
 			                  if (data.exist)
 			                     { $scope.contactExist=true;
+							        $scope.showloading=false;
+                                      $scope.tdata=data.data;
 							        $scope.disableComponents=true;
-									notificationFactory.error("The Given PhoneNumber Exists..");
-									$scope.Tenant.contact="";
+			
 							      }
 							   else{ $scope.contactExist=false; 
 								      $scope.disableComponents=false;
+                                      $scope.showloading=false;
 							   }
 							   $scope.ContactSpinner=false;
 							 }) 
 						 .error(function(data) {
 							   $scope.ErrorStatus=true;
 							    $scope.ContactSpinner=false;
+								notificationService.showAlert('Error ','Ooops an error Occurred Retry Later');	
 			});
 };
+  
 
+       $scope.TenantLookup=function(lookup){
+       
+	       if (typeof $scope.search.searchType =="undefined") {
+	             notificationService.showAlert('Error ','Kindly Choose a Search Criteria');	
+	              }
+           else {
+                      LandlordFactory.tenantLookup($scope.search.searchType.id,lookup)
+						 .success(function(data) {
+		                    $scope.statement=data;
+							  $scope.Ten=data.data;
+							 }) 
+						 .error(function(data) {
+							 
+							 });
+                   }
+
+
+	   };
+
+
+	   $scope.UpdateTenant=function(){
+		   $scope.updatingdata=true;
+            LandlordFactory.tenantUpdate($scope.Ten)
+				.success(function(data) {
+				               $scope.updatingdata=false;
+		                       notificationService.showAlert('Success ','Tenant Successfully Updated');	
+							 }) 
+						 .error(function(data) {
+								 $scope.updatingdata=false;
+							   notificationService.showAlert('Error ','Ooops an error Occurred Retry Later');	
+							 });
+
+	   };
+
+	   $scope.getTenantsData=function(){
+		   $scope.process=true;
+                 LandlordFactory.tenantList()
+					 	.success(function(data) {
+				            $scope.process=false;
+							$scope.tenantData=data;
+							 }) 
+						 .error(function(data) {
+								 $scope.process=false;
+							   notificationService.showAlert('Error ','Ooops an error Occurred Retry Later');	
+							 });
+
+	   };
+
+	   $scope.removeTenant=function(tid){
+            LandlordFactory.DeleteTenant(tid)
+				 .success(function(data) {
+				            $scope.process=false;
+							$scope.msg=data.success;
+							removeRec(tid);
+							 notificationService.showAlert('Success ','Tenant Successfully Deleted');	
+							 }) 
+						 .error(function(data) {
+								 $scope.process=false;
+							      notificationService.showAlert('Error ','Ooops an error Occurred Retry Later');	
+							 });
+	   };
+    
+	   function removeRec(ttid){
+					   var i;
+                             for (i in $scope.tenantData) {
+									if ($scope.tenantData[i]._id==ttid) {	
+										$scope.tenantData.splice(i, 1);
+									}
+								}
+	                 }
 
 
 
@@ -598,17 +684,17 @@ $http.post('/web/CheckPhonenumberExists',qerr)
 					$scope.tenanterror=false;
                     $scope.disableComponents=false;
 					$scope.userExist=false; 
-					$scope.Tenant="";
+					$scope.contactExist=false;
+	
 		   };
                  $scope.clearTenant=function(){
-                  $scope.Tenant="";
 				  $scope.userExist=false; 
 				 
 		   };
 
 		   
             $scope.saveTenant=function(){
-            $scope.tform.tenantnames.$setValidity("size", false);
+            
 			       $scope.Tenant.plot={};
 				   $scope.Tenant.Landlordid=$rootScope.landlordDetails._id;
 				   $scope.Tenant.plot.Plotname =$scope.Tnt.plot.Plotname;
@@ -618,42 +704,25 @@ $http.post('/web/CheckPhonenumberExists',qerr)
 				   $scope.Tenant.role="tenant";
 				   $scope.Tenant.AgreementStatus=false;
 				   $scope.Tenant.datecreated=new Date().toISOString();
+				   $scope.Tenant.tid=$scope.Tenant._id;
  //change this later
             $scope.Tenant.password= $scope.Tenant._id;
 
-				   ngProgress.start();
-                   $http.post('/web/Landlord/createTenant', $scope.Tenant)
+				    LandlordFactory.createTenant($scope.Tenant)
 						 .success(function(data) {
 							    $scope.tenantcreated=true;
 								$scope.msg=data.success;
-								notificationFactory.success("New Tenant Saved Successfully..");
-								ngProgress.complete();
+								 notificationService.showAlert('Success ','Tenant Successfully Created');	
 							 }) 
 						 .error(function(data) {
 							 $scope.tenanterror=true;
 							 $scope.msg=data.error;
-							 ngProgress.complete();
-							 notificationFactory.success("Ooops Error Saving Details");
+							  notificationService.showAlert('Error ','Ooops an error Occurred Retry Later');	
 							 });	
 
-                     }
+                     };
 
-    $scope.open = function (TenantDetails) {
-        var modalInstance = $modal.open({
-            templateUrl: 'views/partials/landlordEditTenantDetails.html',
-            controller: 'editTenantCtrl',
-            resolve: {
-                '$modalInstance': function() { return function() { return modalInstance; } },
-                'Tenant': function() { return TenantDetails; }
-            }
-        });
-    
-        modalInstance.result.then(function (response) {
-            $scope.selected = response;
-        }, function () {
-			//console.log("Cancell Cliked 3we");
-        });
-    }; 
+   
   
 });
 
@@ -704,20 +773,16 @@ landlordtmngt.controller('housemngtEditctrl', function($scope,$rootScope,$http,n
        };
 
 });
-landlordtmngt.controller('housemngtctrl', function($scope,$rootScope,$http,ngProgress,notificationFactory) {
+landlordtmngt.controller('housemngtctrl', function($scope,$rootScope,LandlordFactory,$mdToast,notificationService) {
    $scope.House={};
      $scope.housecreated=false;
 	 $scope.houseterror=false;
 	  $scope.disableComponents=true;
-	   $scope.showSpinner=false;
- 
     $scope.House.status="vacant";
 	$scope.plot=$rootScope.plot;
 	$scope.hsetype=$rootScope.hsetype;
      $scope.addHouse=function(){
           $scope.disableComponents=false; 
-		  $scope.housecreated=false;
-			 $scope.houseterror=false;
 			    $scope.House.plot=$scope.plot[0];
 				$scope.House.type=$scope.hsetype[0];
 				$scope.House.number="";
@@ -725,81 +790,136 @@ landlordtmngt.controller('housemngtctrl', function($scope,$rootScope,$http,ngPro
                 $scope.House.description="";
 				$scope.HsenoExist=false;
 	 };
-$scope.CheckHseNoExists=function(){
-           
-      $scope.showSpinner=true;
-          var dt={"hseno":$scope.House.number,"plotname":$scope.House.plot.Plotname};
-          $http.post('/web/Landlord/CheckHseNoExists',dt)
+             $scope.CheckHseNoExists=function(){     
+                           $scope.busy=true;
+                          LandlordFactory.CheckHseNoExists($scope.House.number,$scope.House.plot.Plotname)
 				 		 .success(function(data) {
 			                  if (data.exist)
-			                     { $scope.HsenoExist=true;
+			                     { 
 							        $scope.disableComponents=true;
 									$scope.House.number="";
-									notificationFactory.error("House Already Exists..")
+									notificationService.showAlert('Error ','House Number Exists');	
 							      }
 							   else{ $scope.HsenoExist=false; 
 								      $scope.disableComponents=false;
 							   }
-							   $scope.showSpinner=false;
+							   $scope.busy=false;
 							 }) 
 						 .error(function(data) {
-							   $scope.houseterror=true;
-							    $scope.showSpinner=false;
+							   notificationService.showAlert('Error ','Ooops an error Occurred Retry Later');	
+							    $scope.busy=false;
 								$scope.House.number="";
-			});
+			          });
+			 }
 
-};
 
-  $scope.clearTenant=function(){
-         $scope.House="";
+
+         $scope.GethseDetails=function(hsenumber){ 
+                           $scope.loadingdata=true;
+                          LandlordFactory.CheckHseNoExists(hsenumber,$scope.House.plot.Plotname)
+				 		    .success(function(data) {
+			                      	$scope.Hse=data.data;
+							        $scope.loadingdata=false;
+							 }) 
+						 .error(function(data) {
+							   notificationService.showAlert('Error ','Ooops an error Occurred Retry Later');	
+							    $scope.loadingdata=false;
+								$scope.House.number="";
+			          });
+
+                    };
+
+  $scope.removeData=function(hsename){
+          
+        $scope.process=true;
+		  LandlordFactory.deleteHse(hsename)
+			   .success(function(data) {
+			                      	
+							        
+									$scope.msg=data;
+									removeRec(hsename);
+									notificationService.showAlert('Success','Record Deleted..');
+									$scope.process=false;
+							 }) 
+						 .error(function(data) {
+								 $scope.msg=data;
+								 $scope.process=false;
+							   notificationService.showAlert('Error ','Ooops an error Occurred Retry Later');	
+							    
+							
+			          });
+
+  };
+          function removeRec(hsename){
+					   var i;
+                             for (i in $scope.hseData) {
+									if ($scope.hseData[i].number==hsename) {	
+										$scope.hseData.splice(i, 1);
+									}
+								}
+	                 }
+
+
+  $scope.getData=function(){
+
+                       $scope.process=true;
+                          LandlordFactory.getmyHouses()
+				 		    .success(function(data) {
+			                      	$scope.hseData=data
+							        $scope.process=false;
+							 }) 
+						 .error(function(data) {
+							   notificationService.showAlert('Error ','Ooops an error Occurred Retry Later');	
+							    $scope.process=false;
+								
+			          });
+	  
   };
 
-  $scope.edithouse=function(){
-         alert("editing house..");
+  $scope.Updatehse=function(){
+          LandlordFactory.updateHse ($scope.Hse)
+			  .success(function(data) {
+			  notificationService.showAlert('Success ','Data Updated ..');
+			  	 }) 
+			  .error(function(data) {
+			      notificationService.showAlert('Error ',data.error);
+              });
   };
-     $scope.saveHouse=function(){
-     $scope.userForm.hsenum.$setValidity("size", false);
-     $scope.disableComponents=true;
-				 ngProgress.start();
+     $scope.saveHouse=function(cc){
+		 alert(cc);
+          $scope.disableComponents=true;
 				 $scope.House.landlordid=$rootScope.landlordDetails._id;
-                   $http.post('/web/Landlord/createHouse', $scope.House)
+				 $scope.House.loc=$scope.plot.loc;
+                      LandlordFactory.createHouse($scope.House)				  
 						 .success(function(data) {
-							    $scope.housecreated=true;
 								$scope.msg=data.success;
 
                                if (typeof $rootScope.landlordDetails.nohse=="undefined")
 							   {$rootScope.landlordDetails.nohse=1; 
-							  // $rootScope.landlordDetails.expcMonthlyIncome=1;
 							   }
 							   else{
 								$rootScope.landlordDetails.nohse =$rootScope.landlordDetails.nohse + 1;
                                 $rootScope.landlordDetails.expcMonthlyIncome=$rootScope.landlordDetails.expcMonthlyIncome+ $scope.House.amount;
-								    notificationFactory.success("House Saved...");
+								    notificationService.showAlert('Success ','Data Saved ..');
 								   }
 
-								
-							   
-								ngProgress.complete();
 							 }) 
 						 .error(function(data) {
-							 $scope.houseterror=true;
-							 $scope.msg=data.error;
-							 ngProgress.complete();
-							  notificationFactory.error("Ooops Error Occured..");
+							  notificationService.showAlert('Error ',data.error);
 							 });	
-                     }
-
-
-
-
-
-  
+                     
+	 }
 });
-landlordtmngt.controller('plotmngtctrl', function($scope,$rootScope,ngProgress,$mdDialog,LandlordFactory,$mdToast) {
+
+
+
+landlordtmngt.controller('plotmngtctrl', function($scope,$rootScope,$mdDialog,LandlordFactory,$mdToast,notificationService) {
 	 $scope.LandlordPlot={};
 	 $scope.LandlordPlot.location={};
 	 $scope.saving=false;
      $scope.loc;
+
+	 
 	 
 	$scope.disableComponents=true;
     $scope.showSpinner=false;
@@ -864,17 +984,7 @@ landlordtmngt.controller('plotmngtctrl', function($scope,$rootScope,ngProgress,$
 
 					   $scope.lat="-1.2920658999999999";
 	                   $scope.lng="36.8219462";
-
-								$mdDialog.show(
-								  $mdDialog.alert()
-									.title('Position')
-									.content('Sorry We could not Get Your Position !!')
-									.ariaLabel('Position')
-									.ok('Ok Got it!')
-								
-								);
-							 
-
+                       notificationService.showAlert('position','Sorry We could not Get Your Position !!');														 
                       }
 		        };
 
@@ -890,14 +1000,7 @@ landlordtmngt.controller('plotmngtctrl', function($scope,$rootScope,ngProgress,$
 									 $scope.loc=results[0].geometry.location;
 									
 								  } else {
-														 $mdDialog.show(
-															  $mdDialog.alert()
-																.title('Geo Position')
-																.content('Sorry We could not Get Your Position !!')
-																.ariaLabel('Position')
-																.ok('Ok Got it!')
-															
-															);
+											notificationService.showAlert('position','Sorry We could not Get Your Position !!');														 
 
 								  }
 								});
@@ -951,7 +1054,12 @@ landlordtmngt.controller('plotmngtctrl', function($scope,$rootScope,ngProgress,$
 									$scope.plotExist=false;
 								   }
 							   $scope.Saveplot=function(){ 
+                                      // check to see if long,lat is paseed if not just get it from the guys current location
+
 								   $scope.saving=true;
+								   $scope.LandlordPlot.loc=[];
+                                   $scope.LandlordPlot.loc.push($scope.LandlordPlot.location.longitude);
+								   $scope.LandlordPlot.loc.push($scope.LandlordPlot.location.latitude);
 										     LandlordFactory.addPlot($scope.LandlordPlot)
 													 .success(function(data) {
                                                           $scope.saving=false;
@@ -975,8 +1083,7 @@ landlordtmngt.controller('plotmngtctrl', function($scope,$rootScope,ngProgress,$
 
                     $scope.GetplotDetails=function(prop){ 
 						   if (typeof prop =="undefined") {
-	                            alert("Kindly Choose a Property Name");
-
+	                            notificationService.showAlert('Choice','Kindly Choose a Property');														 
 	                            }
                            else {
                                 LandlordFactory.getPlotDetails(prop.Plotname)
@@ -989,6 +1096,59 @@ landlordtmngt.controller('plotmngtctrl', function($scope,$rootScope,ngProgress,$
 						   }
 
 					}
+    
+	            $scope.UpdateProperty=function(){ 
+                          LandlordFactory.updateProperty($scope.property)
+                                .success(function(data) {        
+										}) 
+								.error(function(data) {
+                                                    
+									});
+				}
+
+
+				$scope.Confirmdelete = function(ev,delprop) {
+					var confirm = $mdDialog.confirm()
+					  .title('Are you Sure you Want Delete the Property?')
+					  .content('Click Ok if You Agree..')
+					  .ariaLabel('Delete')
+					  .ok('Ok')
+					  .cancel('No ')
+					  .targetEvent(ev);
+					$mdDialog.show(confirm).then(function() {
+					    delRecord(delprop);
+					}, function() {
+					  $scope.msg = 'You decided to keep the Record.';
+					});
+				  };
+
+      function delRecord(rec){
+         $scope.showdeleting=true;
+
+		          
+              LandlordFactory.deleteProperty(rec.Plotname)
+                                .success(function(data) { 
+				                    removeRec(rec.Plotname);
+				                     $scope.msg =data.status;
+				                     $scope.showdeleting=false;
+										}) 
+								.error(function(data) {
+                                    $scope.msg =data.status;
+				                    $scope.showdeleting=false;            
+									});
+
+	  }
+
+	               function removeRec(pname){
+					   var i;
+                             for (i in $rootScope.plot) {
+									if ($rootScope.plot[i].Plotname==pname) {	
+										$rootScope.plot.splice(i, 1);
+									}
+								}
+	                 }
+
+
 
 							  
 });
@@ -2903,9 +3063,11 @@ ngProgress.start();
 landlordtmngt.factory('tenant', function($http) {
     var tenant={}    
     var url='/web/Landlord';
+
+	
 	 tenant.gethouse = function (Houseid) {
 		return $http.post(url + '/tenantDataHseName', Houseid);
-    };
+      };
       tenant.getTenantid = function (Tenantid) {
 		return $http.post(url + '/tenantDataID', Tenantid);
     };
@@ -2978,7 +3140,7 @@ landlordtmngt.directive('myMap', function(GoogleMapApi,$rootScope ) {
                 function initMap() {
                     if (map === void 0) {
                         //Places Option
-                   autocomplete = new google.maps.places.Autocomplete(
+                         autocomplete = new google.maps.places.Autocomplete(
 						  /** @type {HTMLInputElement} */(document.getElementById('autocomplete')),
 						  {
 							types: [],
@@ -3101,6 +3263,65 @@ landlordtmngt.directive('clickOnce', function($timeout) {
     };
 });
 
+
+landlordtmngt.service('notificationService', function( $mdDialog) {
+  var alert = '';
+  this.showAlert = function(title,content) {
+    $mdDialog.show(
+      $mdDialog.alert(title)
+        .title()
+        .content(content)
+        .ariaLabel('notification')
+        .ok('Got it!')
+     
+    );
+  };
+  this.showConfirm = function() {
+    var confirm = $mdDialog.confirm()
+      .title('Would you like to delete your debt?')
+      .content('All of the banks have agreed to forgive you your debts.')
+      .ariaLabel('Lucky day')
+      .ok('Please do it!')
+      .cancel('Sounds like a scam')
+   
+    $mdDialog.show(confirm).then(function() {
+      alert = 'You decided to get rid of your debt.';
+    }, function() {
+      alert = 'You decided to keep your debt.';
+    });
+  };
+  this.showAdvanced = function() {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'tenant.tmpl.html',
+    
+    })
+    .then(function(answer) {
+      alert = 'You said the information was "' + answer + '".';
+    }, function() {
+      alert = 'You cancelled the dialog.';
+    });
+  };
+});
+
+
+function DialogController( $mdDialog) {
+  this.hide = function() {
+    $mdDialog.hide();
+  };
+  this.cancel = function() {
+    $mdDialog.cancel();
+  };
+  this.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+}
+
+
+
+
+
+
 landlordtmngt.factory('notificationFactory', function () {
     toastr.options.positionClass = 'toast-top-right';
     toastr.options.extendedTimeOut = 1000; //1000;	
@@ -3171,10 +3392,40 @@ landlordtmngt.factory('LandlordFactory', ['$http','$rootScope','notificationFact
 	var url='/web/Landlord';
 	var data = {
 
+		//tenant 
+
+		  	checkTenant:function (tenantid) {
+		     return $http.get(url + '/Tenant/id/'+ tenantid);
+            },
+            checkTenantContact:function (contact) {
+		     return $http.get(url + '/Tenant/contact/'+ contact);
+            },
+            createTenant:function (data) {
+		     return $http.post(url + '/Tenant',data); 
+            },
+             tenantLookup:function (searchid,lookup) {
+		     return $http.get(url + '/Tenant/lookup/?searchid='+searchid+'&lookup='+lookup);
+            },
+            tenantUpdate:function (details) {
+		     return $http.put(url + '/Tenant',details); 
+            },
+           tenantList:function () {
+		     return $http.get(url + '/Tenant'); 
+            },
+            DeleteTenant:function (tenantid) {
+		     return $http.delete(url + '/Tenant/'+tenantid); 
+            },
+
+           
+				
+		//
+
         GetLandlordNotice: function() {
 			var promise = $http.get(url+ '/GetLandlordNotice',{ cache: true })
 			return promise;
 		},
+
+       //
          plotExist: function(plotname) {
 			var promise = $http.get(url+ '/plot/check/'+plotname)
 			return promise;
@@ -3188,7 +3439,38 @@ landlordtmngt.factory('LandlordFactory', ['$http','$rootScope','notificationFact
 			var promise =  $http.get(url + '/plot/'+details); 
 			return promise;
 		 },
-			
+         updateProperty: function(details) {
+			var promise =  $http.put(url + '/plot',details); 
+			return promise;
+		 },
+         deleteProperty: function(property) {
+			var promise =  $http.delete(url + '/plot/'+property); 
+			return promise;
+		 },
+         //
+		  CheckHseNoExists: function(hsename,plotname) {
+			var promise =  $http.get(url + '/House/check/data?hsename='+hsename+'&plotname='+plotname); 
+			return promise;
+		 },
+          createHouse: function(data) {
+			var promise =  $http.post(url + '/House',data); 
+			return promise;
+		 },
+          updateHse: function(details) {
+			var promise =  $http.put(url + '/House',details); 
+			return promise;
+		 },
+			 
+		  getmyHouses: function(data) {
+			var promise =  $http.get(url + '/House'); 
+			return promise;
+		 },
+           deleteHse: function(hseno) {
+			var promise =  $http.delete(url + '/House/'+hseno); 
+			return promise;
+		 },
+      //      
+
        GetUnverifiedTransactions: function() {
 			var promise = $http.get(url+ '/UnverifiedTransactions',{ cache: true })
 			return promise;
@@ -3217,13 +3499,13 @@ landlordtmngt.factory('LandlordFactory', ['$http','$rootScope','notificationFact
 
     
 		getMessages:function(){
-               notificationFactory.inprogress("Loading Data Please Wait ..");
+  
            var promise = $http.get('/web/Sms/getMsg')
 			return promise;
 		},
 
        getUsage:function(){
-               notificationFactory.inprogress("Loading Data Please Wait ..");
+             
                     var promise = $http.get('/web/Sms/getUsage')
 			return promise;
 		}
@@ -3480,7 +3762,7 @@ landlordtmngt.config(function($routeProvider,$locationProvider)	{
         })	   
 
 	.otherwise({
-         redirectTo: '/plotmngt'
+         redirectTo: 'plotmngt'
       });
 
 });
