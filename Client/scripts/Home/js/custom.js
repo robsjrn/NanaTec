@@ -27,10 +27,7 @@ $(document).ready(function($) {
 
     $('.tool-tip').tooltip();
 
-    var select = $('select');
-    if (select.length > 0 ){
-        select.selectpicker();
-    }
+  
 
     var bootstrapSelect = $('.bootstrap-select');
     var dropDownMenu = $('.dropdown-menu');
@@ -53,14 +50,7 @@ $(document).ready(function($) {
         }, 100);
     });
 
-    select.change(function() {
-        if ($(this).val() != '') {
-            $('.form-search .bootstrap-select.open').addClass('selected-option-check');
-        }else {
-            $('.form-search  .bootstrap-select.open').removeClass('selected-option-check');
-        }
-    });
-
+ 
 //  Contact form
 
     $("#form-contact-submit").bind("click", function(event){

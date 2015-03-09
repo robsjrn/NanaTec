@@ -13,7 +13,7 @@
 		 <link rel="stylesheet" href="styles/Home/footer.css">
         
   </head>
-    <body   class="page-sub-page page-listing page-grid page-search-results" id="page-top">                 
+    <body   class="page-sub-page  page-search-results" id="page-top">                 
 					  
 		      <!-- Wrapper -->
                 <div class="wrapper"   data-ng-controller="Mainctrl">			  
@@ -58,44 +58,41 @@
 													</section>
 
 													
-                                                <section id="properties" >
+                                                <section id="properties" class="display-lines">
                                                         
 
-                                                    <div class="grid" >
-														<div class="property masonry" ng-repeat="x in data">
-															<div class="inner">
-																<a href="property-detail.html">
-																	<div class="property-image">
-																		<figure class="tag status">{{x.tag}}</figure>
-																		<figure class="type" title="Apartment"><img ng-src={{x.assetimg}}></figure>
-																		<div class="overlay">
-																			<div class="info">
-																				<div class="tag price">$ {{x.price}}</div>
-																			</div>
+														   <div class="property" ng-repeat="x in data">
+																		<figure class="tag status">{{x.status}}</figure>
+																		<figure class="type" title={{x.title}}><img ng-src={{x.assetimg}}></figure>
+																		<div class="property-image">
+																			<figure class="ribbon">{{x.status}}</figure>
+																			<a href="property-detail.html">
+																				<img alt="" ng-src={{x.propertyimg}}>
+																			</a>
 																		</div>
-																		<img alt="" ng-src={{x.propertyimg}}>
-																	</div>
-																</a>
-																<aside>
-																	<header>
-																		<a ng-href="/property-detail/{{x.propertyid}}"><h3>{{x.location}}</h3></a>
-																		<figure>Golden Valley, MN 55427</figure>
-																	</header>
-																	<p>{{x.description}}</p>
-																	<dl>
-																		<dt>Status:</dt>
-																		<dd>{{x.status}}</dd>
-																		<dt>Area:</dt>
-																		<dd>{{x.size}}<sup>2</sup></dd>
-																		<dt>Beds:</dt>
-																		<dd>{{x.beds}}</dd>
-																		<dt>Baths:</dt>
-																		<dd>{{x.baths}}</dd>
-																	</dl>
-																	<a ng-href="/property-detail/{{x.propertyid}}" class="link-arrow">Read More</a>
-																</aside>
-															</div>
-														</div><!-- /.property -->
+																		<div class="info">
+																			<header>
+																				<a href="property-detail.html"><h3>{{x.name}}</h3></a>
+																				<figure>{{x.location}}</figure>
+																			</header>
+																			<div class="tag price">{{x.currency}} {{x.price}}</div>
+																			<aside>
+																				
+																				<dl>
+																				  <dt>Status:</dt>
+																<dd>{{x.status}}</dd>
+																<dt>Area:</dt>
+																<dd>{{x.size}}<sup>2</sup></dd>
+																<dt>Beds:</dt>
+																<dd>{{x.beds}}</dd>
+																<dt>Baths:</dt>
+																<dd>{{x.baths}}</dd>
+																				</dl>
+																			</aside>
+																			
+																		</div>
+																	</div><!-- /.property -->
+														
 
 
 
@@ -233,7 +230,7 @@
         <script src="lib/angular/angular.js"></script>         
         <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
 		<script src="scripts/Home/controller/propertiesListing.js"></script>
-      <!-- <script src="scripts/Home/js/custom.js"></script>  -->
+       <!-- <script src="scripts/Home/js/custom.js"></script>   -->
 
 
 </body>
