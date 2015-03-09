@@ -25,7 +25,7 @@ Registration.controller('Mainctrl', function($scope,$http,$window,CreateAcctServ
 				 		 .success(function(data) {
 								     $scope.invalidcredential=false;
 									$window.sessionStorage.token = data.token;
-									  $window.location.href='/PropertyRegistration.html';
+									  $window.location.href=data.homepage;
 									   
 							 }) 
 						 .error(function(data) {
@@ -37,10 +37,13 @@ Registration.controller('Mainctrl', function($scope,$http,$window,CreateAcctServ
 
      
 		 $scope.Save=function(){
-			  $scope.Registration.AccessStatus=1;
+           
+           if (typeof $scope.Registration.Registrationtype === "undefined")
+			{   alert("Kindly choose a Registration Type"); }
+            else {
+             $scope.Registration.AccessStatus=1;
               $scope.Registration.datecreated=new Date().toISOString();
-             var data={"PropertyDet":$scope.Registration};
-			   CreateAcctService.CreatePropertyOwner(data)
+			   CreateAcctService.CreatePropertyOwner($scope.Registration)
 						 .success(function(data) {
                                  $scope.SuccessStatus=true; 
 								 $scope.ErrorStatus=false;
@@ -52,14 +55,14 @@ Registration.controller('Mainctrl', function($scope,$http,$window,CreateAcctServ
 								 $scope.disableComponents=true;
 								
 							 });
+			}
 
-               };
-
-
-
+			 
+		 }
 
 
 });
+
 
  Registration.directive('matchValidator', function() {
     return {
@@ -78,7 +81,7 @@ Registration.controller('Mainctrl', function($scope,$http,$window,CreateAcctServ
     require : 'ngModel',
     link : function($scope, element, attrs, ngModel) {
       ngModel.$asyncValidators.usernameAvailable = function(username) {
-        return CreateAcctService.getusername(username);
+        return CreateAcctService.checkusername(username);
       };
     }
   }
@@ -87,11 +90,10 @@ Registration.controller('Mainctrl', function($scope,$http,$window,CreateAcctServ
 
 Registration.service('CreateAcctService', function ($http,$q) {
     var transaction={};
-    var url='/web/Property';
-	  this.getusername = function (username) {
-		   var user={"username":username};
+    var url='/web';
+	  this.checkusername = function (username) {
 		    var deferred = $q.defer();
-		 $http.post(url + '/UsernameExists', user)
+		 $http.get(url + '/user/'+  username)
 		 .success(function(data) { 
           deferred.reject(data);
         }).error(function(data) {    
@@ -101,16 +103,22 @@ Registration.service('CreateAcctService', function ($http,$q) {
     };
 
 	  this.CreatePropertyOwner = function (data) {
-		return  $http.post('/web/property/CreatePropertyOwner', data);
+		return  $http.post('/web/propertyAccount', data);
     };
       this.userLogin = function (user) {
-		return  $http.post('/web/property/login',user);
+		return  $http.post('web/Login',user);
 
       
 
     };
 
 });
+
+
+
+
+
+
 
 
 

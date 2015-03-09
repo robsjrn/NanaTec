@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="en" >
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>Nana|Landlord</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+	
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+   
+
+	<link rel="stylesheet" href="lib/angular-material/angular-material.min.css">
+	 <link rel="stylesheet" href="styles/Landlord/landlord.css">
+
+	<link rel="stylesheet" href="styles/Reports/Report.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="LandlordmngtApp" style="background: #e7e7e7">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+         <div class="nanaloading">
+                <div id="floatingBarsG">
+					<div class="blockG" id="rotateG_01">
+					</div>
+					<div class="blockG" id="rotateG_02">
+					</div>
+					<div class="blockG" id="rotateG_03">
+					</div>
+					<div class="blockG" id="rotateG_04">
+					</div>
+					<div class="blockG" id="rotateG_05">
+					</div>
+					<div class="blockG" id="rotateG_06">
+					</div>
+					<div class="blockG" id="rotateG_07">
+					</div>
+					<div class="blockG" id="rotateG_08">
+					</div>
+					</div> 
+					<h5>Loading Kindly Wait.....</h5>
+		 </div>
+
+<div class="content">
+
+<div id="nanawrapper" data-ng-controller="MainLandlordctrl">
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" id="menu-toggle" >
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                 <a class="navbar-brand" href="#">
+	   <span class="glyphicon glyphicon-home"></span>
+	   <strong>Nana Landlord</strong>
+	  </a>
+            </div>
+
+            <!-- /.navbar-header -->
+
+			
+             <ul class="nav navbar-top-links navbar-right">
+                 <li class="dropdown">
+                        <a  data-toggle="dropdown" class="dropdown-toggle">
+						     <i class="fa fa-table"></i>  <i class="fa fa-caret-down"></i>
+						</a>
+                        <ul class="dropdown-menu">
+						  <li role="presentation" class="dropdown-header">Tenant Report</li>
+                             <li><a href="#!/TenantPaidReport">&nbsp Paid</a></li>
+                             <li><a href="#!TenantUnPaidReport">&nbsp Un-Paid</a></li>
+                             <li><a href="#!/OverpaidHouseReport">&nbsp Over-Paid</a></li>
+							 <li><a href="#!/TenantListReport">&nbsp All Tenats</a></li>
+						  <li role="presentation" class="divider"></li>
+						  <li role="presentation" class="dropdown-header">House Report</li>
+                             <li><a href="#!/OccupiedHouseReport">&nbsp Occupied</a></li>
+							 <li><a href="#!/VacantHouseReport">&nbsp Vacant</a></li>
+							  <li><a href="#!/AllHouseReport">&nbsp All Housed</a></li>
+                          <li role="presentation" class="divider"></li>
+						  <li role="presentation" class="dropdown-header">Transaction Report</li>
+						      <li><a href="#!/ReportsPortal">&nbsp Transaction Summary</a></li>
+							  <li><a href="#!/PaymentSummaryDate">&nbsp Transaction Summary By Payment Date</a></li>
+							  <li><a href="#!/summarymngt">&nbsp Chart Summary</a></li>
+                            
+                        </ul>
+                    </li>   <!-- /.Report Drop down -->
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" >
+                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li ng-repeat="message in emails.messages  | limitTo :4" >
+                            <a href="#">
+                                <div>
+                                    <strong>{{ message.from }}</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>{{ message.date | date:'yyyy-MM-dd'  }}</em>
+                                    </span>
+                                </div>
+                                <div>{{ message.subject }}</div>
+                            </a>
+							  <div class="divider"></div>
+                        </li>                        
+                        <li>
+                            <a class="text-center" >
+                                <strong><a href="#!/inbox">Read All Messages</a></strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                   
+                </li>
+
+                 <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+						<li><a href="#!/pwdchange"><i class="fa fa-user fa-fw"></i>Change Password</a></li>
+						<li ><a href="#!/help"><i class="fa fa-question fa-fw"></i> Help</a></li> 
+						 <li><a href="#!/profile"><i class="fa fa-user fa-fw"></i> User Profile</a></li>
+						 <li><a href="#!/Settings"><i class="fa fa-gear fa-fw" ></i> Settings</a> </li>
+						 <li><a href="#!/map">Map</a></li>
+						 <li ><a href="#">Rent Increment</a></li>
+                        <li class="divider"></li>
+                        <li><a ng-click="Logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->		
+		
+		</nav>
+<div class="navcontainer" >
+ <ul class="nav nav-tabs tab-bar">
+		<li ng-repeat="x in menu" >
+		    <a ng-if="x.mainmenu" ng-href="#!{{x.path}}">{{x.name}}</a>
+		</li>
+		 
+   </ul>
+ </div>
+<div  class="container">
+
+   
+
+
+
+         <div  class="row">
+
+		           <div class="col-md-12">     
+						 <div data-ng-view ></div>
+					 </div>
+  	   
+			
+</div>
+
+    
+
+
+
+  </div>
+
+</div>
+
+
+             <div class="navbar navbar-default navbar-fixed-bottom">
+		         <div class="container" >
+			       <p>copyrights @NanaTec 2014 </p>	
+				  </div>
+               </div>
+
+
+</div>
+  <!--[if lt IE 9]>
+    <script src="public/es5-shim/es5-shim.js"></script>
+    <script src="public/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+	<script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="lib/ng-file-upload/angular-file-upload.min.js"></script>
+    <script src="lib/angular-route/angular-route.min.js"></script>
+   <script src="lib/angular-animate/angular-animate.js"></script>
+	<script src="lib/angular-aria/angular-aria.min.js"></script>
+	<!-- <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>  -->
+	<script src="lib/angular-resource/angular-resource.js"></script>                   
+	<script src="lib/angular-material/angular-material.js"></script>
+	  
+	<script src="lib/angular-resource/angular-resource.js"></script>
+    <script src="lib/textAngular/dist/textAngular.min.js"></script>
+	<script src="lib/textAngular/dist/textAngular-sanitize.min.js"></script>
+	<script src="lib/lodash/dist/lodash.min.js"></script>
+
+	
+	
+
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+		    <script src="lib/toastr/toastr.min.js"></script> 
+        	<script src="scripts/Landlord/controller/LandlordMngt.js"></script>
+			<script src="scripts/Landlord/controller/ngProgress.min.js"></script>
+        <!-- endbuild -->
+
+
+ <script>
+	$(function(){
+	$(".nanaloading").fadeOut(2000,function(){
+	   $(".content").fadeIn("slow");
+	     });
+	});
+</script>
+           
+
+			
+  </body>
+</html>
+
+
+
+                    
+
+
+

@@ -1,0 +1,104 @@
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.wrapper {
+    min-height: 100%;
+}
+
+.content {
+    overflow:auto;
+	padding-bottom: 150px;
+	
+	}  /* must be same height as the footer */
+/*Opera Fix*/
+body:before {
+	content:"";
+	height:100%;
+	float:left;
+	width:0;
+	margin-top:-32767px;/
+}
+
+.section-title {
+  position: relative;
+}
+.section-title .link-arrow {
+  margin-top: 5px;
+  right: 0;
+  position: absolute;
+  top: 0;
+}
+.section-title {
+  position: relative;
+}
+.section-title .link-arrow {
+  margin-top: 5px;
+  right: 0;
+  position: absolute;
+  top: 0;
+}
+.feature-box {
+  border: 2px solid #f3f3f3;
+  margin-bottom: 30px;
+  padding: 0 20px 15px 80px;
+  position: relative;
+}
+.feature-box .description h3 {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  color: #e06f13;
+  font-weight: normal;
+  padding-bottom: 10px;
+}
+.feature-box .icon {
+  background-color: #e06f13;
+  height: 60px;
+  left: -2px;
+  padding: 20px;
+  position: absolute;
+  top: -2px;
+  width: 60px;
+}
+.feature-box .icon:after {
+  bottom: -8px;
+  content: "";
+  height: 0px;
+  border-style: solid;
+  border-width: 0 8px 8px 0;
+  border-color: transparent #e06f13 transparent transparent;
+  position: absolute;
+  right: 0;
+  width: 0px;
+}
+.feature-box .icon .fa {
+  color: #fff;
+  font-size: 20px;
+}
+
+.featured-properties {
+  padding-bottom: 0;
+  padding-top: 40px;
+}
+
+#page-content {
+  padding-bottom: 10px;
+  position: relative;
+}
+.page-sub-page #page-content:after {
+  background: #f1f1f1;
+  background: -moz-linear-gradient(top, #f1f1f1 0%, white 80%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f1f1f1), color-stop(80%, white));
+  background: -webkit-linear-gradient(top, #f1f1f1 0%, white 80%);
+  background: -o-linear-gradient(top, #f1f1f1 0%, white 80%);
+  background: -ms-linear-gradient(top, #f1f1f1 0%, white 80%);
+  background: linear-gradient(to bottom, #f1f1f1 0%, white 80%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f1f1f1', endColorstr='#ffffff',GradientType=0 );
+  content: "";
+  left: 0;
+  height: 110px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -1;
+}

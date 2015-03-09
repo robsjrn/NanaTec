@@ -50,9 +50,9 @@ var express = require('express')
 				 {
                      
 				   var token = jwt.encode({username: user, accessrole:user.userRole.role}, tokenSecret);
-				   var accessrole;
 					       res.json({token : token,
-						             role:user.role					       
+						             role:user.role	,
+							         homepage:user.Homepage
 						       });	
 						 }
 				});
@@ -61,6 +61,11 @@ var express = require('express')
 
 
            router.get('/logout',DatabaseConn.logout);
+
+
+         router.post('/propertyAccount',DatabaseConn.CreateAccount);//create property manager account
+         router.post('/serviceAccount',DatabaseConn.CreateAccount);//create service Provider account
+         router.get('/user/:userid',DatabaseConn.checkuser);  //Check user name
 
 
         //Service that dont Require Login

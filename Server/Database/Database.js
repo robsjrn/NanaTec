@@ -58,7 +58,7 @@ function Success(res){
 
 exports.getCredentials=function(userid,pwd,fn){	
  db.collection('user', function(err, collection) { 
-     collection.findOne({$and: [ {"_id":userid},{"AccessStatus" : 1}]},{_id:1,password:1,Landlordid:1,role:1,userRole:1},function(err, item) {
+     collection.findOne({$and: [ {"_id":userid},{"AccessStatus" : 1}]},{_id:1,password:1,Landlordid:1,role:1,userRole:1,Homepage:1},function(err, item) {
 	   if(item){
 		 bcrypt.compare(pwd, item.password, function(err, res) {
               if (res) { return fn(null,item); }
@@ -359,8 +359,6 @@ exports.GetLandlordHouse = function(req, res) {
 
 
 		exports.deleteTenant = function(req, res) {
-			console.log(req.params.tenantid);
-			console.log(req.user._id);
 		  db.collection('user', function(err, collection) {
 		   collection.remove({$and:[{"Landlordid":req.user._id},{"_id" : req.params.tenantid}]}, function(err, item) {
 		   if (err) {DbError(res) ;}
@@ -370,6 +368,64 @@ exports.GetLandlordHouse = function(req, res) {
 		};
 
 /* end of tenant */
+
+
+
+/* Property Registration Stuff */
+
+		exports.CreateAccount = function(req, res) {
+       
+		   req.body.contacts="+254"+req.body.contacts;
+		   req.body.role="landlord";
+		   req.body._id=req.body.username;
+
+		      if (req.body.Registrationtype=="PL"){
+				  req.body.allowedPath=config.PL.allowedPath;
+		          req.body.Homepage=config.PL.Homepage;
+				  req.body.userRole=config.PL.userrole;
+				  }
+              if (req.body.Registrationtype=="PM")
+              {
+				   req.body.allowedPath=config.PM.allowedPath;
+		           req.body.Homepage=config.PM.Homepage;
+				   req.body.userRole=config.PM.userrole;
+              }
+		   
+		   bcrypt.hash(req.body.password, 10, function(err, hash) {
+			req.body.password=hash;
+			db.collection('user', function(err, collection) {
+			collection.insert(req.body,{safe:true}, function(err, item) {
+		   if (err) {
+			   DbError(res);}
+		   else{	
+					   sms.LandlordWelcomeSMS(req.body,function(message){
+						   SaveMessage(message);
+						});      
+				 Success(res);   
+			   }	
+		   });
+		  }); 
+		}); 
+		};
+
+
+		exports.checkuser=function(req, res) {		
+			 db.collection('user', function(err, collection) {
+			  collection.findOne({"_id":req.params.userid},function(err, item){
+			  if(item){ res.json(200,{exist: true}); }
+			   else { res.json(404,{exist: false}); };
+			  if (err) {DbError(res);}
+			});
+			});
+			};
+
+
+
+/* End Property Registration Stuff */
+
+
+
+
 
 
 exports.listoftenant = function(req, res) {
@@ -863,6 +919,7 @@ exports.LandlordAddPlots = function(req, res) {
 exports.CreateLandlord = function(req, res) {
 
    req.body.LandlordDet.contact="+254"+req.body.LandlordDet.contact;
+   req.body.LandlordDet.role="landlord";
    bcrypt.hash(req.body.LandlordDet.password, 10, function(err, hash) {
 	req.body.LandlordDet.password=hash;
     db.collection('user', function(err, collection) {
@@ -901,7 +958,7 @@ exports.CreatePropertyOwner = function(req, res) {
 
 
 exports.PropertyOwnerCredentials=function(userid,pwd,fn){	
- db.collection('property', function(err, collection) { 
+ db.collection('user', function(err, collection) { 
      collection.findOne({$and: [ {"username":userid},{"AccessStatus" : 1}]},function(err, item) {
 	   if(item){
 		 bcrypt.compare(pwd, item.password, function(err, res) {

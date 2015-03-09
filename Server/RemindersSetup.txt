@@ -392,3 +392,14 @@ bower install angular-aria#1.3.3 -F, --force-1.3.3
 
 Resize thumbnails via sharp and optimize via gulp-imagemin then upload to 
 
+
+
+
+
+db.user.update({"_id" : "3622036"},{$set: {"Homepage" : "/Account-propertyManagement.html","username":"3622036","Registrationtype" : "PM"});
+
+
+
+db.user.update({"_id" : "3622036"},{$set: {"Homepage" : "/Account-propertyManagement.html"}}, { upsert: true })
+db.user.update({"_id" : "3622036"},{$set: {"username":"3622036"}})
+db.user.update({"_id" : "3622036"},{$set: {"Registrationtype" : "PM"}})

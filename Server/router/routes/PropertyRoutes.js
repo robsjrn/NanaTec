@@ -42,7 +42,7 @@ var express = require('express'),
 				 if (user !==null)
 				 {
 				   var token = jwt.encode({username: user.username}, tokenSecret);
-					  res.json({token : token});	
+					  res.json({token : token,homepage:user.Homepage});	
 						 }
 				});
 				   

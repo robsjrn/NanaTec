@@ -29,7 +29,7 @@ var PropertyRegistration= angular.module('PropertyRegistration', ['ngRoute','flo
 		});
 
 PropertyRegistration.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('authInterceptor');
+  //$httpProvider.interceptors.push('authInterceptor');
 });
 
 

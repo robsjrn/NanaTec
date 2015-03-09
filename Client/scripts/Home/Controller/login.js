@@ -11,10 +11,11 @@ var LoginMngt= angular.module('RentmngtAppLogin', [] );
 				 		 .success(function(data) {
 								     $scope.invalidcredential=false;
 									 $window.sessionStorage.token = data.token;
+									 console.log(data);
 									  if (data.role=="tenant")
 									  { $window.location.href='/Tenant.html';}
                                       if (data.role=="landlord")
-									  { $window.location.href='/Landlord.html';}
+									  { $window.location.href=data.homepage;}
 									  if (data.role=="admin")
 									  { $window.location.href='/Admin.html';}
 									   if (data.role=="agent")

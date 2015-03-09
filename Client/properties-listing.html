@@ -56,13 +56,58 @@
 															</div>
 														</figure>
 													</section>
-                                                <section id="properties">
-                                                   
-                                                </section>  <!-- Propeties-->
-                                                 </section>  <!-- /#results -->
+
+													
+                                                <section id="properties" >
+                                                        
+
+                                                    <div class="grid" >
+														<div class="property masonry" ng-repeat="x in data">
+															<div class="inner">
+																<a href="property-detail.html">
+																	<div class="property-image">
+																		<figure class="tag status">{{x.tag}}</figure>
+																		<figure class="type" title="Apartment"><img ng-src={{x.assetimg}}></figure>
+																		<div class="overlay">
+																			<div class="info">
+																				<div class="tag price">$ {{x.price}}</div>
+																			</div>
+																		</div>
+																		<img alt="" ng-src={{x.propertyimg}}>
+																	</div>
+																</a>
+																<aside>
+																	<header>
+																		<a ng-href="/property-detail/{{x.propertyid}}"><h3>{{x.location}}</h3></a>
+																		<figure>Golden Valley, MN 55427</figure>
+																	</header>
+																	<p>{{x.description}}</p>
+																	<dl>
+																		<dt>Status:</dt>
+																		<dd>{{x.status}}</dd>
+																		<dt>Area:</dt>
+																		<dd>{{x.size}}<sup>2</sup></dd>
+																		<dt>Beds:</dt>
+																		<dd>{{x.beds}}</dd>
+																		<dt>Baths:</dt>
+																		<dd>{{x.baths}}</dd>
+																	</dl>
+																	<a ng-href="/property-detail/{{x.propertyid}}" class="link-arrow">Read More</a>
+																</aside>
+															</div>
+														</div><!-- /.property -->
 
 
-												  <h1>Under Construction</h1>
+
+									              </section>  <!-- Propeties-->
+                                            </section>  <!-- /#results -->
+
+
+												  
+
+
+
+
                                       </div><!-- /.col-md-9 -->
                                      <!-- end Results -->
                                            <!-- sidebar -->
@@ -188,7 +233,7 @@
         <script src="lib/angular/angular.js"></script>         
         <script src="lib/bootstrap/dist/js/bootstrap.js"></script>  
 		<script src="scripts/Home/controller/propertiesListing.js"></script>
-
+      <!-- <script src="scripts/Home/js/custom.js"></script>  -->
 
 
 </body>
