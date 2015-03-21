@@ -2,5 +2,5 @@
     "directory": "lib",
     "json": "bower.json" ,
     "strict-ssl":false,
-    "https-proxy": "http://ebsafrica%5Crobert.njoroge:sebastian12345@10.11.4.4:8080/"
+    "https-proxy": "http://ebsafrica%5Crobert.njoroge:sebastian123@10.11.4.4:8080/"
 }

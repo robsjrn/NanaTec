@@ -42,8 +42,7 @@
 												<section id="results">
 													<header><h1>Properties Listing</h1></header>
 													<section id="search-filter">
-														<figure><h3><i class="fa fa-search"></i>Search Results:</h3>
-															<span class="search-count">{{NoProperties}}</span>
+														<figure><h3><i class="fa fa-search"></i>Search Results: {{data.length}}</h3>
 															<div class="sorting">
 																<div class="form-group">
 																	<select name="sorting">
@@ -61,7 +60,7 @@
                                                 <section id="properties" class="display-lines">
                                                         
 
-														   <div class="property" ng-repeat="x in data">
+														   <div class="property" ng-repeat="x in data ">
 																		<figure class="tag status">{{x.status}}</figure>
 																		<figure class="type" title={{x.title}}><img ng-src={{x.assetimg}}></figure>
 																		<div class="property-image">

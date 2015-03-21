@@ -1,0 +1,210 @@
+   html, body {
+        height: 100%;
+      }
+
+.wrapper{
+  min-height: 100%;
+}
+
+.content {
+    overflow:auto;
+	padding-bottom: 150px;
+	
+	}  
+.page-sub-page #page-content:after {
+  background: #f1f1f1;
+  background: -moz-linear-gradient(top, #f1f1f1 0%, white 80%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f1f1f1), color-stop(80%, white));
+  background: -webkit-linear-gradient(top, #f1f1f1 0%, white 80%);
+  background: -o-linear-gradient(top, #f1f1f1 0%, white 80%);
+  background: -ms-linear-gradient(top, #f1f1f1 0%, white 80%);
+  background: linear-gradient(to bottom, #f1f1f1 0%, white 80%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f1f1f1', endColorstr='#ffffff',GradientType=0 );
+  content: "";
+  left: 0;
+  height: 110px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -1;
+}
+
+.page-sub-page.page-submit h2 {
+  border: none;
+  margin-bottom: 25px;
+  padding-bottom: 0;
+}
+
+.submit-step {
+  padding-left: 50px;
+  padding-top: 10px;
+  position: relative;
+}
+.submit-step .step-number {
+  background-color: #E06F13;
+  color: #fff;
+  height: 35px;
+  left: 0;
+  width: 35px;
+  position: absolute;
+  top: 0;
+  text-align: center;
+  line-height: 35px;
+}
+.submit-step .step-number:after {
+  bottom: -7px;
+  content: "";
+  height: 0px;
+  border-style: solid;
+  border-width: 0px 10px 10px 10px;
+  border-color: transparent transparent transparent #E06F13;
+  position: absolute;
+  left: 0;
+  width: 0px;
+}
+.submit-step .description h4 {
+  color: #2a2a2a;
+  margin-top: 0;
+  font-weight: bold;
+}
+
+.submit-features {
+  list-style: none;
+  padding-left: 0;
+}
+.submit-features li {
+  display: inline-block;
+  width: 33%;
+}
+.submit-features li label {
+  font-weight: normal;
+}
+.block {
+  padding: 25px 0;
+}
+.center {
+  text-align: center;
+}
+
+#page-content {
+  padding-bottom: 10px;
+  position: relative;
+}
+
+#page-content {
+  height: auto;
+}
+
+.breadcrumb {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  opacity: 0.6;
+  background-color: transparent;
+  padding: 8px 0;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.breadcrumb a {
+  color: #5a5a5a;
+}
+/**
+ * Material design
+ */
+
+textarea {
+  width: 100%;
+  height: 3rem;
+  background-color: transparent; }
+
+.materialize-textarea {
+  overflow-y: hidden;
+  /* prevents scroll bar flash */
+  padding: 1.6rem 0;
+  /* prevents text jump on Enter keypress */
+  resize: none;
+  min-height: 3rem; }
+.su-txt{
+margin:16px;
+}
+
+input[type=text], input[type=password], input[type=email], input[type=url], input[type=date], input[type=tel], input[type=number], input[type=search], textarea.materialize-textarea {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #9e9e9e;
+  outline: none;
+  height: 3rem;
+  width: 100%;
+  font-size: 2rem;
+  margin: 0 0 15px 0;
+  padding: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -o-transition: 0.3s;
+  -ms-transition: 0.3s;
+  transition: 0.3s; }
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=url]:focus, input[type=date]:focus, input[type=tel]:focus, input[type=number]:focus, input[type=search]:focus, textarea:focus.materialize-textarea {
+  border-bottom: 1px solid #26a69a;
+  -webkit-box-shadow: 0 1px 0 0 #26a69a;
+  -moz-box-shadow: 0 1px 0 0 #26a69a;
+  box-shadow: 0 1px 0 0 #26a69a; }
+
+  .section-title .link-arrow {
+  margin-top: 5px;
+  right: 0;
+  position: absolute;
+  top: 0;
+}
+.link-arrow {
+  -moz-transition: 0.2s;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  color: #2a2a2a;
+  display: inline-block;
+}
+
+
+/***************
+  Select Field
+***************/
+
+
+
+select {
+  background-color: #fffafa;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #f2f2f2;
+  border-radius: 2px;
+  height: 3rem;
+}
+
+
+
+
+
+/**
+ *End  Material design
+ */
+
+@media (min-width: 1200px) {
+
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+}
+
+@media (max-width: 767px) {
+
+ #page-content {
+    padding-top: 0px !important;
+  }
+}

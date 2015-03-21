@@ -11,52 +11,41 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
-	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="styles/Tenant/welcome.css">
+    <link rel="stylesheet" href="styles/Home/submitproperty.css">
+	  
+
+
+	
  </head>
-  <body ng-app="TenantWelcome">
-         <div class="BrandImg">
-		
+ <body>
 
-                <div id="floatingBarsG">
-					<div class="blockG" id="rotateG_01">
-					</div>
-					<div class="blockG" id="rotateG_02">
-					</div>
-					<div class="blockG" id="rotateG_03">
-					</div>
-					<div class="blockG" id="rotateG_04">
-					</div>
-					<div class="blockG" id="rotateG_05">
-					</div>
-					<div class="blockG" id="rotateG_06">
-					</div>
-					<div class="blockG" id="rotateG_07">
-					</div>
-					<div class="blockG" id="rotateG_08">
-					</div>
-					</div> 
-					<h5>Loading Kindly Wait.....</h5>
-		 </div>
-  <div class="content" data-ng-controller="tescontrl">
-     
-	  <h1>helooooooooooooo  papa</h1>
 
-              
-  </div>
 
-</div>
-    <script src="lib/jquery/dist/jquery.min.js"></script>
-    <script src="lib/angular/angular.js"></script>
 
-    <script src="scripts/Tenant/controller/Welcome.js"></script>
- <script>
-	$(function(){
-	$(".BrandImg").fadeOut(9000,function(){
-	   $(".content").fadeIn("slow");
-	     });
-	});
-</script>
+  <select>
+    <option value=""  selected >Choose your option</option>
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+    <option value="3">Option 3</option>
+  </select>
+
+ 
+
+
+
+
+      <script src="lib/jquery/dist/jquery.min.js"></script>
+     <script src="lib/angular/angular.js"></script>
+    <script src="lib/materialize/dist/js/materialize.js" ></script>
+
+	
+ 
+	 <script>
+ $(document).ready(function() {
+    $('select').material_select();
+  });
+  </script>
+
+
   </body>
 </html>
