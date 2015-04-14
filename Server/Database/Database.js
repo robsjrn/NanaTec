@@ -144,6 +144,22 @@ exports.Updateproperty = function(req, res) {
 };
 
 
+//Guyz who have not signed in
+exports.RegisterProperty = function(req, res) {
+   console.log("Model ");
+	console.dir(req.body)
+	console.log("image ");
+	console.dir(req.files)
+  db.collection('property', function(err, collection) {
+  collection.insert(req.body, function(err, item) {
+      if (err) {
+			  DbError(res) ;}
+      else {Success(res);}
+        });
+   });
+};
+
+
 exports.Deleteproperty = function(req, res) {
   db.collection('property', function(err, collection) {
     collection.remove({"Plotname" : req.params.plotname}, function(err, item) {

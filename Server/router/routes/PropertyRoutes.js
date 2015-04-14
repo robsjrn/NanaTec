@@ -22,6 +22,8 @@ var express = require('express'),
 			}
 
 
+          router.post('/property',DatabaseConn.RegisterProperty); //create property
+
 		  router.post('/CreatePropertyOwner',DatabaseConn.CreatePropertyOwner);
 		  router.post('/PropertyOwnerProfile',ensureAuthenticated,DatabaseConn.PropertyOwnerProfile);
 		  router.get('/PropertyOwnerDetails',ensureAuthenticated,DatabaseConn.PropertyOwnerDetails);

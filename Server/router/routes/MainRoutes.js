@@ -60,9 +60,14 @@ var express = require('express')
 			  });
 
 
-           router.get('/logout',DatabaseConn.logout);
+            router.get('/logout',DatabaseConn.logout);
+          
+      
 
 
+
+
+ ///do delete
          router.post('/propertyAccount',DatabaseConn.CreateAccount);//create property manager account
          router.post('/serviceAccount',DatabaseConn.CreateAccount);//create service Provider account
          router.get('/user/:userid',DatabaseConn.checkuser);  //Check user name
